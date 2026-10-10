@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <div class="header-content">
-          <h1 class="logo">🐚 Kgraph</h1>
+          <h1 class="logo">知识图谱系统</h1>
           <el-menu mode="horizontal" :router="true" :default-active="$route.path" class="nav-menu">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/graph">图谱可视化</el-menu-item>

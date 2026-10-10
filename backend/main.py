@@ -78,7 +78,7 @@ class Neo4jClient:
             self.connected = True
             print(f"Neo4j 连接成功：{uri}")
         except Exception as e:
-            print(f"⚠️  Neo4j 连接失败：{e}")
+            print(f"Neo4j 连接失败：{e}")
 
     def close(self):
         self.driver.close()
@@ -470,7 +470,7 @@ if __name__ == "__main__":
     print("=" * 60)
     print("Kgraph API 服务器启动中...")
     print("=" * 60)
-    print(f"📊 支持项目：{list(PROJECTS.keys())}")
+    print(f"支持项目：{list(PROJECTS.keys())}")
     print(f"Neo4j: {NEO4J_URI}")
     print("=" * 60)
 

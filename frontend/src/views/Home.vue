@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <el-card class="welcome-card">
-      <h2>👋 欢迎使用 Kgraph 多项目知识图谱系统</h2>
+      <h2>欢迎使用 Kgraph 多项目知识图谱系统</h2>
       <p class="description">
         展示 PhyKgraph 初中物理示例数据，支持多项目知识图谱查询与可视化
       </p>
@@ -20,7 +20,7 @@
 
       <el-divider />
 
-      <h3>🚀 快速开始</h3>
+      <h3>快速开始</h3>
       <el-steps :active="1" finish-status="success" align-center>
         <el-step title="选择项目" description="从项目列表中选择要查看的图谱" />
         <el-step title="可视化" description="查看图谱结构和节点关系" />
@@ -29,7 +29,7 @@
     </el-card>
 
     <el-card class="stats-card" style="margin-top: 20px;">
-      <h3>📊 系统状态</h3>
+      <h3>系统状态</h3>
       <el-descriptions :column="3" border>
         <el-descriptions-item label="API 状态">
           <el-tag :type="apiStatus ? 'success' : 'danger'">

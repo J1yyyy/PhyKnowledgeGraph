@@ -1,7 +1,7 @@
 <template>
   <div class="projects">
     <el-card>
-      <h2>📁 项目管理</h2>
+      <h2>项目管理</h2>
       <p class="description">管理和查看所有知识图谱项目</p>
 
       <el-table :data="projects" style="width: 100%; margin-top: 20px;" v-loading="loading">

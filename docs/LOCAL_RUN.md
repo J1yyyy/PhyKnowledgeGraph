@@ -4,8 +4,6 @@
 
 随仓库提供 `data/demo_junior_physics.json`，不依赖原始桌面文件或服务器。以下命令假设项目放在 `D:\Desktop\new-project\physics-knowledge-graph-demo`，其他位置请替换路径。
 
-以下命令全部在 **Windows PowerShell** 中执行。提示符应是 `PS ...>`，不是 Python 的 `>>>`。如果已经进入 Python 交互模式，先输入 `exit()`。
-
 ## 1. 依赖与数据库
 
 打开 Neo4j Desktop 并启动本地实例，用户数据库默认 `neo4j`。

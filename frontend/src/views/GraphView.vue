@@ -13,9 +13,9 @@
 
         <!-- 分级控制 -->
         <el-select v-model="graphLevel" placeholder="显示级别" @change="loadGraph()" style="width: 150px; margin-left: 10px;">
-          <el-option label="🎯 核心节点" value="core" />
-          <el-option label="⭐ 重要节点" value="important" />
-          <el-option label="📊 全部节点" value="all" />
+          <el-option label="核心节点" value="core" />
+          <el-option label="重要节点" value="important" />
+          <el-option label="全部节点" value="all" />
         </el-select>
 
         <el-autocomplete
@@ -53,13 +53,13 @@
 
       <div class="stats-bar">
         <el-tag type="info" size="small">
-          📊 当前显示：{{ currentNodeCount }} 个节点
+          当前显示：{{ currentNodeCount }} 个节点
         </el-tag>
         <el-tag type="success" size="small" style="margin-left: 10px;">
           {{ currentEdgeCount }} 条真实关系
         </el-tag>
         <el-tag type="success" size="small" style="margin-left: 10px;">
-          🔍 {{ activeCenterId ? '当前显示：节点一跳邻域' : `级别：${levelLabels[graphLevel]}` }}
+          {{ activeCenterId ? '当前显示：节点一跳邻域' : `级别：${levelLabels[graphLevel]}` }}
         </el-tag>
       </div>
 
