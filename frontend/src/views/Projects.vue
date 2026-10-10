@@ -15,10 +15,15 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column label="开放状态" width="110">
+          <template #default="scope">
+            <el-tag :type="scope.row.available ? 'success' : 'info'">{{ scope.row.available ? '已开放' : '未开放' }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button size="small" @click="viewStats(scope.row.id)">统计</el-button>
-            <el-button size="small" type="primary" @click="viewGraph(scope.row.id)">查看图谱</el-button>
+            <el-button size="small" :disabled="!scope.row.available" @click="viewStats(scope.row.id)">统计</el-button>
+            <el-button size="small" type="primary" :disabled="!scope.row.available" @click="viewGraph(scope.row.id)">查看图谱</el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'graph-page': $route.name === 'GraphView' }">
     <el-container>
       <el-header>
         <div class="header-content">
@@ -16,7 +16,7 @@
         <router-view />
       </el-main>
 
-      <el-footer>
+      <el-footer v-if="$route.name !== 'GraphView'">
         <p>Kgraph 多项目知识图谱系统 v2.0 | Powered by FastAPI + Vue 3 + Neo4j</p>
       </el-footer>
     </el-container>
@@ -27,6 +27,10 @@
 </script>
 
 <style>
+html, body { margin: 0; }
+.graph-page > .el-container { height: 100dvh; min-height: 0; }
+.graph-page .el-main { min-height: 0; padding: 10px; overflow: hidden; }
+
 #app {
   font-family: 'Arial', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;

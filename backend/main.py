@@ -31,6 +31,7 @@ if not NEO4J_PASSWORD:
 PROJECTS = {
     "junior_demo": {
         "name": "初中物理演示图谱",
+        "available": True,
         "neo4j_label": "DemoJuniorPhysics",
         "description": "PhyKgraph 示例数据：101 个节点、104 条语义关系"
     },
@@ -120,7 +121,8 @@ class Neo4jClient:
         WHERE $node_type IS NULL OR coalesce(n.type, n.group) = $node_type
         OPTIONAL MATCH (n)--(m:{label})
         WITH n, count(DISTINCT m) AS degree
-        WHERE $level <> 'important' OR degree >= 2
+        WHERE ($level <> 'core' OR degree >= 5)
+          AND ($level <> 'important' OR degree >= 2)
         RETURN n.id as id, coalesce(n.title, n.name, n.label) as label,
                coalesce(n.type, n.group, 'Unknown') as type,
                n.description as description, n.human_readable_id as hr_id, degree,
@@ -142,9 +144,12 @@ class Neo4jClient:
                 MATCH path = (center)-[*0..{depth}]-(n:{label})
                 WHERE all(item IN nodes(path) WHERE item:{label})
                 WITH DISTINCT n
+                ORDER BY CASE WHEN n.id = $center_id THEN 0 ELSE 1 END, n.id LIMIT $limit
+                OPTIONAL MATCH (n)--(neighbor:{label})
+                WITH n, count(DISTINCT neighbor) AS degree
                 RETURN n.id AS id, coalesce(n.title, n.name, n.label) AS label,
                        coalesce(n.type, n.group, 'Unknown') AS type, n.description AS description,
-                       n.source_id AS source_id
+                       n.source_id AS source_id, degree
                 ORDER BY CASE WHEN n.id = $center_id THEN 0 ELSE 1 END, id LIMIT $limit
             """, {"center_id": center_id, "center_node": center_node, "limit": limit})
         else:
@@ -233,7 +238,8 @@ async def get_projects():
                 "id": pid,
                 "name": info["name"],
                 "description": info["description"],
-                "source": "neo4j" if "neo4j_label" in info else "json"
+                "source": "neo4j" if "neo4j_label" in info else "json",
+                "available": info.get("available", False)
             }
             for pid, info in PROJECTS.items()
         ]

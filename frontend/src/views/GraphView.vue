@@ -6,52 +6,58 @@
           <el-option
             v-for="proj in projects"
             :key="proj.id"
-            :label="proj.name"
+            :label="proj.available ? proj.name : `${proj.name}（未开放）`"
+            :disabled="!proj.available"
             :value="proj.id"
           />
         </el-select>
 
         <!-- 分级控制 -->
-        <el-select v-model="graphLevel" placeholder="显示级别" @change="loadGraph()" style="width: 150px; margin-left: 10px;">
+        <el-select v-model="graphLevel" placeholder="显示级别" @change="loadGraph()" style="width: 150px;">
           <el-option label="核心节点" value="core" />
           <el-option label="重要节点" value="important" />
           <el-option label="全部节点" value="all" />
         </el-select>
 
-        <el-autocomplete
-          ref="searchInput"
-          v-model="searchKeyword"
-          value-key="label"
-          :fetch-suggestions="fetchSuggestions"
-          :debounce="300"
-          :trigger-on-focus="false"
-          :highlight-first-item="false"
-          placeholder="搜索节点..."
-          clearable
-          @select="selectNode"
-          style="width: 340px; margin-left: 20px;"
-        >
-          <template #default="{ item }">
-            <div class="search-suggestion">
-              <span>{{ item.label }}</span>
-              <el-tag size="small" type="info">{{ item.type }}</el-tag>
-            </div>
-          </template>
-          <template #append>
-            <el-button @mousedown.prevent @click="search">搜索</el-button>
-          </template>
-        </el-autocomplete>
+        <div class="node-search">
+          <el-autocomplete
+            ref="searchInput"
+            v-model="searchKeyword"
+            value-key="label"
+            :fetch-suggestions="fetchSuggestions"
+            :debounce="300"
+            :trigger-on-focus="false"
+            :highlight-first-item="false"
+            placeholder="搜索节点..."
+            clearable
+            @select="selectNode"
+            style="width: 100%;"
+          >
+            <template #default="{ item }">
+              <div class="search-suggestion">
+                <span>{{ item.label }}</span>
+                <el-tag size="small" type="info">{{ item.type }}</el-tag>
+              </div>
+            </template>
+            <template #append>
+              <el-button @mousedown.prevent @click="search">搜索</el-button>
+            </template>
+          </el-autocomplete>
+        </div>
         <span v-if="searchCount !== null" class="search-status" role="status">
           {{ searchFailed ? '搜索失败，可重试' : searchCount ? `找到 ${searchCount} 个结果，请选择节点` : '未找到相关节点' }}
         </span>
 
         <div class="controls">
+          <el-checkbox v-model="showRelationLabels" :disabled="!currentAvailable">显示关系名称</el-checkbox>
           <el-button @click="resetView">重置视图</el-button>
           <el-button @click="exportImage">导出图片</el-button>
         </div>
       </div>
 
-      <div class="stats-bar">
+      <el-alert v-if="!currentAvailable" title="该项目未开放，请选择初中物理演示图谱" type="info" :closable="false" />
+
+      <div v-if="currentAvailable" class="stats-bar">
         <el-tag type="info" size="small">
           当前显示：{{ currentNodeCount }} 个节点
         </el-tag>
@@ -61,6 +67,13 @@
         <el-tag type="success" size="small" style="margin-left: 10px;">
           {{ activeCenterId ? '当前显示：节点一跳邻域' : `级别：${levelLabels[graphLevel]}` }}
         </el-tag>
+      </div>
+
+      <div v-if="currentAvailable" class="graph-legend" aria-label="节点图例">
+        <span v-for="type in legendTypes" :key="type" class="legend-item">
+          <i :style="{ backgroundColor: typeStyle(type).color }"></i>{{ typeStyle(type).name }}
+        </span>
+        <span class="legend-note">颜色：实体类型 · 大小：完整图谱的关联节点数，非重要程度 · 橙色描边：当前选中</span>
       </div>
 
       <div ref="graphContainer" class="graph-container"></div>
@@ -94,7 +107,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import * as d3 from 'd3'
 import axios from 'axios'
@@ -107,6 +120,7 @@ const searchKeyword = ref('')
 const searchInput = ref(null)
 const searchCount = ref(null)
 const searchFailed = ref(false)
+const showRelationLabels = ref(false)
 const graphLevel = ref('all') // 演示数据默认完整展示；大图谱可切换核心节点
 const showNodeDetail = ref(false)
 const selectedNode = ref(null)
@@ -121,8 +135,8 @@ let selectionVersion = 0
 let visibleNodes = new Map()
 
 const levelLabels = {
-  'core': '核心',
-  'important': '重要',
+  'core': '核心（关联节点数 ≥ 5）',
+  'important': '重要（关联节点数 ≥ 2）',
   'all': '全部'
 }
 
@@ -130,6 +144,27 @@ let svg = null
 let simulation = null
 let fitGraphView = null
 let focusGraphNode = null
+const nodeTypes = {
+  PHYSICS_CONCEPT: { name: '物理概念', color: '#2563eb' },
+  PHYSICAL_QUANTITY: { name: '物理量', color: '#059669' },
+  FORMULA: { name: '公式', color: '#d97706' },
+  LAW_OR_PRINCIPLE: { name: '定律与原理', color: '#dc2626' },
+  PHYSICS_MODEL: { name: '物理模型', color: '#7c3aed' },
+  PHENOMENON: { name: '物理现象', color: '#0891b2' },
+  TYPICAL_SCENARIO: { name: '典型情境', color: '#db2777' },
+  CONDITION: { name: '适用条件', color: '#64748b' },
+  EXPERIMENT: { name: '实验', color: '#65a30d' },
+  METHOD: { name: '方法', color: '#9333ea' },
+  CONSTANT: { name: '常量', color: '#92400e' },
+  MISCONCEPTION: { name: '易错认识', color: '#be123c' },
+  MATH_TOOL: { name: '数学工具', color: '#0f766e' }
+}
+const typeStyle = type => nodeTypes[type] || { name: type, color: '#475569' }
+const nodeRadius = node => 6 + Math.min(8, Math.sqrt(Math.max(0, node.degree)) * 1.6)
+const legendTypes = ref([])
+const currentAvailable = computed(() => projects.value.some(project => project.id === currentProject.value && project.available))
+let resizeObserver = null
+
 const relationNames = {
   PARENT_CHILD: '层级关系',
   CONTAINS_VARIABLE: '包含变量',
@@ -143,7 +178,7 @@ const loadProjects = async () => {
     const response = await axios.get('/api/projects')
     projects.value = response.data.projects
     if (projects.value.length > 0) {
-      currentProject.value = route.query.project || projects.value[0].id
+      currentProject.value = route.query.project || projects.value.find(project => project.available)?.id || ''
       loadGraph()
     }
   } catch (error) {
@@ -154,6 +189,19 @@ const loadProjects = async () => {
 // 加载图谱数据
 const loadGraph = async (centerId = null) => {
   if (!currentProject.value) return false
+  if (!currentAvailable.value) {
+    ++loadVersion
+    ++selectionVersion
+    showNodeDetail.value = false
+    currentNodeCount.value = 0
+    currentEdgeCount.value = 0
+    visibleNodes.clear()
+    simulation?.stop()
+    resizeObserver?.disconnect()
+    d3.select(graphContainer.value).selectAll('*').remove()
+    return false
+  }
+  await nextTick()
   if (!centerId) {
     ++selectionVersion
     showNodeDetail.value = false
@@ -186,9 +234,10 @@ const loadGraph = async (centerId = null) => {
       type: n.type || 'Unknown',
       description: n.description,
       group: n.type || 'Unknown',
-      value: n.degree || n.value || 1 // 连接数
+      degree: Number(n.degree ?? 0) // 完整项目图谱中的不同邻居数量
     }))
 
+    legendTypes.value = [...new Set(nodes.map(node => node.type))].sort()
     currentNodeCount.value = nodes.length
     visibleNodes = new Map(nodes.map(node => [node.id, node]))
 
@@ -223,12 +272,13 @@ const loadGraph = async (centerId = null) => {
 const visualizeGraph = (nodesData, edgesData) => {
   if (!graphContainer.value) return
   simulation?.stop()
+  resizeObserver?.disconnect()
 
   // 清空容器
   d3.select(graphContainer.value).selectAll('*').remove()
 
-  const width = graphContainer.value.clientWidth
-  const height = 600
+  let width = graphContainer.value.clientWidth
+  let height = graphContainer.value.clientHeight
 
   // 创建 SVG
   const zoomBehavior = d3.zoom().on('zoom', (event) => {
@@ -243,24 +293,23 @@ const visualizeGraph = (nodesData, edgesData) => {
   svg.append('defs').append('marker')
     .attr('id', 'relation-arrow')
     .attr('viewBox', '0 -5 10 10')
-    .attr('refX', 19)
+    .attr('refX', 10)
     .attr('markerWidth', 6)
     .attr('markerHeight', 6)
     .attr('orient', 'auto')
     .append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', '#999')
 
   // 颜色映射
-  const types = [...new Set(nodesData.map(n => n.type))]
-  const color = d3.scaleOrdinal(d3.schemeCategory10).domain(types)
+  const color = type => typeStyle(type).color
 
   // 创建力导向模拟
   simulation = d3.forceSimulation(nodesData)
-    .force('link', d3.forceLink(edgesData).id(d => d.id).distance(100))
-    .force('charge', d3.forceManyBody().strength(-300))
+    .force('link', d3.forceLink(edgesData).id(d => d.id).distance(115))
+    .force('charge', d3.forceManyBody().strength(-360))
     .force('center', d3.forceCenter(width / 2, height / 2))
     .force('x', d3.forceX(width / 2).strength(0.04))
     .force('y', d3.forceY(height / 2).strength(0.04))
-    .force('collide', d3.forceCollide().radius(30))
+    .force('collide', d3.forceCollide().radius(node => nodeRadius(node) + 22))
 
   // 绘制边
   const links = g.append('g')
@@ -272,7 +321,8 @@ const visualizeGraph = (nodesData, edgesData) => {
     .attr('stroke-width', 1.5)
     .attr('marker-end', 'url(#relation-arrow)')
   links.append('title').text(d => d.label)
-  const relationLabels = g.append('g').selectAll('text')
+  const relationLabels = g.append('g').attr('class', 'relation-labels')
+    .attr('display', showRelationLabels.value ? null : 'none').selectAll('text')
     .data(edgesData).join('text')
     .attr('font-size', 9).attr('fill', '#64748b')
     .attr('text-anchor', 'middle').attr('pointer-events', 'none')
@@ -284,7 +334,7 @@ const visualizeGraph = (nodesData, edgesData) => {
     .data(nodesData)
     .join('circle')
     .attr('data-node-id', d => d.id)
-    .attr('r', 8)
+    .attr('r', nodeRadius)
     .attr('fill', d => color(d.type))
     .attr('stroke', '#fff')
     .attr('stroke-width', 1.5)
@@ -294,7 +344,7 @@ const visualizeGraph = (nodesData, edgesData) => {
       .on('end', dragended))
     .on('click', (event, d) => selectNode(d))
     .on('mouseover', function(event, d) {
-      d3.select(this).attr('r', 12)
+      d3.select(this).attr('r', nodeRadius(d) + 3)
       // 显示 tooltip
       g.append('text')
         .attr('class', 'tooltip')
@@ -305,28 +355,35 @@ const visualizeGraph = (nodesData, edgesData) => {
         .attr('fill', '#333')
     })
     .on('mouseout', function(event, d) {
-      d3.select(this).attr('r', selectedNode.value?.id === d.id ? 14 : 8)
+      d3.select(this).attr('r', nodeRadius(d) + (selectedNode.value?.id === d.id ? 3 : 0))
       svg.selectAll('.tooltip').remove()
     })
-  nodes.append('title').text(d => `${d.label} (${d.type})`)
+  nodes.append('title').text(d => `${d.label}（${typeStyle(d.type).name}）· 关联节点：${d.degree}`)
   const nodeLabels = g.append('g').selectAll('text')
     .data(nodesData).join('text')
     .attr('font-size', 11).attr('fill', '#1f2937')
     .attr('pointer-events', 'none')
-    .text(d => d.label?.length > 18 ? `${d.label.slice(0, 18)}…` : d.label)
+    .text(d => d.label?.length > 12 ? `${d.label.slice(0, 12)}…` : d.label)
 
   // 更新位置
+  const edgeEnd = edge => {
+    const dx = edge.target.x - edge.source.x
+    const dy = edge.target.y - edge.source.y
+    const length = Math.max(1, Math.hypot(dx, dy))
+    const offset = Math.min(length, nodeRadius(edge.target) + 5)
+    return { x: edge.target.x - dx / length * offset, y: edge.target.y - dy / length * offset }
+  }
   const updatePositions = () => {
     links
       .attr('x1', d => d.source.x)
       .attr('y1', d => d.source.y)
-      .attr('x2', d => d.target.x)
-      .attr('y2', d => d.target.y)
+      .attr('x2', d => edgeEnd(d).x)
+      .attr('y2', d => edgeEnd(d).y)
 
     nodes
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
-    nodeLabels.attr('x', d => d.x + 10).attr('y', d => d.y + 4)
+    nodeLabels.attr('x', d => d.x + nodeRadius(d) + 4).attr('y', d => d.y + 4)
     relationLabels.attr('x', d => (d.source.x + d.target.x) / 2)
       .attr('y', d => (d.source.y + d.target.y) / 2 - 3)
   }
@@ -346,7 +403,7 @@ const visualizeGraph = (nodesData, edgesData) => {
     if (!node) return
     simulation.stop()
     nodes.classed('selected-node', d => d.id === nodeId)
-      .attr('r', d => d.id === nodeId ? 14 : 8)
+      .attr('r', d => nodeRadius(d) + (d.id === nodeId ? 3 : 0))
       .attr('stroke', d => d.id === nodeId ? '#f59e0b' : '#fff')
       .attr('stroke-width', d => d.id === nodeId ? 4 : 1.5)
     nodeLabels.attr('font-weight', d => d.id === nodeId ? 'bold' : 'normal')
@@ -370,6 +427,20 @@ const visualizeGraph = (nodesData, edgesData) => {
   }
   updatePositions()
   fitGraphView()
+  resizeObserver = new ResizeObserver(() => {
+    const nextWidth = graphContainer.value.clientWidth
+    const nextHeight = graphContainer.value.clientHeight
+    if (!nextWidth || !nextHeight || (width === nextWidth && height === nextHeight)) return
+    width = nextWidth
+    height = nextHeight
+    svg.attr('width', width).attr('height', height)
+    simulation.force('center', d3.forceCenter(width / 2, height / 2))
+    simulation.force('x', d3.forceX(width / 2).strength(0.04))
+    simulation.force('y', d3.forceY(height / 2).strength(0.04))
+    if (showNodeDetail.value && selectedNode.value && visibleNodes.has(selectedNode.value.id)) focusGraphNode(selectedNode.value.id)
+    else fitGraphView()
+  })
+  resizeObserver.observe(graphContainer.value)
 
   function dragstarted(event, d) {
     if (!event.active) simulation.alphaTarget(0.3).restart()
@@ -394,7 +465,7 @@ const fetchSuggestions = async (query, callback) => {
   const keyword = query.trim()
   const project = currentProject.value
   const version = ++suggestionVersion
-  if (keyword.length < 2) {
+  if (!currentAvailable.value || keyword.length < 2) {
     callback([])
     return
   }
@@ -413,6 +484,7 @@ const fetchSuggestions = async (query, callback) => {
 }
 
 const search = () => {
+  if (!currentAvailable.value) return
   if (searchKeyword.value.trim().length < 2) {
     ElMessage.warning('请输入至少 2 个字符')
     return
@@ -498,6 +570,10 @@ const exportImage = () => {
   img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
 }
 
+watch(showRelationLabels, visible => {
+  svg?.select('.relation-labels').attr('display', visible ? null : 'none')
+})
+
 // 监听路由变化
 watch(() => route.query.project, (newProject) => {
   if (newProject) {
@@ -514,27 +590,51 @@ onUnmounted(() => {
   ++suggestionVersion
   ++selectionVersion
   simulation?.stop()
+  resizeObserver?.disconnect()
 })
 </script>
 
 <style scoped>
-.graph-view {
-  height: calc(100vh - 140px);
+.graph-view { height: 100%; min-height: 0; }
+.graph-view > .el-card { height: 100%; box-sizing: border-box; }
+.graph-view :deep(.el-card__body) {
+  height: 100%; box-sizing: border-box; padding: 12px;
+  display: flex; flex-direction: column; gap: 10px;
 }
+.graph-legend {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 6px 14px; font-size: 12px; color: #475569;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.legend-item i { width: 10px; height: 10px; border-radius: 50%; }
+.legend-note { color: #64748b; }
+.stats-bar, .graph-legend, .toolbar { flex-shrink: 0; }
 
 .toolbar {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   flex-wrap: wrap;
   gap: 10px;
 }
 
+.toolbar > .node-search {
+  width: 260px;
+  flex: 0 0 260px;
+  min-width: 0;
+}
+
+.node-search :deep(.el-input) { width: 100%; min-width: 0; }
+
 .controls {
   margin-left: auto;
   display: flex;
+  align-items: center;
+  flex-shrink: 0;
   gap: 10px;
 }
+
+.controls :deep(.el-checkbox) { margin-right: 0; }
 
 .search-suggestion {
   display: flex;
@@ -547,6 +647,10 @@ onUnmounted(() => {
 }
 
 .search-status {
+  flex: 0 1 220px;
+  min-width: 0;
+  white-space: normal;
+  line-height: 20px;
   font-size: 12px;
   color: #64748b;
 }
@@ -561,7 +665,8 @@ onUnmounted(() => {
 
 .graph-container {
   width: 100%;
-  height: calc(100% - 80px);
+  flex: 1;
+  min-height: 180px;
   background: #f8f9fa;
   border-radius: 8px;
   overflow: hidden;

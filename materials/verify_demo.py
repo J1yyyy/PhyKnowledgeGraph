@@ -50,6 +50,13 @@ def check_api(data, base_url):
     assert (stats["total_nodes"], stats["total_edges"]) == (len(expected_nodes), len(expected_edges))
     graph = get("/api/junior_demo/graph", limit=1000, level="all")
     assert {n["id"]: (n["label"], n["type"]) for n in graph["nodes"]} == expected_nodes
+    all_neighbors = {node_id: set() for node_id in expected_nodes}
+    for source, _, target in expected_edges:
+        all_neighbors[source].add(target)
+        all_neighbors[target].add(source)
+    assert {n['id']: n['degree'] for n in graph['nodes']} == {node_id: len(ids) for node_id, ids in all_neighbors.items()}
+    projects = get('/api/projects')['projects']
+    assert {p['id'] for p in projects if p['available']} == {'junior_demo'}
     actual_edges = {(e["from"], e["relation_type"], e["to"]) for e in graph["edges"]}
     assert actual_edges == expected_edges and len(graph["edges"]) == len(expected_edges)
     assert Counter(e["relation_type"] for e in graph["edges"]) == Counter(e["relation_type"] for e in data["edges"])
@@ -75,12 +82,28 @@ def check_api(data, base_url):
     assert {(e["from"], e["relation_type"], e["to"]) for e in exact_graph["edges"]} == {
         edge for edge in expected_edges if edge[0] in neighbors and edge[2] in neighbors
     }
+    for node in exact_graph['nodes']:
+        assert node['degree'] == len(all_neighbors[node['id']])
+    print('PASS：项目开放状态准确；完整图和邻域的节点关联数量一致')
     assert get("/api/junior_demo/graph", center_id=charge_id, limit=1)["nodes"][0]["id"] == charge_id
     assert get("/api/junior_demo/graph", center_id="missing_node") == {"nodes": [], "edges": []}
     assert get("/api/physics/graph", center_id=charge_id) == {"nodes": [], "edges": []}
     formulas = get("/api/junior_demo/nodes", node_type="FORMULA", limit=1000)["nodes"]
     assert len(formulas) == sum(n["type"] == "FORMULA" for n in data["entities"])
     assert all(n["type"] == "FORMULA" for n in formulas)
+    level_ids = {}
+    for level, threshold, expected_count in [('core', 5, 9), ('important', 2, 52), ('all', 0, 101)]:
+        expected = {node_id for node_id, neighbors in all_neighbors.items() if len(neighbors) >= threshold}
+        level_graph = get('/api/junior_demo/graph', level=level, limit=1000)
+        selected_ids = {node['id'] for node in level_graph['nodes']}
+        assert selected_ids == expected and len(selected_ids) == expected_count
+        assert {node['id'] for node in get('/api/junior_demo/nodes', level=level, limit=1000)['nodes']} == expected
+        assert {(edge['from'], edge['relation_type'], edge['to']) for edge in level_graph['edges']} == {
+            edge for edge in expected_edges if edge[0] in selected_ids and edge[2] in selected_ids
+        }
+        level_ids[level] = selected_ids
+    assert level_ids['core'] <= level_ids['important'] <= level_ids['all']
+    print('PASS：核心 ≥5（9个）、重要 ≥2（52个）、全部（101个）；分级边与 JSON 一致')
     small_graph = get("/api/junior_demo/graph", level="core", limit=3)
     selected = {n["id"] for n in small_graph["nodes"]}
     assert len(selected) == 3

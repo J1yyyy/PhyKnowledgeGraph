@@ -8,8 +8,9 @@
 
       <el-row :gutter="20" style="margin-top: 30px;">
         <el-col :span="8" v-for="project in projects" :key="project.id">
-          <el-card shadow="hover" class="project-card" @click="goToProject(project.id)">
+          <el-card shadow="hover" class="project-card" :class="{ unavailable: !project.available }" @click="goToProject(project.id)">
             <h3>{{ project.name }}</h3>
+            <el-tag :type="project.available ? 'success' : 'info'" size="small">{{ project.available ? '已开放' : '未开放' }}</el-tag>
             <p>{{ project.description }}</p>
             <el-tag :type="project.source === 'neo4j' ? 'success' : 'info'">
               {{ project.source === 'neo4j' ? 'Neo4j' : 'JSON' }}
@@ -41,8 +42,8 @@
             {{ neo4jConnected ? '已连接' : '未连接' }}
           </el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="项目数量">
-          {{ projects.length }}
+        <el-descriptions-item label="已开放项目数量">
+          {{ projects.filter(project => project.available).length }}
         </el-descriptions-item>
       </el-descriptions>
     </el-card>
@@ -75,6 +76,7 @@ const loadProjects = async () => {
 }
 
 const goToProject = (projectId) => {
+  if (!projects.value.find(project => project.id === projectId)?.available) return
   router.push(`/graph?project=${projectId}`)
 }
 
@@ -105,7 +107,8 @@ onMounted(() => {
   height: 200px;
 }
 
-.project-card:hover {
+.project-card.unavailable { cursor: not-allowed; opacity: 0.65; }
+.project-card:not(.unavailable):hover {
   transform: translateY(-5px);
 }
 
