@@ -15,8 +15,9 @@
 
 历史项目曾使用 38,942 个节点、21,474 条关系的数据；该完整数据不包含在本仓库。
 
-![图谱展示](docs/images/demo-graph.png)
-![搜索与节点详情](docs/images/search-node-detail.png)
+![图谱展示](docs/images/portfolio/01-graph-overview.jpg)
+![搜索候选](docs/images/portfolio/02-search-candidates.jpg)
+![选中节点的一跳探索](docs/images/portfolio/03-selected-one-hop.jpg)
 
 ## 运行
 
@@ -34,7 +35,7 @@
 
 ## 搜索请求流程
 
-输入至少两个字符，约 300 毫秒后调用 `/api/junior_demo/search` 获取候选。点击候选才调用 `/api/junior_demo/node/{node_id}` 获取详情，并高亮、定位该节点；当前图中没有该节点时调用 `/api/junior_demo/graph?center_id=...&depth=1` 加载邻域。
+输入至少两个字符，约 300 毫秒后调用 `/api/junior_demo/search` 获取候选。点击候选才调用 `/api/junior_demo/node/{node_id}` 获取详情，并高亮、定位该节点；每次选择都调用 `/api/junior_demo/graph?center_id=...&depth=1`，在当前基础分级图谱上补充一跳邻域，去重并替换上一次临时补充。可通过“返回分级视图”恢复。
 
 例如搜索“电荷”返回五个候选，可分别点击查看。开发时 `/api` 由 Vite 代理到 9000 端口。
 

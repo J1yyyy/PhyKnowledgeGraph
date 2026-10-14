@@ -104,6 +104,17 @@ def check_api(data, base_url):
         level_ids[level] = selected_ids
     assert level_ids['core'] <= level_ids['important'] <= level_ids['all']
     print('PASS：核心 ≥5（9个）、重要 ≥2（52个）、全部（101个）；分级边与 JSON 一致')
+    isolated_id = next(node_id for node_id, neighbors in all_neighbors.items() if not neighbors)
+    for center_id in sorted(level_ids['core'] | {charge_id, isolated_id}):
+        neighborhood = get('/api/junior_demo/graph', center_id=center_id, depth=1, limit=1000)
+        expected_ids = {center_id} | all_neighbors[center_id]
+        assert {node['id'] for node in neighborhood['nodes']} == expected_ids
+        actual = {(edge['from'], edge['relation_type'], edge['to']) for edge in neighborhood['edges']}
+        assert len(actual) == len(neighborhood['edges'])
+        assert actual == {edge for edge in expected_edges if edge[0] in expected_ids and edge[2] in expected_ids}
+        assert all(node['degree'] == len(all_neighbors[node['id']]) for node in neighborhood['nodes'])
+    print('PASS：全部核心节点、普通节点和孤立节点的一跳查询与源 JSON 完全一致')
+
     small_graph = get("/api/junior_demo/graph", level="core", limit=3)
     selected = {n["id"] for n in small_graph["nodes"]}
     assert len(selected) == 3
