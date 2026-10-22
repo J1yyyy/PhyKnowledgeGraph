@@ -12,10 +12,19 @@ from fastapi.staticfiles import StaticFiles
 from neo4j import GraphDatabase
 from neo4j.exceptions import Neo4jError, ServiceUnavailable
 from pydantic import BaseModel
+from starlette.concurrency import run_in_threadpool
 from typing import List, Optional, Dict, Any
 import os
 import json
 from pathlib import Path
+
+from backend.question_locator import (
+    LocateQuestionRequest,
+    QuestionLocatorError,
+    load_examples,
+    locate_live,
+    locate_offline_example,
+)
 
 # ==================== 配置 ====================
 LOCAL_CONFIG_FILE = Path(__file__).parent / "neo4j.local.json"
@@ -448,6 +457,35 @@ async def get_node_detail(project_id: str, node_id: str):
         raise HTTPException(status_code=404, detail="节点不存在")
 
     raise HTTPException(status_code=404, detail="数据文件不存在")
+
+
+@app.get("/api/{project_id}/question/examples")
+async def get_question_examples(project_id: str):
+    """返回人工编写的示例题；不暴露评测标注答案。"""
+    if project_id not in PROJECTS:
+        raise HTTPException(status_code=404, detail="项目不存在")
+    if project_id != "junior_demo":
+        raise HTTPException(status_code=400, detail="该项目未配置题目知识点定位")
+    try:
+        examples = load_examples()
+    except QuestionLocatorError as error:
+        raise HTTPException(status_code=error.status_code, detail={"code": error.code, "message": error.message}) from error
+    return {"examples": [{"id": item["id"], "question": item["question"]} for item in examples]}
+
+
+@app.post("/api/{project_id}/question/locate")
+async def locate_question(project_id: str, request: LocateQuestionRequest):
+    """解析物理题并从当前本地向量索引返回最多五个候选知识点。"""
+    if project_id not in PROJECTS:
+        raise HTTPException(status_code=404, detail="项目不存在")
+    if project_id != "junior_demo":
+        raise HTTPException(status_code=400, detail="该项目未配置题目知识点定位")
+    try:
+        if request.mode == "offline_example":
+            return await run_in_threadpool(locate_offline_example, request)
+        return await run_in_threadpool(locate_live, request.question)
+    except QuestionLocatorError as error:
+        raise HTTPException(status_code=error.status_code, detail={"code": error.code, "message": error.message}) from error
 
 # ==================== 前端路由 ====================
 

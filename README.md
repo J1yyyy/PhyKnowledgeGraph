@@ -1,6 +1,6 @@
 # 物理知识图谱演示
 
-基于现有 Kgraph 项目整理的本机演示，使用 FastAPI、Neo4j、Vue 3、Element Plus 和 D3。提供初中物理图谱可视化、模糊搜索、节点定位、属性和关联关系查看。
+基于现有 Kgraph 项目整理的本机演示，使用 FastAPI、Neo4j、Vue 3、Element Plus、D3 和 NumPy。提供初中物理图谱可视化、模糊搜索、节点定位、属性和关联关系查看，以及题目解析到候选知识点的最小链路。
 
 ## 演示数据
 
@@ -39,6 +39,12 @@
 
 例如搜索“电荷”返回五个候选，可分别点击查看。开发时 `/api` 由 Vite 代理到 9000 端口。
 
+## 题目知识点定位
+
+独立页面 `/kgraph/question-locator` 支持输入题目或选择人工标注示例。实时模式使用火山方舟 LLM 生成经过 Pydantic 校验的结构化解析，再以相同模型和编码配置查询本地 NumPy 向量索引，最多返回五个候选。选择候选后通过路由进入图谱页，复用已有详情和一跳探索。
+
+真实 API Key 只保存在被 Git 忽略的 `backend/ai.local.json`。启动 Neo4j 后，先运行 `\.phyvenv\Scripts\python.exe materials\build_local_index.py --verify-only` 校验实体映射，再运行同一命令并改用 `--yes` 构建本地索引。没有 Key 时仍可使用明确标记的离线示例。
+
 ## 目录
 
 - `backend/main.py`：FastAPI 接口及 Neo4j 查询。
@@ -46,6 +52,8 @@
 - `data/demo_junior_physics.json`：演示节点和关系。
 - `materials/import_phykgraph_json.py`：规则校验、配置、事务导入。
 - `materials/verify_demo.py`：数据与 API 验证。
+- `materials/build_local_index.py`：校验实体 ID 并构建本地向量索引。
+- `materials/evaluate_question_locator.py`：人工标注题目的 Top-5 评测。
 
 ## 验证
 

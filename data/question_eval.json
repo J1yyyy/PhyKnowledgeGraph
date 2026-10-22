@@ -1,0 +1,107 @@
+[
+  {
+    "id": "density_calculation",
+    "question": "一个金属块的质量是540克，体积是200立方厘米，求它的密度。",
+    "expected_entity_ids": ["junior_demo:G_NODE_5"],
+    "coverage_expected": true,
+    "label_note": "人工标注：题目核心知识点是密度。",
+    "analysis": {
+      "domain": "质量与密度",
+      "task": "根据质量和体积求密度",
+      "known_quantities": ["质量为540克", "体积为200立方厘米"],
+      "target_quantity": "密度",
+      "candidate_concepts": ["密度", "质量", "体积", "密度公式"],
+      "retrieval_text": "根据物体的质量和体积计算密度"
+    }
+  },
+  {
+    "id": "lever_balance",
+    "question": "杠杆左侧距支点20厘米处挂3牛的物体，右侧距支点多远挂2牛的物体才能平衡？",
+    "expected_entity_ids": ["junior_demo:G_NODE_34"],
+    "coverage_expected": true,
+    "label_note": "人工标注：题目核心知识点是杠杆平衡条件。",
+    "analysis": {
+      "domain": "简单机械",
+      "task": "利用杠杆平衡条件求力臂",
+      "known_quantities": ["左侧力臂20厘米", "左侧力3牛", "右侧力2牛"],
+      "target_quantity": "右侧力臂",
+      "candidate_concepts": ["杠杆", "杠杆平衡条件", "动力臂", "阻力臂"],
+      "retrieval_text": "利用杠杆平衡条件根据两侧力和一个力臂求另一个力臂"
+    }
+  },
+  {
+    "id": "mechanical_efficiency",
+    "question": "使用滑轮组提升重物，有用功为800焦，总功为1000焦，机械效率是多少？",
+    "expected_entity_ids": ["junior_demo:G_NODE_47"],
+    "coverage_expected": true,
+    "label_note": "人工标注：题目核心知识点是机械效率。",
+    "analysis": {
+      "domain": "功和机械",
+      "task": "根据有用功和总功计算机械效率",
+      "known_quantities": ["有用功800焦", "总功1000焦"],
+      "target_quantity": "机械效率",
+      "candidate_concepts": ["机械效率", "有用功", "总功", "滑轮组"],
+      "retrieval_text": "根据有用功和总功计算滑轮组的机械效率"
+    }
+  },
+  {
+    "id": "melting_heat",
+    "question": "冰在熔化过程中温度保持不变，但仍需要继续加热，这个过程叫什么？",
+    "expected_entity_ids": ["junior_demo:G_NODE_59"],
+    "coverage_expected": true,
+    "label_note": "人工标注：题目直接描述熔化过程。",
+    "analysis": {
+      "domain": "物态变化",
+      "task": "识别固体吸热变成液体的物态变化",
+      "known_quantities": ["冰熔化时继续吸热", "温度保持不变"],
+      "target_quantity": "物态变化名称",
+      "candidate_concepts": ["熔化", "吸热", "物态变化"],
+      "retrieval_text": "固体吸热变成液体的熔化过程"
+    }
+  },
+  {
+    "id": "charge_interaction",
+    "question": "两个带同种电荷的小球靠近时会相互排斥，这体现了什么规律？",
+    "expected_entity_ids": ["junior_demo:G_NODE_86"],
+    "coverage_expected": true,
+    "label_note": "人工标注：核心知识点是电荷相互作用。",
+    "analysis": {
+      "domain": "电荷",
+      "task": "判断同种电荷之间的相互作用",
+      "known_quantities": ["两个小球带同种电荷", "靠近时相互排斥"],
+      "target_quantity": "电荷相互作用规律",
+      "candidate_concepts": ["电荷相互作用", "同种电荷排斥", "电荷"],
+      "retrieval_text": "同种电荷相互排斥的电荷相互作用规律"
+    }
+  },
+  {
+    "id": "series_circuit_voltage",
+    "question": "在串联电路中，电源两端电压与各用电器两端电压有什么关系？",
+    "expected_entity_ids": ["junior_demo:G_NODE_100"],
+    "coverage_expected": true,
+    "label_note": "人工标注：核心知识点是串联电路电压关系公式。",
+    "analysis": {
+      "domain": "电与电路",
+      "task": "说明串联电路的电压关系",
+      "known_quantities": ["电路连接方式为串联"],
+      "target_quantity": "总电压与各部分电压的关系",
+      "candidate_concepts": ["串联电路", "电压", "串联电路电压关系"],
+      "retrieval_text": "串联电路总电压等于各用电器两端电压之和"
+    }
+  },
+  {
+    "id": "optics_uncovered",
+    "question": "物体放在凸透镜二倍焦距以外时，会成什么性质的像？",
+    "expected_entity_ids": [],
+    "coverage_expected": false,
+    "label_note": "人工标注：当前101节点图谱不包含光学和凸透镜成像。",
+    "analysis": {
+      "domain": "光学",
+      "task": "判断凸透镜成像性质",
+      "known_quantities": ["物距大于二倍焦距"],
+      "target_quantity": "像的性质",
+      "candidate_concepts": ["凸透镜", "凸透镜成像", "焦距", "物距"],
+      "retrieval_text": "物体位于凸透镜二倍焦距以外时的成像规律"
+    }
+  }
+]

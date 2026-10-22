@@ -1,0 +1,9 @@
+{
+  "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+  "api_key": "",
+  "llm_model": "doubao-seed-2-0-lite-260428",
+  "embedding_model": "doubao-embedding-vision-251215",
+  "embedding_dimensions": 1024,
+  "timeout_seconds": 60,
+  "coverage_threshold": null
+}

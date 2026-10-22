@@ -261,6 +261,8 @@ const loadGraph = async () => {
     baseNodeCount.value = baseGraph.nodes.length
     renderGraph(baseGraph)
     ElMessage.success(`已加载 ${currentNodeCount.value} 个节点、${currentEdgeCount.value} 条真实关系`)
+    await nextTick()
+    if (version === loadVersion) await openRouteNode()
     return true
   } catch (error) {
     if (version !== loadVersion) return false
@@ -573,6 +575,14 @@ const selectNode = async (node) => {
   }
 }
 
+// 外部页面只通过路由传递节点 ID，实际选点仍复用统一的一跳探索流程。
+const openRouteNode = async () => {
+  const nodeId = typeof route.query.node_id === 'string' ? route.query.node_id.trim() : ''
+  const project = typeof route.query.project === 'string' ? route.query.project : currentProject.value
+  if (!nodeId || !baseGraph || project !== currentProject.value || nodeId === activeCenterId.value) return
+  await selectNode({ id: nodeId, project_id: project })
+}
+
 watch(searchKeyword, () => {
   ++suggestionVersion
   searchCount.value = null
@@ -637,6 +647,10 @@ watch(() => route.query.project, (newProject) => {
     currentProject.value = newProject
     loadGraph()
   }
+})
+
+watch(() => route.query.node_id, () => {
+  openRouteNode()
 })
 
 onMounted(() => {

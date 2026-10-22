@@ -5,7 +5,7 @@ from copy import deepcopy
 import json
 from urllib.error import HTTPError
 from urllib.parse import urlencode
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from import_phykgraph_json import ROOT, validate_graph
 
@@ -40,6 +40,16 @@ def check_api(data, base_url):
         if params:
             url += "?" + urlencode(params)
         with urlopen(url, timeout=15) as response:
+            return json.load(response)
+
+    def post(path, payload):
+        request = Request(
+            base_url.rstrip("/") + path,
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(request, timeout=15) as response:
             return json.load(response)
 
     assert get("/api/health")["neo4j_connected"] is True
@@ -141,6 +151,25 @@ def check_api(data, base_url):
     print(f"PASS：API 节点和三元组与 JSON 完全一致（{len(expected_nodes)} / {len(expected_edges)}）")
     print("PASS：搜索、详情、类型过滤、节点限制、二跳子图和错误响应")
     print("PASS：电荷五个候选、精确匹配优先、真实详情、按 ID 查询邻域和项目隔离")
+
+    examples = get("/api/junior_demo/question/examples")["examples"]
+    assert 5 <= len(examples) <= 10
+    first_example = examples[0]
+    offline = post("/api/junior_demo/question/locate", {
+        "question": first_example["question"],
+        "mode": "offline_example",
+        "example_id": first_example["id"],
+    })
+    assert offline["source"] == "offline_example" and offline["retrieval_status"] == "not_run"
+    assert offline["candidates"] and all(item["score"] is None for item in offline["candidates"])
+    assert all(item["id"] in expected_nodes for item in offline["candidates"])
+    try:
+        post("/api/junior_demo/question/locate", {"question": "", "mode": "live_api"})
+    except HTTPError as error:
+        assert error.code == 422
+    else:
+        raise AssertionError("空题目应返回 422")
+    print("PASS：题目定位离线接口结构、来源标记、候选 ID 和空输入校验")
 
 
 def main():

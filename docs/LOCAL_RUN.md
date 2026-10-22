@@ -97,6 +97,15 @@ npm.cmd run dev -- --host 127.0.0.1
 
 需要后端运行。它检查每个节点的名称/类型、每条真实三元组、搜索、节点详情、类型过滤、二跳子图和错误响应。预期全部打印 PASS。
 
+题目知识点定位使用被 Git 忽略的 `backend/ai.local.json` 保存火山方舟 API Key。启动 Neo4j 后，在仓库根目录依次执行：
+
+```powershell
+.\.phyvenv\Scripts\python.exe .\materials\build_local_index.py --verify-only
+.\.phyvenv\Scripts\python.exe .\materials\build_local_index.py --yes
+```
+
+第一条只校验 JSON、`junior_demo:` 前缀和 Neo4j ID，不产生模型费用；第二条调用嵌入 API 并生成可复用的本地索引。访问 `http://127.0.0.1:5173/kgraph/question-locator` 使用题目定位页面。离线示例不调用模型，也不代表实时检索效果。
+
 在 Neo4j Query 中分别执行（不是 PowerShell）：
 
 ```cypher

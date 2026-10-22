@@ -93,12 +93,20 @@ temp/
 config.local.js
 settings.local.yaml
 *.local.json
+backend/ai.local.json
 
 # ==================== 数据缓存 ====================
 # 缓存文件
 .cache/
 .parcel-cache/
 .eslintcache
+data/generated/
+
+# 本机作品集与过程材料，不上传仓库
+docs/PORTFOLIO.md
+docs/PORTFOLIO_PREPARATION.md
+docs/PROJECT_PIPELINE.md
+docs/images/portfolio/
 
 # ==================== 测试 ====================
 # 测试覆盖率

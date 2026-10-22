@@ -7,6 +7,7 @@
           <el-menu mode="horizontal" :router="true" :default-active="$route.path" class="nav-menu">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/graph">图谱可视化</el-menu-item>
+            <el-menu-item index="/question-locator">题目知识点定位</el-menu-item>
             <el-menu-item index="/projects">项目管理</el-menu-item>
           </el-menu>
         </div>
