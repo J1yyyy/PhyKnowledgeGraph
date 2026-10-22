@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <el-alert v-if="!currentAvailable" title="该项目未开放，请选择初中物理演示图谱" type="info" :closable="false" />
+      <el-alert v-if="!currentAvailable" title="该项目未开放，请选择初中物理知识图谱" type="info" :closable="false" />
 
       <div v-if="currentAvailable" class="stats-bar">
         <el-button v-if="activeCenterId" size="small" @click="returnToLevel">返回分级视图</el-button>
@@ -162,7 +162,11 @@ const nodeTypes = {
   METHOD: { name: '方法', color: '#9333ea' },
   CONSTANT: { name: '常量', color: '#92400e' },
   MISCONCEPTION: { name: '易错认识', color: '#be123c' },
-  MATH_TOOL: { name: '数学工具', color: '#0f766e' }
+  MATH_TOOL: { name: '数学工具', color: '#0f766e' },
+  MEASUREMENT_TOOL: { name: '测量工具', color: '#0d9488' },
+  TEXTBOOK_VOLUME: { name: '教材册别', color: '#334155' },
+  CHAPTER: { name: '教材章', color: '#475569' },
+  SECTION: { name: '教材节', color: '#64748b' }
 }
 const typeStyle = type => nodeTypes[type] || { name: type, color: '#475569' }
 const nodeRadius = node => 6 + Math.min(8, Math.sqrt(Math.max(0, node.degree)) * 1.6)
@@ -174,7 +178,16 @@ const relationNames = {
   PARENT_CHILD: '层级关系',
   CONTAINS_VARIABLE: '包含变量',
   PREREQUISITE: '前置依赖',
-  APPLICABLE_UNDER: '适用条件'
+  APPLICABLE_UNDER: '适用条件',
+  TAUGHT_IN: '对应教材节',
+  BELONGS_TO: '属于',
+  COVERED_IN_CHAPTER: '涉及教材章',
+  DESCRIBED_BY: '由公式描述',
+  RELATED_TO: '相关知识',
+  RELATES_TO: '关联',
+  ABSORBS_HEAT: '吸热',
+  RELEASES_HEAT: '放热',
+  CHANGED_BY: '改变方式'
 }
 
 // 加载项目列表

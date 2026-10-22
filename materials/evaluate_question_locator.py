@@ -41,7 +41,7 @@ def main() -> None:
     mode = "live_api" if args.live else "offline_example"
 
     for example in examples:
-        result = request_json(args.base_url, "POST", "/api/junior_demo/question/locate", {
+        result = request_json(args.base_url, "POST", "/api/junior_physics/question/locate", {
             "question": example["question"],
             "mode": mode,
             "example_id": example["id"] if not args.live else None,
@@ -52,7 +52,7 @@ def main() -> None:
             detail = request_json(
                 args.base_url,
                 "GET",
-                "/api/junior_demo/node/" + quote(candidate_id, safe=""),
+                "/api/junior_physics/node/" + quote(candidate_id, safe=""),
             )
             assert detail["n"]["id"] == candidate_id
 

@@ -104,7 +104,7 @@ const offlineAvailable = computed(() => Boolean(selectedExample.value && selecte
 
 const loadExamples = async () => {
   try {
-    const response = await axios.get('/api/junior_demo/question/examples')
+    const response = await axios.get('/api/junior_physics/question/examples')
     examples.value = response.data.examples
   } catch (error) {
     ElMessage.warning('示例题加载失败，仍可手动输入题目')
@@ -131,7 +131,7 @@ const locate = async () => {
   result.value = null
   errorMessage.value = ''
   try {
-    const response = await axios.post('/api/junior_demo/question/locate', {
+    const response = await axios.post('/api/junior_physics/question/locate', {
       question: text,
       mode: mode.value,
       example_id: mode.value === 'offline_example' ? selectedExampleId.value : null
@@ -146,7 +146,7 @@ const locate = async () => {
 }
 
 const openGraph = nodeId => {
-  router.push({ name: 'GraphView', query: { project: 'junior_demo', node_id: nodeId } })
+  router.push({ name: 'GraphView', query: { project: 'junior_physics', node_id: nodeId } })
 }
 
 onMounted(loadExamples)

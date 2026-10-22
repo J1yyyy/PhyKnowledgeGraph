@@ -1,4 +1,4 @@
-"""校验实体映射并为 junior_demo 构建可复用的 NumPy 向量索引。"""
+"""校验实体映射并为初中物理知识实体构建可复用的 NumPy 向量索引。"""
 from __future__ import annotations
 
 import argparse
@@ -18,21 +18,24 @@ sys.path.insert(0, str(ROOT))
 from backend.question_locator import (  # noqa: E402
     CORPUS_INSTRUCTION,
     INDEX_FILE,
+    INDEX_FILTER_VERSION,
+    PROJECT_ID,
     QUERY_INSTRUCTION,
     QuestionLocatorError,
     SOURCE_FILE,
     TEXT_FORMAT_VERSION,
     embed_text,
     entity_text,
+    is_searchable_entity,
     load_ai_settings,
     source_fingerprint,
 )
 from materials.import_phykgraph_json import CONFIG_FILE as NEO4J_CONFIG_FILE, validate_graph  # noqa: E402
 
 
-PROJECT_ID = "junior_demo"
-NEO4J_LABEL = "DemoJuniorPhysics"
-PARTIAL_INDEX_FILE = INDEX_FILE.with_name("junior_demo_embeddings.partial.npz")
+NEO4J_LABEL = "JuniorPhysics2024"
+PARTIAL_INDEX_FILE = INDEX_FILE.with_name("junior_physics_embeddings.partial.npz")
+LEGACY_INDEX_FILE = ROOT / "data" / "generated" / "junior_demo_embeddings.npz"
 
 
 def load_neo4j_config() -> dict[str, str]:
@@ -81,6 +84,7 @@ def index_metadata(settings, entity_count: int) -> dict:
         "source_fingerprint": source_fingerprint(),
         "entity_count": entity_count,
         "text_format_version": TEXT_FORMAT_VERSION,
+        "index_filter_version": INDEX_FILTER_VERSION,
         "corpus_instruction": CORPUS_INSTRUCTION,
         "query_instruction": QUERY_INSTRUCTION,
     }
@@ -104,6 +108,43 @@ def save_index(path: Path, entities: list[dict], vectors: list[np.ndarray], meta
     temporary.replace(path)
 
 
+def load_reusable_vectors(entities: list[dict], settings) -> dict[str, np.ndarray]:
+    """只在旧向量的模型、编码和逐实体知识文本完全一致时复用。"""
+    if not LEGACY_INDEX_FILE.exists():
+        return {}
+    try:
+        with np.load(LEGACY_INDEX_FILE, allow_pickle=False) as stored:
+            old_metadata = json.loads(str(stored["metadata"].item()))
+            old_ids = stored["source_ids"].tolist()
+            old_texts = stored["texts"].tolist()
+            old_vectors = stored["vectors"].astype(np.float32)
+    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+        print(f"旧索引无法读取，不复用已有向量：{type(error).__name__}")
+        return {}
+    expected = {
+        "embedding_model": settings.embedding_model,
+        "embedding_dimensions": settings.embedding_dimensions,
+        "text_format_version": TEXT_FORMAT_VERSION,
+        "corpus_instruction": CORPUS_INSTRUCTION,
+        "query_instruction": QUERY_INSTRUCTION,
+    }
+    if any(old_metadata.get(key) != value for key, value in expected.items()):
+        print("旧索引模型或编码配置不匹配，不复用已有向量")
+        return {}
+    if (old_vectors.shape != (len(old_ids), settings.embedding_dimensions)
+            or len(old_texts) != len(old_ids) or not np.isfinite(old_vectors).all()):
+        print("旧索引向量或知识文本不完整，不复用已有向量")
+        return {}
+    by_id = {entity["id"]: entity for entity in entities}
+    reusable = {
+        source_id: vector
+        for source_id, text, vector in zip(old_ids, old_texts, old_vectors)
+        if source_id in by_id and text == entity_text(by_id[source_id])
+    }
+    print(f"旧索引中有 {len(reusable)} 个知识实体可安全复用")
+    return reusable
+
+
 def load_checkpoint(entities: list[dict], metadata: dict) -> list[np.ndarray]:
     if not PARTIAL_INDEX_FILE.exists():
         return []
@@ -123,19 +164,24 @@ def load_checkpoint(entities: list[dict], metadata: dict) -> list[np.ndarray]:
 
 def build_index() -> None:
     data = validate_graph(json.loads(SOURCE_FILE.read_text(encoding="utf-8-sig")))
-    entities = data["entities"]
-    verify_neo4j_ids({f"{PROJECT_ID}:{entity['id']}" for entity in entities})
+    verify_neo4j_ids({f"{PROJECT_ID}:{entity['id']}" for entity in data["entities"]})
+    entities = [entity for entity in data["entities"] if is_searchable_entity(entity)]
 
     settings = load_ai_settings(require_key=True)
-    print(
-        f"即将调用付费嵌入 API {len(entities)} 次：模型={settings.embedding_model}，"
-        f"维度={settings.embedding_dimensions}。节点向量生成后将写入本地索引并复用。"
-    )
     metadata = index_metadata(settings, len(entities))
     vectors = load_checkpoint(entities, metadata)
+    reusable = load_reusable_vectors(entities, settings)
+    remaining_calls = sum(entity["id"] not in reusable for entity in entities[len(vectors):])
+    print(
+        f"本次预计调用付费嵌入 API {remaining_calls} 次：模型={settings.embedding_model}，"
+        f"维度={settings.embedding_dimensions}；共索引 {len(entities)} 个知识实体，不编码教材目录。"
+    )
     for index, entity in enumerate(entities[len(vectors):], start=len(vectors) + 1):
-        # 单个请求最多重试三次；每次成功立即保存断点，避免网络中断后重复付费。
-        vector, _ = embed_text(entity_text(entity), settings, CORPUS_INSTRUCTION, attempts=3)
+        # 单个付费请求最多重试三次；每个实体完成后保存断点，避免中断后重复付费。
+        if entity["id"] in reusable:
+            vector = reusable[entity["id"]]
+        else:
+            vector, _ = embed_text(entity_text(entity), settings, CORPUS_INSTRUCTION, attempts=3)
         vectors.append(vector)
         save_index(PARTIAL_INDEX_FILE, entities[:index], vectors, metadata)
         if index == 1 or index % 10 == 0 or index == len(entities):
@@ -152,7 +198,7 @@ def build_index() -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify-only", action="store_true", help="只校验 JSON 与 Neo4j ID，不调用嵌入 API")
-    parser.add_argument("--yes", action="store_true", help="确认执行 101 次付费嵌入调用")
+    parser.add_argument("--yes", action="store_true", help="确认执行尚未复用的知识实体付费嵌入调用")
     args = parser.parse_args()
     try:
         data = validate_graph(json.loads(SOURCE_FILE.read_text(encoding="utf-8-sig")))

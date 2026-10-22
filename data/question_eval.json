@@ -2,7 +2,7 @@
   {
     "id": "density_calculation",
     "question": "一个金属块的质量是540克，体积是200立方厘米，求它的密度。",
-    "expected_entity_ids": ["junior_demo:G_NODE_5"],
+    "expected_entity_ids": ["junior_physics:G_NODE_5"],
     "coverage_expected": true,
     "label_note": "人工标注：题目核心知识点是密度。",
     "analysis": {
@@ -17,7 +17,7 @@
   {
     "id": "lever_balance",
     "question": "杠杆左侧距支点20厘米处挂3牛的物体，右侧距支点多远挂2牛的物体才能平衡？",
-    "expected_entity_ids": ["junior_demo:G_NODE_34"],
+    "expected_entity_ids": ["junior_physics:G_NODE_34"],
     "coverage_expected": true,
     "label_note": "人工标注：题目核心知识点是杠杆平衡条件。",
     "analysis": {
@@ -32,7 +32,7 @@
   {
     "id": "mechanical_efficiency",
     "question": "使用滑轮组提升重物，有用功为800焦，总功为1000焦，机械效率是多少？",
-    "expected_entity_ids": ["junior_demo:G_NODE_47"],
+    "expected_entity_ids": ["junior_physics:G_NODE_47"],
     "coverage_expected": true,
     "label_note": "人工标注：题目核心知识点是机械效率。",
     "analysis": {
@@ -47,7 +47,7 @@
   {
     "id": "melting_heat",
     "question": "冰在熔化过程中温度保持不变，但仍需要继续加热，这个过程叫什么？",
-    "expected_entity_ids": ["junior_demo:G_NODE_59"],
+    "expected_entity_ids": ["junior_physics:G_NODE_59"],
     "coverage_expected": true,
     "label_note": "人工标注：题目直接描述熔化过程。",
     "analysis": {
@@ -62,7 +62,7 @@
   {
     "id": "charge_interaction",
     "question": "两个带同种电荷的小球靠近时会相互排斥，这体现了什么规律？",
-    "expected_entity_ids": ["junior_demo:G_NODE_86"],
+    "expected_entity_ids": ["junior_physics:G_NODE_86"],
     "coverage_expected": true,
     "label_note": "人工标注：核心知识点是电荷相互作用。",
     "analysis": {
@@ -77,7 +77,7 @@
   {
     "id": "series_circuit_voltage",
     "question": "在串联电路中，电源两端电压与各用电器两端电压有什么关系？",
-    "expected_entity_ids": ["junior_demo:G_NODE_100"],
+    "expected_entity_ids": ["junior_physics:G_NODE_100"],
     "coverage_expected": true,
     "label_note": "人工标注：核心知识点是串联电路电压关系公式。",
     "analysis": {
@@ -90,18 +90,18 @@
     }
   },
   {
-    "id": "optics_uncovered",
-    "question": "物体放在凸透镜二倍焦距以外时，会成什么性质的像？",
+    "id": "quantum_uncovered",
+    "question": "已知一个电子的动量为 p，如何求它的德布罗意波长？",
     "expected_entity_ids": [],
     "coverage_expected": false,
-    "label_note": "人工标注：当前101节点图谱不包含光学和凸透镜成像。",
+    "label_note": "人工标注：当前初中物理图谱不包含德布罗意波长和量子物质波。",
     "analysis": {
-      "domain": "光学",
-      "task": "判断凸透镜成像性质",
-      "known_quantities": ["物距大于二倍焦距"],
-      "target_quantity": "像的性质",
-      "candidate_concepts": ["凸透镜", "凸透镜成像", "焦距", "物距"],
-      "retrieval_text": "物体位于凸透镜二倍焦距以外时的成像规律"
+      "domain": "量子物理",
+      "task": "根据电子动量求德布罗意波长",
+      "known_quantities": ["电子动量为 p"],
+      "target_quantity": "德布罗意波长",
+      "candidate_concepts": ["德布罗意波长", "物质波", "动量"],
+      "retrieval_text": "电子动量与德布罗意波长之间的关系"
     }
   }
 ]

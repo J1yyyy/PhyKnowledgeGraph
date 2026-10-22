@@ -1,4 +1,4 @@
-"""校验并导入 PhyKgraph 原生 JSON；原文件不修改，项目 ID 隔离。"""
+"""校验并导入初中物理图谱 JSON；原文件不修改，项目 ID 隔离。"""
 import argparse
 from collections import Counter
 from getpass import getpass
@@ -13,7 +13,9 @@ ENTITY_TYPES = {
     "PHYSICS_CONCEPT", "LAW_OR_PRINCIPLE", "FORMULA", "CONSTANT",
     "PHYSICS_MODEL", "PHENOMENON", "CONDITION", "TYPICAL_SCENARIO",
     "METHOD", "MISCONCEPTION", "MATH_TOOL", "PHYSICAL_QUANTITY", "EXPERIMENT",
+    "MEASUREMENT_TOOL", "TEXTBOOK_VOLUME", "CHAPTER", "SECTION",
 }
+CATALOG_TYPES = {"TEXTBOOK_VOLUME", "CHAPTER", "SECTION"}
 # 对应 PhyKgraph src/phykgraph/core/validator.py 的源类型、目标类型限制。
 RELATION_RULES = {
     "PREREQUISITE": None,
@@ -22,7 +24,8 @@ RELATION_RULES = {
     "APPLICABLE_UNDER": ({"LAW_OR_PRINCIPLE", "FORMULA"}, {"CONDITION", "PHYSICS_MODEL"}),
     "EXPLAINS": ({"LAW_OR_PRINCIPLE"}, {"PHENOMENON"}),
     "MODELLED_BY": ({"PHENOMENON", "TYPICAL_SCENARIO"}, {"PHYSICS_MODEL"}),
-    "CONTAINS_VARIABLE": ({"FORMULA"}, {"PHYSICAL_QUANTITY", "CONSTANT"}),
+    # 原有“重力”仍标为概念；增强图谱中的 G=mg 引用它作为公式变量。
+    "CONTAINS_VARIABLE": ({"FORMULA"}, {"PHYSICAL_QUANTITY", "CONSTANT", "PHYSICS_CONCEPT"}),
     "MATHEMATICAL_LINK": ({"FORMULA"}, {"FORMULA"}),
     "EXPRESSED_IN": ({"PHYSICAL_QUANTITY", "LAW_OR_PRINCIPLE"}, {"MATH_TOOL"}),
     "EMPLOY_METHOD": ({"TYPICAL_SCENARIO", "PHENOMENON"}, {"METHOD"}),
@@ -30,6 +33,34 @@ RELATION_RULES = {
     "CONFUSED_WITH": ({"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY"}, {"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY"}),
     "CORRECTS": ({"LAW_OR_PRINCIPLE", "PHYSICS_CONCEPT"}, {"MISCONCEPTION"}),
     "VERIFIES": ({"EXPERIMENT"}, {"LAW_OR_PRINCIPLE", "PHENOMENON"}),
+    "TAUGHT_IN": None,
+    "BELONGS_TO": None,
+    "COVERED_IN_CHAPTER": None,
+    "RELATED_TO": None,
+    "DESCRIBED_BY": None,
+    "RELATES_TO": None,
+    "APPLIED_IN": None,
+    "MEASURED_USING": None,
+    "HAS_PROPERTY": None,
+    "MEASURED_IN": None,
+    "HAS_COMPONENT": None,
+    "HAS_PARAMETER": None,
+    "COMPOSED_OF": None,
+    "HAS_STAGE": None,
+    "INCLUDES_TOPIC": None,
+    "ABSORBS_HEAT": None,
+    "RELEASES_HEAT": None,
+    "CHANGED_BY": None,
+    "OBEYS": None,
+    "INVOLVES": None,
+    "AFFECTS": None,
+    "DEFINED_AS": None,
+    "HAS_EFFECT": None,
+    "HAS_CATEGORY": None,
+    "CAUSES": None,
+    "PROPAGATES_THROUGH": None,
+    "USED_IN": None,
+    "REQUIRES": None,
 }
 
 
@@ -63,9 +94,26 @@ def validate_graph(data):
             raise ValueError(f"不允许自环：{source}")
         if relation not in RELATION_RULES:
             raise ValueError(f"未知关系类型：{relation}")
+        source_type, target_type = entities[source]["type"], entities[target]["type"]
+        # 目录层级只接受明确的方向；普通知识关系不能误连到教材目录节点。
+        if source_type in CATALOG_TYPES or target_type in CATALOG_TYPES:
+            valid_catalog_edge = (
+                relation == "BELONGS_TO" and (source_type, target_type) in {
+                    ("SECTION", "CHAPTER"), ("CHAPTER", "TEXTBOOK_VOLUME")
+                }
+                or relation == "TAUGHT_IN" and source_type not in CATALOG_TYPES and target_type == "SECTION"
+                or relation == "COVERED_IN_CHAPTER" and source_type not in CATALOG_TYPES and target_type == "CHAPTER"
+            )
+            if not valid_catalog_edge:
+                raise ValueError(f"教材目录关系类型组合不合法：{source} -[{relation}]-> {target}")
+        elif relation in {"BELONGS_TO", "TAUGHT_IN", "COVERED_IN_CHAPTER"}:
+            raise ValueError(f"教材目录关系缺少目录节点：{source} -[{relation}]-> {target}")
         rule = RELATION_RULES[relation]
-        if rule and (entities[source]["type"] not in rule[0] or entities[target]["type"] not in rule[1]):
+        if rule and (source_type not in rule[0] or target_type not in rule[1]):
             raise ValueError(f"关系类型组合不合法：{source} -[{relation}]-> {target}")
+        for key in ("mapping_method", "verification"):
+            if key in edge and (not isinstance(edge[key], str) or not edge[key].strip()):
+                raise ValueError(f"关系 {key} 必须是非空字符串：{source} -[{relation}]-> {target}")
         key = (source, relation, target)
         if key in seen_edges:
             raise ValueError(f"重复关系：{key}")
@@ -105,7 +153,8 @@ def import_graph(data, project, label):
     edge_groups = {}
     for edge in data["edges"]:
         edge_groups.setdefault(edge["relation_type"], []).append({
-            "source": f"{project}:{edge['source_id']}", "target": f"{project}:{edge['target_id']}"
+            "source": f"{project}:{edge['source_id']}", "target": f"{project}:{edge['target_id']}",
+            "provenance": {key: edge[key] for key in ("mapping_method", "verification") if key in edge},
         })
 
     def write_graph(tx):
@@ -123,6 +172,7 @@ def import_graph(data, project, label):
                 MATCH (a:{label} {{id: item.source}}), (b:{label} {{id: item.target}})
                 MERGE (a)-[r:{relation}]->(b)
                 SET r.project_id = $project, r.relation_type = $relation
+                SET r += item.provenance
             """, edges=edges, project=project, relation=relation).consume()
 
     with GraphDatabase.driver(uri, auth=(user, password)) as driver:
@@ -142,9 +192,9 @@ def import_graph(data, project, label):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input", type=Path, default=ROOT / "data" / "demo_junior_physics.json")
-    parser.add_argument("--project", default="junior_demo")
-    parser.add_argument("--label", default="DemoJuniorPhysics")
+    parser.add_argument("--input", type=Path, default=ROOT / "data" / "junior_physics_2024.json")
+    parser.add_argument("--project", default="junior_physics")
+    parser.add_argument("--label", default="JuniorPhysics2024")
     parser.add_argument("--validate-only", action="store_true")
     parser.add_argument("--configure", action="store_true")
     args = parser.parse_args()

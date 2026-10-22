@@ -17,13 +17,16 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_FILE = ROOT / "data" / "demo_junior_physics.json"
-INDEX_FILE = ROOT / "data" / "generated" / "junior_demo_embeddings.npz"
+PROJECT_ID = "junior_physics"
+SOURCE_FILE = ROOT / "data" / "junior_physics_2024.json"
+INDEX_FILE = ROOT / "data" / "generated" / "junior_physics_embeddings.npz"
 EVAL_FILE = ROOT / "data" / "question_eval.json"
 EXAMPLE_CONFIG_FILE = ROOT / "backend" / "ai.example.json"
 LOCAL_CONFIG_FILE = ROOT / "backend" / "ai.local.json"
 
 TEXT_FORMAT_VERSION = "entity-name-type-v1"
+INDEX_FILTER_VERSION = "exclude-textbook-catalog-v1"
+CATALOG_TYPES = frozenset({"TEXTBOOK_VOLUME", "CHAPTER", "SECTION"})
 CORPUS_INSTRUCTION = (
     "Target_modality: text.\n"
     "Instruction: Represent the physics knowledge graph entity for semantic retrieval. Passage:"
@@ -158,6 +161,11 @@ def source_fingerprint(path: Path = SOURCE_FILE) -> str:
 
 def entity_text(entity: dict[str, Any]) -> str:
     return f"名称：{entity['name']}\n类型：{entity['type']}"
+
+
+def is_searchable_entity(entity: dict[str, Any]) -> bool:
+    """章、节和册别只用于知识定位，不参与题目相似度排序。"""
+    return entity["type"] not in CATALOG_TYPES
 
 
 def _post_json(
@@ -297,6 +305,7 @@ def load_index(settings: AISettings) -> dict[str, Any]:
         "embedding_dimensions": settings.embedding_dimensions,
         "source_fingerprint": source_fingerprint(),
         "text_format_version": TEXT_FORMAT_VERSION,
+        "index_filter_version": INDEX_FILTER_VERSION,
         "corpus_instruction": CORPUS_INSTRUCTION,
         "query_instruction": QUERY_INSTRUCTION,
     }
@@ -308,7 +317,8 @@ def load_index(settings: AISettings) -> dict[str, Any]:
             503,
         )
     vectors = data.get("vectors")
-    if vectors is None or vectors.ndim != 2 or vectors.shape[1] != settings.embedding_dimensions:
+    if (vectors is None or vectors.ndim != 2 or vectors.shape[1] != settings.embedding_dimensions
+            or vectors.shape[0] != len(data.get("ids", []))):
         raise QuestionLocatorError("INDEX_INVALID", "本地向量索引维度无效，请重新构建", 503)
     return data
 
@@ -358,9 +368,11 @@ def locate_offline_example(request: LocateQuestionRequest) -> dict[str, Any]:
     entities = {item["id"]: item for item in json.loads(SOURCE_FILE.read_text(encoding="utf-8-sig"))["entities"]}
     candidates = []
     for entity_id in example.get("expected_entity_ids", []):
-        source_id = entity_id.removeprefix("junior_demo:")
+        if not entity_id.startswith(f"{PROJECT_ID}:"):
+            raise QuestionLocatorError("EXAMPLES_INVALID", f"离线示例实体 ID 前缀错误：{entity_id}", 500)
+        source_id = entity_id.removeprefix(f"{PROJECT_ID}:")
         entity = entities.get(source_id)
-        if not entity:
+        if not entity or not is_searchable_entity(entity):
             raise QuestionLocatorError("EXAMPLES_INVALID", f"离线示例引用了不存在的实体：{entity_id}", 500)
         candidates.append({
             "id": entity_id,
@@ -371,7 +383,7 @@ def locate_offline_example(request: LocateQuestionRequest) -> dict[str, Any]:
         })
     covered = bool(example.get("coverage_expected"))
     return {
-        "project_id": "junior_demo",
+        "project_id": PROJECT_ID,
         "source": "offline_example",
         "retrieval_status": "not_run",
         "analysis": QuestionAnalysis.model_validate(example["analysis"]).model_dump(),
@@ -385,13 +397,14 @@ def locate_offline_example(request: LocateQuestionRequest) -> dict[str, Any]:
 
 def locate_live(question: str) -> dict[str, Any]:
     settings = load_ai_settings(require_key=True)
+    # 先确认新图谱索引匹配，再调用付费模型，避免缺索引时产生无用请求。
+    index = load_index(settings)
     analysis, llm_usage = parse_question(question, settings)
     query_vector, embedding_usage = embed_text(analysis.retrieval_text, settings, QUERY_INSTRUCTION)
     candidates, sufficient, message = search_index(query_vector, settings)
-    index = load_index(settings)
     metadata = index["metadata_dict"]
     return {
-        "project_id": "junior_demo",
+        "project_id": PROJECT_ID,
         "source": "live_api",
         "retrieval_status": "completed",
         "analysis": analysis.model_dump(),

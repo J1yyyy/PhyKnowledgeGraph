@@ -38,11 +38,11 @@ if not NEO4J_PASSWORD:
 
 # 项目配置（支持多个图谱项目）
 PROJECTS = {
-    "junior_demo": {
-        "name": "初中物理演示图谱",
+    "junior_physics": {
+        "name": "初中物理知识图谱",
         "available": True,
-        "neo4j_label": "DemoJuniorPhysics",
-        "description": "PhyKgraph 示例数据：101 个节点、104 条语义关系"
+        "neo4j_label": "JuniorPhysics2024",
+        "description": "基于教材抽取并参考人教版 2024 目录扩充：436 个节点、686 条关系"
     },
     "physics": {
         "name": "Physics 知识图谱",
@@ -464,7 +464,7 @@ async def get_question_examples(project_id: str):
     """返回人工编写的示例题；不暴露评测标注答案。"""
     if project_id not in PROJECTS:
         raise HTTPException(status_code=404, detail="项目不存在")
-    if project_id != "junior_demo":
+    if project_id != "junior_physics":
         raise HTTPException(status_code=400, detail="该项目未配置题目知识点定位")
     try:
         examples = load_examples()
@@ -478,7 +478,7 @@ async def locate_question(project_id: str, request: LocateQuestionRequest):
     """解析物理题并从当前本地向量索引返回最多五个候选知识点。"""
     if project_id not in PROJECTS:
         raise HTTPException(status_code=404, detail="项目不存在")
-    if project_id != "junior_demo":
+    if project_id != "junior_physics":
         raise HTTPException(status_code=400, detail="该项目未配置题目知识点定位")
     try:
         if request.mode == "offline_example":

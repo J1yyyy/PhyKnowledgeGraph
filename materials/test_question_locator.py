@@ -46,12 +46,13 @@ class QuestionLocatorTests(unittest.TestCase):
                 "embedding_dimensions": 3,
                 "source_fingerprint": locator.source_fingerprint(),
                 "text_format_version": locator.TEXT_FORMAT_VERSION,
+                "index_filter_version": locator.INDEX_FILTER_VERSION,
                 "corpus_instruction": locator.CORPUS_INSTRUCTION,
                 "query_instruction": locator.QUERY_INSTRUCTION,
             }
             np.savez_compressed(
                 path,
-                ids=np.asarray(["junior_demo:A", "junior_demo:B"]),
+                ids=np.asarray(["junior_physics:A", "junior_physics:B"]),
                 source_ids=np.asarray(["A", "B"]),
                 names=np.asarray(["甲", "乙"]),
                 types=np.asarray(["PHYSICS_CONCEPT", "PHYSICS_CONCEPT"]),
@@ -65,7 +66,7 @@ class QuestionLocatorTests(unittest.TestCase):
                 candidates, sufficient, _ = locator.search_index(
                     np.asarray([0.9, 0.1, 0], dtype=np.float32), settings
                 )
-                self.assertEqual(candidates[0]["id"], "junior_demo:A")
+                self.assertEqual(candidates[0]["id"], "junior_physics:A")
                 self.assertTrue(sufficient)
                 locator._index_cache.path = None
                 locator._index_cache.data = None
@@ -93,6 +94,48 @@ class QuestionLocatorTests(unittest.TestCase):
                 loaded = index_builder.load_checkpoint(entities, metadata)
         self.assertEqual(len(loaded), 1)
         np.testing.assert_array_equal(loaded[0], vectors[0])
+
+    def test_catalog_nodes_are_not_search_candidates(self):
+        entities = json.loads(locator.SOURCE_FILE.read_text(encoding="utf-8"))["entities"]
+        searchable = [entity for entity in entities if locator.is_searchable_entity(entity)]
+        self.assertEqual((len(entities), len(searchable)), (436, 319))
+        self.assertFalse(any(entity["type"] in locator.CATALOG_TYPES for entity in searchable))
+
+    def test_legacy_vectors_reused_only_for_matching_text(self):
+        entities = [
+            {"id": "G_NODE_5", "name": "密度", "type": "PHYSICAL_QUANTITY"},
+            {"id": "RJ24_K_NEW", "name": "新知识", "type": "PHYSICS_CONCEPT"},
+        ]
+        settings = self.settings()
+        metadata = {
+            "embedding_model": settings.embedding_model,
+            "embedding_dimensions": settings.embedding_dimensions,
+            "text_format_version": locator.TEXT_FORMAT_VERSION,
+            "corpus_instruction": locator.CORPUS_INSTRUCTION,
+            "query_instruction": locator.QUERY_INSTRUCTION,
+        }
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "legacy.npz"
+            np.savez_compressed(
+                path,
+                source_ids=np.asarray(["G_NODE_5", "RJ24_K_NEW"]),
+                texts=np.asarray([locator.entity_text(entities[0]), "不匹配的知识文本"]),
+                vectors=np.asarray([[1, 0, 0], [0, 1, 0]], dtype=np.float32),
+                metadata=np.asarray(json.dumps(metadata)),
+            )
+            with patch.object(index_builder, "LEGACY_INDEX_FILE", path):
+                reusable = index_builder.load_reusable_vectors(entities, settings)
+        self.assertEqual(set(reusable), {"G_NODE_5"})
+
+    def test_missing_index_rejected_before_paid_request(self):
+        with TemporaryDirectory() as directory:
+            with patch.object(locator, "INDEX_FILE", Path(directory) / "missing.npz"):
+                with patch.object(locator, "load_ai_settings", return_value=self.settings()):
+                    with patch.object(locator, "_post_json") as post:
+                        with self.assertRaises(locator.QuestionLocatorError) as caught:
+                            locator.locate_live("测试题")
+        self.assertEqual(caught.exception.code, "INDEX_MISSING")
+        post.assert_not_called()
 
 
 if __name__ == "__main__":
