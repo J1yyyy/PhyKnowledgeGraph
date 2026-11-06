@@ -2,7 +2,7 @@
   <div class="graph-view">
     <el-card>
       <div class="toolbar">
-        <el-select v-model="currentProject" placeholder="选择项目" @change="loadGraph()" style="width: 200px;">
+        <el-select v-model="currentProject" placeholder="选择项目" :disabled="isQuestionMode" @change="loadGraph()" style="width: 200px;">
           <el-option
             v-for="proj in projects"
             :key="proj.id"
@@ -13,13 +13,18 @@
         </el-select>
 
         <!-- 分级控制 -->
-        <el-select v-model="graphLevel" placeholder="显示级别" @change="loadGraph()" style="width: 150px;">
+        <el-select v-if="!isQuestionMode" v-model="graphLevel" placeholder="显示级别" @change="loadGraph()" style="width: 150px;">
           <el-option label="核心节点" value="core" />
           <el-option label="重要节点" value="important" />
           <el-option label="全部节点" value="all" />
         </el-select>
 
-        <div class="node-search">
+        <el-select v-if="!isQuestionMode" v-model="graphScope" aria-label="图谱显示范围" @change="loadGraph()" style="width: 150px;">
+          <el-option label="知识实体" value="knowledge" />
+          <el-option label="含教材目录" value="with_catalog" />
+        </el-select>
+
+        <div v-if="!isQuestionMode" class="node-search">
           <el-autocomplete
             ref="searchInput"
             v-model="searchKeyword"
@@ -44,7 +49,7 @@
             </template>
           </el-autocomplete>
         </div>
-        <span v-if="searchCount !== null" class="search-status" role="status">
+        <span v-if="!isQuestionMode && searchCount !== null" class="search-status" role="status">
           {{ searchFailed ? '搜索失败，可重试' : searchCount ? `找到 ${searchCount} 个结果，请选择节点` : '未找到相关节点' }}
         </span>
 
@@ -58,7 +63,9 @@
       <el-alert v-if="!currentAvailable" title="该项目未开放，请选择初中物理知识图谱" type="info" :closable="false" />
 
       <div v-if="currentAvailable" class="stats-bar">
-        <el-button v-if="activeCenterId" size="small" @click="returnToLevel">返回分级视图</el-button>
+        <el-button v-if="isQuestionMode" size="small" @click="returnToQuestion">返回题目与解析结果</el-button>
+        <el-button v-if="isQuestionMode" size="small" @click="openRegularGraph">查看普通图谱</el-button>
+        <el-button v-if="activeCenterId && !isQuestionMode" size="small" @click="returnToLevel">返回分级视图</el-button>
         <el-tag type="info" size="small">
           当前显示：{{ currentNodeCount }} 个节点
         </el-tag>
@@ -66,16 +73,30 @@
           {{ currentEdgeCount }} 条真实关系
         </el-tag>
         <el-tag type="success" size="small" style="margin-left: 10px;">
-          {{ `级别：${levelLabels[graphLevel]}` }}{{ activeCenterId ? ' ＋ 选中节点一跳关联' : '' }}
+          {{ isQuestionMode ? '题目候选上下文' : `级别：${levelLabels[graphLevel]}` }}{{ activeCenterId && !isQuestionMode ? ' ＋ 选中节点一跳关联' : '' }}
         </el-tag>
-        <el-tag v-if="activeCenterId" size="small" type="info" style="margin-left: 10px;">基础 {{ baseNodeCount }} 个 · 临时补充 {{ currentNodeCount - baseNodeCount }} 个</el-tag>
+        <el-tag v-if="activeCenterId && !isQuestionMode" size="small" type="info" style="margin-left: 10px;">基础 {{ baseNodeCount }} 个 · 临时补充 {{ currentNodeCount - baseNodeCount }} 个</el-tag>
       </div>
+
+      <div v-if="isQuestionMode" class="question-candidates" aria-label="题目候选知识点">
+        <span>候选知识点：</span>
+        <el-button v-for="(candidate, index) in questionResult.candidates" :key="candidate.id"
+          size="small" :type="activeCenterId === candidate.id ? 'primary' : 'default'"
+          @click="selectNode({ id: candidate.id })">
+          {{ index + 1 }}. {{ candidate.name }}（{{ candidate.score == null ? '离线示例' : candidate.score.toFixed(4) }}）
+        </el-button>
+        <span class="context-note">相似度不是正确概率；未连线的候选不表示没有知识关联。</span>
+      </div>
+      <el-alert v-if="isQuestionMode && questionResult.coverage_sufficient === false"
+        title="当前图谱可能覆盖不足；只展示候选之间的真实关系，不自动补充邻居" type="warning" :closable="false" />
 
       <div v-if="currentAvailable" class="graph-legend" aria-label="节点图例">
         <span v-for="type in legendTypes" :key="type" class="legend-item">
           <i :style="{ backgroundColor: typeStyle(type).color }"></i>{{ typeStyle(type).name }}
         </span>
-        <span class="legend-note">颜色：实体类型 · 大小：完整图谱的关联节点数，非重要程度 · 橙色描边：当前选中 · 淡色：一跳范围外的背景节点</span>
+        <span class="legend-note">{{ isQuestionMode
+          ? '蓝色描边：候选知识点 · 橙色描边：当前选中 · 连线均为经筛选的真实关系'
+          : '颜色：实体类型 · 大小：完整图谱的关联节点数，非重要程度 · 橙色描边：当前选中 · 淡色：一跳范围外的背景节点' }}</span>
       </div>
 
       <div ref="graphContainer" class="graph-container"></div>
@@ -92,17 +113,17 @@
             {{ selectedNode.description }}
           </el-descriptions-item>
         </el-descriptions>
-        <h4>关联节点（{{ nodeConnections.length }}）</h4>
-        <div v-for="connection in nodeConnections"
+        <h4>{{ isQuestionMode ? '当前上下文中的关联节点' : '关联节点' }}（{{ visibleConnections.length }}）</h4>
+        <div v-for="connection in visibleConnections"
           :key="`${connection.neighbor.id}:${connection.relationship.type}:${connection.relationship.source_id}`"
           class="node-connection">
           <span>{{ connection.relationship.source_id === selectedNode.id ? '→' : '←' }}</span>
           <el-tag size="small">{{ relationNames[connection.relationship.type] || connection.relationship.type }}</el-tag>
-          <el-button link type="primary" @click="selectNode({ id: connection.neighbor.id })">
+          <el-button link type="primary" @click="selectNode({ id: connection.neighbor.id, type: connection.neighbor.type })">
             {{ connection.neighbor.name || connection.neighbor.title || connection.neighbor.label }}
           </el-button>
         </div>
-        <p v-if="!nodeConnections.length">该节点暂无关联关系。</p>
+        <p v-if="!visibleConnections.length">{{ isQuestionMode ? '筛选后没有需要展示的关联节点。' : '该节点暂无关联关系。' }}</p>
       </div>
     </el-drawer>
   </div>
@@ -110,12 +131,15 @@
 
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import * as d3 from 'd3'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { loadQuestionSession } from '../questionSession'
+import { CATALOG_TYPES, filterGraphForDisplay } from '../graphDisplay'
 
 const route = useRoute()
+const router = useRouter()
 const projects = ref([])
 const currentProject = ref('')
 const searchKeyword = ref('')
@@ -123,10 +147,12 @@ const searchInput = ref(null)
 const searchCount = ref(null)
 const searchFailed = ref(false)
 const showRelationLabels = ref(false)
-const graphLevel = ref('all') // 演示数据默认完整展示；大图谱可切换核心节点
+const graphLevel = ref('all') // 默认不按关联数筛选，教材目录由显示范围单独控制。
+const graphScope = ref('knowledge')
 const showNodeDetail = ref(false)
 const selectedNode = ref(null)
 const nodeConnections = ref([])
+const questionResult = ref(null)
 const activeCenterId = ref('')
 const graphContainer = ref(null)
 const currentNodeCount = ref(0)
@@ -172,6 +198,18 @@ const typeStyle = type => nodeTypes[type] || { name: type, color: '#475569' }
 const nodeRadius = node => 6 + Math.min(8, Math.sqrt(Math.max(0, node.degree)) * 1.6)
 const legendTypes = ref([])
 const currentAvailable = computed(() => projects.value.some(project => project.id === currentProject.value && project.available))
+const isQuestionMode = computed(() => route.query.context === 'question' && questionResult.value?.project_id === currentProject.value)
+const candidateIds = computed(() => new Set(questionResult.value?.candidates.map(item => item.id) || []))
+const visibleConnections = computed(() => {
+  if (!isQuestionMode.value) return nodeConnections.value
+  // 详情只列出上下文图实际保留的边，不能让未选中的一跳关系从侧栏混入。
+  const edgeKeys = new Set(baseGraph?.edges.map(edge => JSON.stringify([
+    edge.source, edge.relation_type, edge.target
+  ])) || [])
+  return nodeConnections.value.filter(item => edgeKeys.has(JSON.stringify([
+    item.relationship.source_id, item.relationship.type, item.relationship.target_id
+  ])))
+})
 let resizeObserver = null
 
 const relationNames = {
@@ -182,7 +220,9 @@ const relationNames = {
   TAUGHT_IN: '对应教材节',
   BELONGS_TO: '属于',
   COVERED_IN_CHAPTER: '涉及教材章',
-  DESCRIBED_BY: '由公式描述',
+  DESCRIBED_BY: '由公式或规律描述',
+  IS_A: '属于一种',
+  MEASURES: '测量',
   RELATED_TO: '相关知识',
   RELATES_TO: '关联',
   ABSORBS_HEAT: '吸热',
@@ -244,9 +284,11 @@ const renderGraph = (graph, preservePositions = false) => {
   visualizeGraph(nodes, edges, preservePositions)
 }
 
-const loadGraph = async () => {
+const loadGraph = async (requestedNodeId = '') => {
   const version = ++loadVersion
   ++selectionVersion
+  const session = route.query.context === 'question' ? loadQuestionSession() : null
+  questionResult.value = session?.result?.project_id === currentProject.value ? session.result : null
   baseGraph = null
   baseNodeCount.value = 0
   activeCenterId.value = ''
@@ -266,16 +308,27 @@ const loadGraph = async () => {
   await nextTick()
   try {
     const limits = { core: 100, important: 500, all: 1000 }
-    const response = await axios.get(`/api/${currentProject.value}/graph`, {
-      params: { limit: limits[graphLevel.value], level: graphLevel.value }
-    })
+    // 题目模式只请求筛选后的候选上下文；普通分级图谱继续走原有接口。
+    const response = isQuestionMode.value
+      ? await axios.post(`/api/${currentProject.value}/question/context`, {
+          candidates: questionResult.value.candidates.map(item => ({ id: item.id, score: item.score })),
+          analysis: questionResult.value.analysis,
+          coverage_sufficient: questionResult.value.coverage_sufficient
+        })
+      : await axios.get(`/api/${currentProject.value}/graph`, {
+          params: { limit: limits[graphLevel.value], level: graphLevel.value }
+        })
     if (version !== loadVersion) return false
-    baseGraph = normalizeGraph(response.data)
+    const graph = normalizeGraph(response.data)
+    baseGraph = isQuestionMode.value ? graph : filterGraphForDisplay(graph, graphScope.value)
     baseNodeCount.value = baseGraph.nodes.length
     renderGraph(baseGraph)
     ElMessage.success(`已加载 ${currentNodeCount.value} 个节点、${currentEdgeCount.value} 条真实关系`)
+    if (route.query.context === 'question' && !isQuestionMode.value) {
+      ElMessage.warning('当前标签页没有可恢复的题目结果，已显示普通图谱')
+    }
     await nextTick()
-    if (version === loadVersion) await openRouteNode()
+    if (version === loadVersion) await openRouteNode(requestedNodeId)
     return true
   } catch (error) {
     if (version !== loadVersion) return false
@@ -287,7 +340,9 @@ const loadGraph = async () => {
     simulation?.stop()
     resizeObserver?.disconnect()
     d3.select(graphContainer.value).selectAll('*').remove()
-    ElMessage.error('加载图谱数据失败')
+    const detail = error.response?.data?.detail
+    const message = typeof detail === 'object' ? detail.message : detail
+    ElMessage.error(isQuestionMode.value ? message || '加载题目上下文失败' : '加载图谱数据失败')
     return false
   }
 }
@@ -301,6 +356,9 @@ const returnToLevel = () => {
   nodeConnections.value = []
   if (baseGraph) renderGraph(baseGraph, true)
 }
+
+const returnToQuestion = () => router.push({ name: 'QuestionLocator' })
+const openRegularGraph = () => router.push({ name: 'GraphView', query: { project: currentProject.value } })
 
 // D3 可视化
 const visualizeGraph = (nodesData, edgesData, preservePositions = false) => {
@@ -373,8 +431,8 @@ const visualizeGraph = (nodesData, edgesData, preservePositions = false) => {
     .attr('data-node-id', d => d.id)
     .attr('r', nodeRadius)
     .attr('fill', d => color(d.type))
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 1.5)
+    .attr('stroke', d => isQuestionMode.value && candidateIds.value.has(d.id) ? '#2563eb' : '#fff')
+    .attr('stroke-width', d => isQuestionMode.value && candidateIds.value.has(d.id) ? 3 : 1.5)
     .call(d3.drag()
       .on('start', dragstarted)
       .on('drag', dragged)
@@ -441,8 +499,8 @@ const visualizeGraph = (nodesData, edgesData, preservePositions = false) => {
     simulation.stop()
     nodes.classed('selected-node', d => d.id === nodeId)
       .attr('r', d => nodeRadius(d) + (d.id === nodeId ? 3 : 0))
-      .attr('stroke', d => d.id === nodeId ? '#f59e0b' : '#fff')
-      .attr('stroke-width', d => d.id === nodeId ? 4 : 1.5)
+      .attr('stroke', d => d.id === nodeId ? '#f59e0b' : isQuestionMode.value && candidateIds.value.has(d.id) ? '#2563eb' : '#fff')
+      .attr('stroke-width', d => d.id === nodeId ? 4 : isQuestionMode.value && candidateIds.value.has(d.id) ? 3 : 1.5)
     nodes.classed('neighbor-node', d => neighborhoodIds.has(d.id) && d.id !== nodeId)
       .classed('context-node', d => !neighborhoodIds.has(d.id))
       .attr('opacity', d => neighborhoodIds.has(d.id) ? 1 : 0.25)
@@ -552,21 +610,50 @@ const search = () => {
   searchInput.value.getData(searchKeyword.value)
 }
 
-// 所有选择入口统一查询一跳邻域，在基础分级图谱上替换临时补充。
+// 普通模式统一查询一跳邻域；题目模式只切换固定上下文中的详情。
 const selectNode = async (node) => {
   if (!baseGraph || !currentAvailable.value || !node.id || (node.project_id && node.project_id !== currentProject.value)) return
+  if (!isQuestionMode.value && graphScope.value === 'knowledge' && CATALOG_TYPES.has(node.type)) {
+    graphScope.value = 'with_catalog'
+    await loadGraph(node.id)
+    return
+  }
   const project = currentProject.value
   const version = ++selectionVersion
   const baseline = baseGraph
   simulation?.stop()
   searchInput.value?.close()
   try {
+    if (isQuestionMode.value) {
+      // 题目图是固定的筛选上下文；点击节点只打开详情，不展开完整一跳。
+      const detailResponse = await axios.get(`/api/${project}/node/${encodeURIComponent(node.id)}`)
+      if (version !== selectionVersion || project !== currentProject.value || baseline !== baseGraph) return
+      const detail = detailResponse.data.n
+      activeCenterId.value = node.id
+      selectedNode.value = { ...detail, label: detail.name || detail.title || detail.label }
+      nodeConnections.value = detailResponse.data.connections
+      neighborhoodIds = new Set(baseGraph.nodes.map(item => item.id))
+      showNodeDetail.value = true
+      await nextTick()
+      if (version !== selectionVersion || project !== currentProject.value) return
+      focusGraphNode?.(node.id)
+      if (candidateIds.value.has(node.id) && route.query.node_id !== node.id) {
+        router.replace({ name: 'GraphView', query: { ...route.query, node_id: node.id } })
+      }
+      return
+    }
     const [detailResponse, graphResponse] = await Promise.all([
       axios.get(`/api/${project}/node/${encodeURIComponent(node.id)}`),
       axios.get(`/api/${project}/graph`, { params: { center_id: node.id, depth: 1, limit: 1000 } })
     ])
     if (version !== selectionVersion || project !== currentProject.value || baseline !== baseGraph) return
-    const neighborhood = normalizeGraph(graphResponse.data)
+    if (graphScope.value === 'knowledge' && CATALOG_TYPES.has(detailResponse.data.n.type)) {
+      // 路由只携带 ID 时，详情类型确认后再切到含目录视图定位该节点。
+      graphScope.value = 'with_catalog'
+      await loadGraph(node.id)
+      return
+    }
+    const neighborhood = filterGraphForDisplay(normalizeGraph(graphResponse.data), graphScope.value)
     if (!neighborhood.nodes.some(item => item.id === node.id)) throw new Error('一跳邻域缺少选中节点')
     const mergedNodes = new Map([...baseline.nodes, ...neighborhood.nodes].map(item => [item.id, item]))
     const mergedEdges = new Map([...baseline.edges, ...neighborhood.edges].map(edge => [
@@ -584,14 +671,17 @@ const selectNode = async (node) => {
     focusGraphNode?.(node.id)
   } catch (error) {
     if (version !== selectionVersion || project !== currentProject.value) return
-    ElMessage.error('加载节点详情和一跳关联失败，请重试')
+    ElMessage.error(isQuestionMode.value ? '加载节点详情失败，请重试' : '加载节点详情和一跳关联失败，请重试')
   }
 }
 
-// 外部页面只通过路由传递节点 ID，实际选点仍复用统一的一跳探索流程。
-const openRouteNode = async () => {
-  const nodeId = typeof route.query.node_id === 'string' ? route.query.node_id.trim() : ''
+// 外部页面通过路由传递节点 ID；题目模式从会话状态恢复全部候选。
+const openRouteNode = async (requestedNodeId = '') => {
+  let nodeId = requestedNodeId || (typeof route.query.node_id === 'string' ? route.query.node_id.trim() : '')
   const project = typeof route.query.project === 'string' ? route.query.project : currentProject.value
+  if (isQuestionMode.value && !baseGraph?.nodes.some(item => item.id === nodeId)) {
+    nodeId = questionResult.value.candidates[0]?.id || ''
+  }
   if (!nodeId || !baseGraph || project !== currentProject.value || nodeId === activeCenterId.value) return
   await selectNode({ id: nodeId, project_id: project })
 }
@@ -666,6 +756,10 @@ watch(() => route.query.node_id, () => {
   openRouteNode()
 })
 
+watch(() => route.query.context, () => {
+  loadGraph()
+})
+
 onMounted(() => {
   loadProjects()
 })
@@ -694,6 +788,12 @@ onUnmounted(() => {
 .legend-note { color: #64748b; }
 .stats-bar, .graph-legend, .toolbar { flex-shrink: 0; }
 .stats-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.question-candidates {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  flex-shrink: 0; font-size: 13px; color: #334155;
+}
+.question-candidates .el-button { margin-left: 0; }
+.context-note { color: #64748b; }
 
 .toolbar {
   display: flex;

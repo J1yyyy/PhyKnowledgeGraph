@@ -37,14 +37,32 @@ RELATION_RULES = {
     "BELONGS_TO": None,
     "COVERED_IN_CHAPTER": None,
     "RELATED_TO": None,
-    "DESCRIBED_BY": None,
+    # 被描述的知识或模型指向描述它的公式、定律；不能反向连接到被描述对象。
+    "DESCRIBED_BY": (
+        {"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY", "PHENOMENON", "PHYSICS_MODEL", "METHOD", "LAW_OR_PRINCIPLE"},
+        {"FORMULA", "LAW_OR_PRINCIPLE"},
+    ),
     "RELATES_TO": None,
-    "APPLIED_IN": None,
+    # 原理、方法或技术指向应用，不把应用场景反向连到物理量或现象。
+    "APPLIED_IN": (
+        {"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY", "LAW_OR_PRINCIPLE", "PHENOMENON", "PHYSICS_MODEL", "METHOD"},
+        {"TYPICAL_SCENARIO", "PHYSICS_MODEL", "PHYSICS_CONCEPT"},
+    ),
     "MEASURED_USING": None,
-    "HAS_PROPERTY": None,
+    "HAS_PROPERTY": (
+        {"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY", "PHENOMENON", "PHYSICS_MODEL"},
+        {"PHYSICS_CONCEPT", "PHYSICAL_QUANTITY", "LAW_OR_PRINCIPLE"},
+    ),
     "MEASURED_IN": None,
     "HAS_COMPONENT": None,
-    "HAS_PARAMETER": None,
+    "HAS_PARAMETER": (
+        {"PHYSICS_MODEL", "PHENOMENON", "LAW_OR_PRINCIPLE", "PHYSICAL_QUANTITY"},
+        {"PHYSICAL_QUANTITY"},
+    ),
+    # 子类指向父类；允许当前图谱中确有依据的跨实体类型表示。
+    "IS_A": None,
+    # 测量工具、实验或测量方法只能指向可定量表示的物理量。
+    "MEASURES": ({"MEASUREMENT_TOOL", "EXPERIMENT", "METHOD"}, {"PHYSICAL_QUANTITY"}),
     "COMPOSED_OF": None,
     "HAS_STAGE": None,
     "INCLUDES_TOPIC": None,
@@ -61,6 +79,16 @@ RELATION_RULES = {
     "PROPAGATES_THROUGH": None,
     "USED_IN": None,
     "REQUIRES": None,
+}
+
+# IS_A 表示子类到父类；允许的跨类型组合来自当前实体建模方式，不能泛化为任意两类节点。
+IS_A_TYPE_PAIRS = {
+    ("PHYSICAL_QUANTITY", "PHYSICAL_QUANTITY"),
+    ("PHYSICAL_QUANTITY", "PHYSICS_CONCEPT"),
+    ("PHYSICS_CONCEPT", "PHYSICS_CONCEPT"),
+    ("PHYSICS_MODEL", "PHYSICS_CONCEPT"),
+    ("PHYSICS_MODEL", "PHYSICS_MODEL"),
+    ("PHENOMENON", "PHENOMENON"),
 }
 
 
@@ -94,6 +122,8 @@ def validate_graph(data):
             raise ValueError(f"不允许自环：{source}")
         if relation not in RELATION_RULES:
             raise ValueError(f"未知关系类型：{relation}")
+        if edge.get("verification") == "semantic_candidate_needs_review":
+            raise ValueError(f"待审核语义关系不能直接导入：{source} -[{relation}]-> {target}")
         source_type, target_type = entities[source]["type"], entities[target]["type"]
         # 目录层级只接受明确的方向；普通知识关系不能误连到教材目录节点。
         if source_type in CATALOG_TYPES or target_type in CATALOG_TYPES:
@@ -111,6 +141,8 @@ def validate_graph(data):
         rule = RELATION_RULES[relation]
         if rule and (source_type not in rule[0] or target_type not in rule[1]):
             raise ValueError(f"关系类型组合不合法：{source} -[{relation}]-> {target}")
+        if relation == "IS_A" and (source_type, target_type) not in IS_A_TYPE_PAIRS:
+            raise ValueError(f"IS_A 类型组合不合法：{source} -> {target}")
         for key in ("mapping_method", "verification"):
             if key in edge and (not isinstance(edge[key], str) or not edge[key].strip()):
                 raise ValueError(f"关系 {key} 必须是非空字符串：{source} -[{relation}]-> {target}")
@@ -154,7 +186,7 @@ def import_graph(data, project, label):
     for edge in data["edges"]:
         edge_groups.setdefault(edge["relation_type"], []).append({
             "source": f"{project}:{edge['source_id']}", "target": f"{project}:{edge['target_id']}",
-            "provenance": {key: edge[key] for key in ("mapping_method", "verification") if key in edge},
+            "provenance": {key: edge[key] for key in ("mapping_method", "verification", "origin") if key in edge},
         })
 
     def write_graph(tx):

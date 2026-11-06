@@ -1,4 +1,4 @@
-# Kgraph 可视化项目 - Git Ignore 文件
+# PhyKnowledgeGraph - Git Ignore 文件
 
 # ==================== 依赖目录 ====================
 # Node.js 依赖
@@ -100,13 +100,15 @@ backend/ai.local.json
 .cache/
 .parcel-cache/
 .eslintcache
-data/generated/
+data/generated/*
+!data/generated/junior_physics_embeddings.npz
 
 # 本机作品集与过程材料，不上传仓库
 docs/PORTFOLIO.md
 docs/PORTFOLIO_PREPARATION.md
 docs/PROJECT_PIPELINE.md
 docs/images/portfolio/
+materials/review_semantic_relations.py
 
 # ==================== 测试 ====================
 # 测试覆盖率

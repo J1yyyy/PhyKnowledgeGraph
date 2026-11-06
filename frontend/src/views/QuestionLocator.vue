@@ -15,11 +15,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="物理题">
-          <el-input v-model="question" type="textarea" :rows="5" maxlength="5000" show-word-limit
+          <el-input v-model="question" type="textarea" :rows="5" maxlength="5000" show-word-limit @input="onQuestionInput"
             placeholder="请输入一道物理题……" />
         </el-form-item>
         <el-form-item label="运行方式">
-          <el-radio-group v-model="mode">
+          <el-radio-group v-model="mode" @change="onModeChange">
             <el-radio label="live_api">实时调用火山方舟并执行向量检索</el-radio>
             <el-radio label="offline_example" :disabled="!offlineAvailable">离线示例（不调用 API）</el-radio>
           </el-radio-group>
@@ -89,6 +89,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { loadQuestionSession, saveQuestionSession } from '../questionSession'
 
 const router = useRouter()
 const examples = ref([])
@@ -98,6 +99,13 @@ const mode = ref('live_api')
 const loading = ref(false)
 const result = ref(null)
 const errorMessage = ref('')
+
+const saveCurrentState = () => saveQuestionSession({
+  question: question.value,
+  selectedExampleId: selectedExampleId.value,
+  mode: mode.value,
+  result: result.value
+})
 
 const selectedExample = computed(() => examples.value.find(item => item.id === selectedExampleId.value))
 const offlineAvailable = computed(() => Boolean(selectedExample.value && selectedExample.value.question === question.value))
@@ -115,6 +123,19 @@ const selectExample = id => {
   const example = examples.value.find(item => item.id === id)
   if (example) question.value = example.question
   else if (mode.value === 'offline_example') mode.value = 'live_api'
+  result.value = null
+  saveCurrentState()
+}
+
+const onQuestionInput = () => {
+  // 输入内容变化后，旧解析结果不再对应当前题目。
+  result.value = null
+  saveCurrentState()
+}
+
+const onModeChange = () => {
+  result.value = null
+  saveCurrentState()
 }
 
 const locate = async () => {
@@ -130,6 +151,7 @@ const locate = async () => {
   loading.value = true
   result.value = null
   errorMessage.value = ''
+  saveCurrentState()
   try {
     const response = await axios.post('/api/junior_physics/question/locate', {
       question: text,
@@ -137,6 +159,7 @@ const locate = async () => {
       example_id: mode.value === 'offline_example' ? selectedExampleId.value : null
     })
     result.value = response.data
+    if (!saveCurrentState()) ElMessage.warning('浏览器无法保存题目结果，离开页面后可能无法恢复')
   } catch (error) {
     const detail = error.response?.data?.detail
     errorMessage.value = typeof detail === 'object' ? detail.message : detail || '题目解析或知识点检索失败，请重试'
@@ -146,10 +169,20 @@ const locate = async () => {
 }
 
 const openGraph = nodeId => {
-  router.push({ name: 'GraphView', query: { project: 'junior_physics', node_id: nodeId } })
+  saveCurrentState()
+  router.push({ name: 'GraphView', query: { project: 'junior_physics', context: 'question', node_id: nodeId } })
 }
 
-onMounted(loadExamples)
+onMounted(() => {
+  const saved = loadQuestionSession()
+  if (saved) {
+    question.value = saved.question
+    selectedExampleId.value = saved.selectedExampleId || ''
+    mode.value = saved.mode || 'live_api'
+    result.value = saved.result || null
+  }
+  loadExamples()
+})
 </script>
 
 <style scoped>

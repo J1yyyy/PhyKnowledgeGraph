@@ -1,6 +1,6 @@
 # Windows 本机运行
 
-本个人项目使用从初中物理教材中抽取并扩充的图谱，包含 436 个节点、686 条关系。数据来源和教材章节映射的限制见 [数据说明](../data/DATA_SOURCE.md)。
+本项目使用从初中物理教材中抽取并整理的图谱，包含 436 个节点、788 条关系。数据结构见 [数据说明](../data/DATA_SOURCE.md)。
 
 随仓库提供 `data/junior_physics_2024.json`，不依赖原始桌面文件或服务器。以下命令使用 Windows PowerShell：在文件资源管理器中打开仓库文件夹，在地址栏输入 `powershell` 并回车，即可从仓库根目录执行命令。路径均相对于仓库根目录。
 
@@ -11,41 +11,50 @@
 首次安装依赖：
 
 ```powershell
-.\.phyvenv\Scripts\python.exe -m pip install -r backend\requirements.txt
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r backend\requirements.txt
 npm.cmd --prefix frontend ci
 ```
 
-作用：使用现有 `.phyvenv` 安装后端依赖，并安装锁文件指定的前端依赖。如果已安装成功，不必重复执行；不要重建现有虚拟环境。
+作用：创建示例虚拟环境 `.venv`、安装后端依赖，并按锁文件安装前端依赖。已有其他虚拟环境时，将后续命令中的 Python 路径换成自己的解释器路径。
 
 ## 2. 本机配置
 
 ```powershell
-.\.phyvenv\Scripts\python.exe .\materials\import_phykgraph_json.py --configure
+.\.venv\Scripts\python.exe .\materials\import_phykgraph_json.py --configure
 ```
 
 在仓库根目录执行。按提示输入 URI、用户名、数据库名和密码。默认 URI 为 `bolt://localhost:7687`，默认用户名及数据库名为 `neo4j`。实际配置以 Desktop 的实例信息为准。
 
 密码输入不显示字符。配置保存在 `backend/neo4j.local.json`，已被现有 `.gitignore` 的 `*.local.json` 排除。环境变量 `NEO4J_URI/NEO4J_USER/NEO4J_PASSWORD/NEO4J_DATABASE` 优先于本机配置。
 
+如需实时解析题目，在仓库根目录复制 AI 配置模板，再在 `backend/ai.local.json` 中填写 API Key：
+
+```powershell
+Copy-Item backend\ai.example.json backend\ai.local.json
+```
+
+本机配置文件已被 Git 忽略；使用仓库附带的索引时，保持示例文件中的嵌入模型和向量维度配置。
+
 ## 3. 校验和导入
 
 ```powershell
-.\.phyvenv\Scripts\python.exe .\materials\import_phykgraph_json.py --validate-only
-.\.phyvenv\Scripts\python.exe .\materials\import_phykgraph_json.py
+.\.venv\Scripts\python.exe .\materials\import_phykgraph_json.py --validate-only
+.\.venv\Scripts\python.exe .\materials\import_phykgraph_json.py
 ```
 
-第一条不写数据库；第二条校验通过后写入。预期打印 436 个节点、686 条关系，以及相同的数据库统计。
+第一条不写数据库；第二条校验通过后写入。预期打印 436 个节点、788 条关系，以及相同的数据库统计。
 
-导入使用 `JuniorPhysics2024` 标签和 `junior_physics:` ID 前缀，原 ID 保存为 `source_id`。关系的 `mapping_method`、`verification` 标记随关系写入数据库。
+导入使用 `JuniorPhysics2024` 标签和 `junior_physics:` ID 前缀，原 ID 保存为 `source_id`。
 
-节点和关系使用 MERGE 写入一个事务；对同一份数据重复执行不会增加节点或关系。新项目 ID 与标签将旧图谱隔离；导入不删除旧图谱，也不自动删除文件更新后消失的记录。
+节点和关系使用 MERGE 写入一个事务；对同一份数据重复执行不会增加节点或关系。
 
 ## 4. 启动后端
 
 在仓库根目录的一个 PowerShell 窗口执行：
 
 ```powershell
-.\.phyvenv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 9000
+.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 9000
 ```
 
 预期服务地址 `http://127.0.0.1:9000`，API 文档 `http://127.0.0.1:9000/docs`。窗口保持运行。若提示端口占用，先检查已经启动的本项目服务，不要重复启动。
@@ -61,7 +70,7 @@ npm.cmd run dev -- --host 127.0.0.1
 
 访问 `http://127.0.0.1:5173/kgraph/`，选择“初中物理知识图谱”。完整图谱地址：`http://127.0.0.1:5173/kgraph/graph?project=junior_physics`。
 
-默认“全部节点”，预期 436 个节点、686 条真实关系；画面较密时可切换核心或重要级别。可以搜索“密度”、点击节点查看详情、拖动节点、缩放及导出图片。
+默认级别为“全部节点”、显示范围为“知识实体”，预期显示 319 个知识节点、327 条节点之间的真实关系。切换到“含教材目录”后显示 436 个节点、788 条真实关系；核心和重要级别可独立选择。节点大小和级别仍按完整图谱的关联节点数计算。可以搜索“密度”、点击节点查看详情、拖动节点、缩放及导出图片。
 
 ### 搜索与定位
 
@@ -69,7 +78,7 @@ npm.cmd run dev -- --host 127.0.0.1
 
 点击画布节点、搜索候选或详情中的关联节点，前端都会同时查询节点详情和按 ID 的一跳邻域。选中节点以橙色描边显示，一跳邻居正常显示，其余背景节点淡化；视图缩放到能显示当前一跳范围。右侧详情面板不遮罩整张图，可以继续操作搜索框。
 
-全部、重要、核心都保留当前基础分级图谱，再补充当前选中节点的一跳邻域。已存在的节点和同类型、同方向的关系去重，已有节点坐标保留。每次选择从基础图谱重新合并，替换上一次临时补充的邻域，不逐次累积。统计栏显示基础和临时补充节点数量；点击“返回分级视图”或切换级别可恢复基础图谱。
+全部、重要、核心都保留当前基础分级图谱，再补充当前选中节点的一跳邻域。“知识实体”范围也会过滤一跳中的教材目录节点及关联边；搜索或详情中明确选择教材节点时，自动切到“含教材目录”后定位。已存在的节点和同类型、同方向的关系去重，已有节点坐标保留。每次选择从基础图谱重新合并，替换上一次临时补充的邻域，不逐次累积。统计栏显示基础和临时补充节点数量；点击“返回分级视图”或切换级别可恢复基础图谱。
 
 关联节点可以继续点击定位。方向箭头表示关系相对当前节点的方向。
 
@@ -81,26 +90,33 @@ npm.cmd run dev -- --host 127.0.0.1
 
 浏览器显示请求地址为前端的 5173 端口是正常的，Vite 会将 `/api` 转发到后端 9000 端口。候选数最多显示 20 条；快速输入时旧请求不会覆盖新关键词的结果。
 
-历史项目配置仍保留；若本机尚未导入 Physics、Curriculum、Materials 的数据，其统计为空不代表当前图谱导入失败。
-
 ## 6. 验证
 
 在仓库根目录的 PowerShell 窗口执行：
 
 ```powershell
-.\.phyvenv\Scripts\python.exe .\materials\verify_graph.py
+.\.venv\Scripts\python.exe .\materials\verify_graph.py
 ```
 
 需要后端运行。它检查每个节点的名称/类型、每条真实三元组、搜索、节点详情、类型过滤、二跳子图和错误响应。预期全部打印 PASS。
 
-题目知识点定位使用被 Git 忽略的 `backend/ai.local.json` 保存火山方舟 API Key。启动 Neo4j 后，在仓库根目录依次执行：
+仓库附带 `data/generated/junior_physics_embeddings.npz`，已包含当前 319 个知识实体的向量。使用当前 JSON 和示例模型配置时，无需重新构建索引。导入图谱并启动 Neo4j 后，可在仓库根目录只读核对实体 ID：
 
 ```powershell
-.\.phyvenv\Scripts\python.exe .\materials\build_local_index.py --verify-only
-.\.phyvenv\Scripts\python.exe .\materials\build_local_index.py --yes
+.\.venv\Scripts\python.exe .\materials\build_local_index.py --verify-only
 ```
 
-第一条只校验 JSON、`junior_physics:` 前缀和 Neo4j ID，不产生模型费用。第二条会先核对旧向量是否能安全复用，再为其余知识实体调用付费嵌入 API；确认调用量后再执行。117 个目录节点不编码。访问 `http://127.0.0.1:5173/kgraph/question-locator` 使用题目定位页面。离线示例不调用模型，也不代表实时检索效果。
+该命令核对 JSON 原 ID 与 Neo4j 中 `junior_physics:` 前缀 ID，不调用模型。若更换知识实体文本或嵌入模型，先导入更新后的 JSON，并在本机 AI 配置中填写对应模型和维度；确认付费调用后执行：
+
+```powershell
+.\.venv\Scripts\python.exe .\materials\build_local_index.py --yes
+```
+
+脚本会报告预计需要编码的知识实体数，缺失向量会调用付费嵌入 API；费用取决于模型与实际调用量。117 个目录节点不编码。访问 `http://127.0.0.1:5173/kgraph/question-locator` 使用题目定位页面。离线示例不调用模型，也不代表实时检索效果。
+
+若只调整 JSON 中的关系，而知识实体 ID、名称、类型和模型配置均未改变，可以运行 `.\.venv\Scripts\python.exe .\materials\build_local_index.py --reuse-only`，离线复用已有向量并更新源文件指纹。
+
+题目结果页点击任一候选，图谱页保留最多 5 个候选，并按关系类型、候选相似度和题目解析内容筛选、排序，最多补充 8 个真实一跳知识节点。点击节点只切换详情，不会加入完整一跳邻域。通过“返回题目与解析结果”可回到原题和候选；结果只保存在当前浏览器标签页，关闭标签页后不保留。通过“查看普通图谱”进入分级视图与一跳探索。图谱覆盖不足时不自动补充邻居；候选可能互不连线。
 
 在 Neo4j Query 中分别执行（不是 PowerShell）：
 
@@ -114,7 +130,7 @@ RETURN type(r) AS relation, count(*) AS count
 ORDER BY count DESC;
 ```
 
-预期节点 436、关系总数 686；其中 `TAUGHT_IN` 336、`BELONGS_TO` 114。完整关系分布以 JSON 校验输出为准。
+预期节点 436、关系总数 788；其中 `TAUGHT_IN` 336、`BELONGS_TO` 114。完整关系分布以 JSON 校验输出为准。
 
 ```cypher
 MATCH (a:JuniorPhysics2024)-[r]->(b:JuniorPhysics2024)

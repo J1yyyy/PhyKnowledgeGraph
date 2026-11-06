@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <el-card class="welcome-card">
-      <h2>欢迎使用 Kgraph 多项目知识图谱系统</h2>
+      <h2>欢迎使用 PhyKnowledgeGraph</h2>
       <p class="description">
-        展示 PhyKgraph 初中物理示例数据，支持多项目知识图谱查询与可视化
+        展示初中物理知识图谱，支持图谱查询、可视化与题目知识点定位
       </p>
 
       <el-row :gutter="20" style="margin-top: 30px;">

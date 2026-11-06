@@ -1,0 +1,3512 @@
+{
+  "schema_version": 1,
+  "project_id": "junior_physics",
+  "dataset": "data/question_eval_50.json",
+  "dataset_sha256": "3e8ed8ca5ef13e355579a9ae7b31b9b3327a3e5e086485b0f1a8fb6e274b33a9",
+  "evaluated_at_utc": "2026-10-27T07:09:42.365187+00:00",
+  "embedding_model": "doubao-embedding-vision-251215",
+  "embedding_dimensions": 1024,
+  "knowledge_entities": 319,
+  "methods": {
+    "vector_top8": "同一次查询向量在本地索引做余弦检索，取前 8 个实体",
+    "vector_top5_graph_up_to3": "同一次查询向量取前 5 个实体，再按现有 Neo4j 一跳规则补充最多 3 个实体"
+  },
+  "metric_scope": "Hit@8 和 Recall@8 仅统计图谱完整覆盖且标有核心知识点的题目",
+  "precision_at_8": null,
+  "precision_reason": "未穷尽标注全部相关实体，不能可靠计算 Precision@8",
+  "summary": {
+    "development": {
+      "evaluated": 10,
+      "fully_covered": 9,
+      "vector_top8": {
+        "hit_at_8": 0.8888888888888888,
+        "recall_at_8": 0.7407407407407408
+      },
+      "vector_top5_graph_up_to3": {
+        "hit_at_8": 1,
+        "recall_at_8": 0.7222222222222222
+      },
+      "vector_better_ids": [
+        "T44"
+      ],
+      "graph_better_ids": [
+        "T35"
+      ],
+      "tie_ids": [
+        "T01",
+        "T04",
+        "T13",
+        "T22",
+        "T30",
+        "T46",
+        "T49"
+      ]
+    },
+    "test": {
+      "evaluated": 40,
+      "fully_covered": 37,
+      "vector_top8": {
+        "hit_at_8": 0.9459459459459459,
+        "recall_at_8": 0.8130630630630631
+      },
+      "vector_top5_graph_up_to3": {
+        "hit_at_8": 0.972972972972973,
+        "recall_at_8": 0.8085585585585586
+      },
+      "vector_better_ids": [
+        "T02",
+        "T09",
+        "T29",
+        "T36",
+        "T47"
+      ],
+      "graph_better_ids": [
+        "T06",
+        "T14",
+        "T18",
+        "T25",
+        "T28"
+      ],
+      "tie_ids": [
+        "T03",
+        "T05",
+        "T07",
+        "T08",
+        "T11",
+        "T12",
+        "T15",
+        "T16",
+        "T17",
+        "T19",
+        "T23",
+        "T24",
+        "T26",
+        "T27",
+        "T31",
+        "T32",
+        "T33",
+        "T34",
+        "T37",
+        "T38",
+        "T39",
+        "T40",
+        "T41",
+        "T42",
+        "T43",
+        "T45",
+        "T48"
+      ]
+    },
+    "all": {
+      "evaluated": 50,
+      "fully_covered": 46,
+      "vector_top8": {
+        "hit_at_8": 0.9347826086956522,
+        "recall_at_8": 0.7989130434782609
+      },
+      "vector_top5_graph_up_to3": {
+        "hit_at_8": 0.9782608695652174,
+        "recall_at_8": 0.7916666666666666
+      },
+      "vector_better_ids": [
+        "T44",
+        "T02",
+        "T09",
+        "T29",
+        "T36",
+        "T47"
+      ],
+      "graph_better_ids": [
+        "T35",
+        "T06",
+        "T14",
+        "T18",
+        "T25",
+        "T28"
+      ],
+      "tie_ids": [
+        "T01",
+        "T04",
+        "T13",
+        "T22",
+        "T30",
+        "T46",
+        "T49",
+        "T03",
+        "T05",
+        "T07",
+        "T08",
+        "T11",
+        "T12",
+        "T15",
+        "T16",
+        "T17",
+        "T19",
+        "T23",
+        "T24",
+        "T26",
+        "T27",
+        "T31",
+        "T32",
+        "T33",
+        "T34",
+        "T37",
+        "T38",
+        "T39",
+        "T40",
+        "T41",
+        "T42",
+        "T43",
+        "T45",
+        "T48"
+      ]
+    }
+  },
+  "results": [
+    {
+      "id": "T01",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_5",
+        "junior_physics:G_NODE_11"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.57145
+          },
+          {
+            "id": "junior_physics:G_NODE_7",
+            "score": 0.548654
+          },
+          {
+            "id": "junior_physics:G_NODE_11",
+            "score": 0.512446
+          },
+          {
+            "id": "junior_physics:G_NODE_5",
+            "score": 0.489928
+          },
+          {
+            "id": "junior_physics:G_NODE_9",
+            "score": 0.485629
+          },
+          {
+            "id": "junior_physics:RJ24_F_TOTAL_WORK",
+            "score": 0.481611
+          },
+          {
+            "id": "junior_physics:RJ24_K_072",
+            "score": 0.478988
+          },
+          {
+            "id": "junior_physics:RJ24_K_116",
+            "score": 0.470903
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_11",
+          "junior_physics:G_NODE_5"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_1",
+          "junior_physics:G_NODE_7",
+          "junior_physics:G_NODE_11",
+          "junior_physics:G_NODE_5",
+          "junior_physics:G_NODE_9",
+          "junior_physics:G_NODE_2",
+          "junior_physics:G_NODE_6"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_11",
+          "junior_physics:G_NODE_5"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T04",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_34",
+        "junior_physics:RJ24_F_WORK"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_34",
+            "score": 0.581142
+          },
+          {
+            "id": "junior_physics:G_NODE_37",
+            "score": 0.569379
+          },
+          {
+            "id": "junior_physics:G_NODE_28",
+            "score": 0.554462
+          },
+          {
+            "id": "junior_physics:G_NODE_36",
+            "score": 0.551451
+          },
+          {
+            "id": "junior_physics:G_NODE_35",
+            "score": 0.534049
+          },
+          {
+            "id": "junior_physics:G_NODE_38",
+            "score": 0.533895
+          },
+          {
+            "id": "junior_physics:G_NODE_31",
+            "score": 0.521177
+          },
+          {
+            "id": "junior_physics:G_NODE_33",
+            "score": 0.511011
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_34"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_34",
+          "junior_physics:G_NODE_37",
+          "junior_physics:G_NODE_28",
+          "junior_physics:G_NODE_36",
+          "junior_physics:G_NODE_35",
+          "junior_physics:G_NODE_30"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_34"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T13",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_040",
+        "junior_physics:RJ24_K_039"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_040",
+            "score": 0.613413
+          },
+          {
+            "id": "junior_physics:RJ24_K_039",
+            "score": 0.592769
+          },
+          {
+            "id": "junior_physics:RJ24_K_044",
+            "score": 0.578363
+          },
+          {
+            "id": "junior_physics:RJ24_K_048",
+            "score": 0.547248
+          },
+          {
+            "id": "junior_physics:RJ24_K_043",
+            "score": 0.534162
+          },
+          {
+            "id": "junior_physics:RJ24_K_042",
+            "score": 0.533768
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.533091
+          },
+          {
+            "id": "junior_physics:RJ24_K_050",
+            "score": 0.528138
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_039",
+          "junior_physics:RJ24_K_040"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_040",
+          "junior_physics:RJ24_K_039",
+          "junior_physics:RJ24_K_044",
+          "junior_physics:RJ24_K_048",
+          "junior_physics:RJ24_K_043"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_039",
+          "junior_physics:RJ24_K_040"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T20",
+      "split": "development",
+      "coverage": "outside_core",
+      "core_entity_ids": [],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_133",
+            "score": 0.596522
+          },
+          {
+            "id": "junior_physics:RJ24_K_132",
+            "score": 0.594337
+          },
+          {
+            "id": "junior_physics:RJ24_K_029",
+            "score": 0.530714
+          },
+          {
+            "id": "junior_physics:RJ24_K_028",
+            "score": 0.519039
+          },
+          {
+            "id": "junior_physics:RJ24_K_196",
+            "score": 0.517362
+          },
+          {
+            "id": "junior_physics:G_NODE_55",
+            "score": 0.511056
+          },
+          {
+            "id": "junior_physics:RJ24_K_030",
+            "score": 0.504516
+          },
+          {
+            "id": "junior_physics:RJ24_K_170",
+            "score": 0.497009
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_133",
+          "junior_physics:RJ24_K_132",
+          "junior_physics:RJ24_K_029",
+          "junior_physics:RJ24_K_028",
+          "junior_physics:RJ24_K_196"
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "winner": null
+    },
+    {
+      "id": "T22",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_006",
+        "junior_physics:RJ24_K_020",
+        "junior_physics:RJ24_K_015"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_006",
+            "score": 0.546234
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.53407
+          },
+          {
+            "id": "junior_physics:RJ24_K_007",
+            "score": 0.514286
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.513023
+          },
+          {
+            "id": "junior_physics:RJ24_K_019",
+            "score": 0.496321
+          },
+          {
+            "id": "junior_physics:RJ24_K_018",
+            "score": 0.490049
+          },
+          {
+            "id": "junior_physics:RJ24_K_026",
+            "score": 0.463501
+          },
+          {
+            "id": "junior_physics:RJ24_K_005",
+            "score": 0.46338
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_006",
+          "junior_physics:RJ24_K_020"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_006",
+          "junior_physics:RJ24_K_020",
+          "junior_physics:RJ24_K_007",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_019"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_006",
+          "junior_physics:RJ24_K_020"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T30",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_154",
+        "junior_physics:RJ24_K_182"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_173",
+            "score": 0.534999
+          },
+          {
+            "id": "junior_physics:G_NODE_84",
+            "score": 0.522545
+          },
+          {
+            "id": "junior_physics:RJ24_K_180",
+            "score": 0.508015
+          },
+          {
+            "id": "junior_physics:RJ24_K_154",
+            "score": 0.487861
+          },
+          {
+            "id": "junior_physics:RJ24_K_181",
+            "score": 0.485886
+          },
+          {
+            "id": "junior_physics:G_NODE_82",
+            "score": 0.472858
+          },
+          {
+            "id": "junior_physics:RJ24_K_183",
+            "score": 0.468661
+          },
+          {
+            "id": "junior_physics:RJ24_K_152",
+            "score": 0.467119
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_154"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_173",
+          "junior_physics:G_NODE_84",
+          "junior_physics:RJ24_K_180",
+          "junior_physics:RJ24_K_154",
+          "junior_physics:RJ24_K_181",
+          "junior_physics:RJ24_K_152",
+          "junior_physics:RJ24_K_179",
+          "junior_physics:G_NODE_83"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_154"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T35",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_61",
+        "junior_physics:G_NODE_68"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_119",
+            "score": 0.535826
+          },
+          {
+            "id": "junior_physics:G_NODE_58",
+            "score": 0.532792
+          },
+          {
+            "id": "junior_physics:G_NODE_59",
+            "score": 0.529656
+          },
+          {
+            "id": "junior_physics:G_NODE_53",
+            "score": 0.528957
+          },
+          {
+            "id": "junior_physics:RJ24_K_117",
+            "score": 0.517741
+          },
+          {
+            "id": "junior_physics:G_NODE_66",
+            "score": 0.516792
+          },
+          {
+            "id": "junior_physics:G_NODE_54",
+            "score": 0.516752
+          },
+          {
+            "id": "junior_physics:G_NODE_60",
+            "score": 0.514551
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": false,
+        "recall_at_8": 0
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_119",
+          "junior_physics:G_NODE_58",
+          "junior_physics:G_NODE_59",
+          "junior_physics:G_NODE_53",
+          "junior_physics:RJ24_K_117",
+          "junior_physics:G_NODE_49",
+          "junior_physics:G_NODE_61",
+          "junior_physics:G_NODE_65"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_61"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T44",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_040",
+        "junior_physics:RJ24_K_182",
+        "junior_physics:G_NODE_67"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_196",
+            "score": 0.549372
+          },
+          {
+            "id": "junior_physics:RJ24_K_040",
+            "score": 0.520403
+          },
+          {
+            "id": "junior_physics:RJ24_K_122",
+            "score": 0.51139
+          },
+          {
+            "id": "junior_physics:RJ24_K_123",
+            "score": 0.510577
+          },
+          {
+            "id": "junior_physics:RJ24_K_121",
+            "score": 0.504846
+          },
+          {
+            "id": "junior_physics:RJ24_K_159",
+            "score": 0.503881
+          },
+          {
+            "id": "junior_physics:G_NODE_67",
+            "score": 0.494931
+          },
+          {
+            "id": "junior_physics:RJ24_K_182",
+            "score": 0.485128
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_67",
+          "junior_physics:RJ24_K_040",
+          "junior_physics:RJ24_K_182"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_196",
+          "junior_physics:RJ24_K_040",
+          "junior_physics:RJ24_K_122",
+          "junior_physics:RJ24_K_123",
+          "junior_physics:RJ24_K_121",
+          "junior_physics:RJ24_K_039"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_040"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.3333333333333333
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T46",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_110",
+        "junior_physics:G_NODE_74"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_74",
+            "score": 0.613086
+          },
+          {
+            "id": "junior_physics:RJ24_K_126",
+            "score": 0.595235
+          },
+          {
+            "id": "junior_physics:G_NODE_67",
+            "score": 0.564373
+          },
+          {
+            "id": "junior_physics:G_NODE_75",
+            "score": 0.554891
+          },
+          {
+            "id": "junior_physics:RJ24_K_110",
+            "score": 0.533339
+          },
+          {
+            "id": "junior_physics:G_NODE_72",
+            "score": 0.512651
+          },
+          {
+            "id": "junior_physics:G_NODE_76",
+            "score": 0.51244
+          },
+          {
+            "id": "junior_physics:RJ24_F_FUEL",
+            "score": 0.509538
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_74",
+          "junior_physics:RJ24_K_110"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_74",
+          "junior_physics:RJ24_K_126",
+          "junior_physics:G_NODE_67",
+          "junior_physics:G_NODE_75",
+          "junior_physics:RJ24_K_110"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_74",
+          "junior_physics:RJ24_K_110"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T49",
+      "split": "development",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_155",
+        "junior_physics:RJ24_K_159"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_JOULE",
+            "score": 0.619525
+          },
+          {
+            "id": "junior_physics:RJ24_K_156",
+            "score": 0.564074
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.560671
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_WORK",
+            "score": 0.560547
+          },
+          {
+            "id": "junior_physics:RJ24_K_159",
+            "score": 0.553216
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+            "score": 0.551075
+          },
+          {
+            "id": "junior_physics:RJ24_K_116",
+            "score": 0.534871
+          },
+          {
+            "id": "junior_physics:RJ24_K_153",
+            "score": 0.533993
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_155",
+          "junior_physics:RJ24_K_159"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_JOULE",
+          "junior_physics:RJ24_K_156",
+          "junior_physics:RJ24_K_155",
+          "junior_physics:RJ24_F_ELECTRIC_WORK",
+          "junior_physics:RJ24_K_159",
+          "junior_physics:G_NODE_90",
+          "junior_physics:RJ24_K_153",
+          "junior_physics:RJ24_K_002"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_155",
+          "junior_physics:RJ24_K_159"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T02",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_018",
+        "junior_physics:RJ24_K_021"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_018",
+            "score": 0.614463
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.542713
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.503561
+          },
+          {
+            "id": "junior_physics:RJ24_K_143",
+            "score": 0.483795
+          },
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.478538
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.47548
+          },
+          {
+            "id": "junior_physics:RJ24_K_001",
+            "score": 0.475464
+          },
+          {
+            "id": "junior_physics:RJ24_K_021",
+            "score": 0.473674
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_018",
+          "junior_physics:RJ24_K_021"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_018",
+          "junior_physics:RJ24_K_020",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_143",
+          "junior_physics:G_NODE_1"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_018"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T03",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_058",
+        "junior_physics:RJ24_K_062",
+        "junior_physics:RJ24_K_063"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_062",
+            "score": 0.572583
+          },
+          {
+            "id": "junior_physics:RJ24_K_055",
+            "score": 0.557279
+          },
+          {
+            "id": "junior_physics:RJ24_K_058",
+            "score": 0.527682
+          },
+          {
+            "id": "junior_physics:RJ24_K_064",
+            "score": 0.526589
+          },
+          {
+            "id": "junior_physics:RJ24_K_046",
+            "score": 0.477867
+          },
+          {
+            "id": "junior_physics:RJ24_K_056",
+            "score": 0.475626
+          },
+          {
+            "id": "junior_physics:RJ24_K_065",
+            "score": 0.472943
+          },
+          {
+            "id": "junior_physics:RJ24_K_054",
+            "score": 0.47279
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_058",
+          "junior_physics:RJ24_K_062"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_062",
+          "junior_physics:RJ24_K_055",
+          "junior_physics:RJ24_K_058",
+          "junior_physics:RJ24_K_064",
+          "junior_physics:RJ24_K_046",
+          "junior_physics:RJ24_K_054"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_058",
+          "junior_physics:RJ24_K_062"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T05",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_47",
+        "junior_physics:G_NODE_45",
+        "junior_physics:G_NODE_44",
+        "junior_physics:RJ24_K_008"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_41",
+            "score": 0.55026
+          },
+          {
+            "id": "junior_physics:G_NODE_39",
+            "score": 0.549491
+          },
+          {
+            "id": "junior_physics:G_NODE_42",
+            "score": 0.532502
+          },
+          {
+            "id": "junior_physics:G_NODE_47",
+            "score": 0.507838
+          },
+          {
+            "id": "junior_physics:RJ24_F_TOTAL_WORK",
+            "score": 0.506473
+          },
+          {
+            "id": "junior_physics:G_NODE_45",
+            "score": 0.503425
+          },
+          {
+            "id": "junior_physics:G_NODE_40",
+            "score": 0.501858
+          },
+          {
+            "id": "junior_physics:G_NODE_48",
+            "score": 0.499082
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_45",
+          "junior_physics:G_NODE_47"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_41",
+          "junior_physics:G_NODE_39",
+          "junior_physics:G_NODE_42",
+          "junior_physics:G_NODE_47",
+          "junior_physics:RJ24_F_TOTAL_WORK",
+          "junior_physics:G_NODE_45",
+          "junior_physics:G_NODE_27",
+          "junior_physics:G_NODE_43"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_45",
+          "junior_physics:G_NODE_47"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T06",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_098",
+        "junior_physics:RJ24_K_100",
+        "junior_physics:G_NODE_5"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_099",
+            "score": 0.591753
+          },
+          {
+            "id": "junior_physics:RJ24_F_ARCHIMEDES",
+            "score": 0.529253
+          },
+          {
+            "id": "junior_physics:RJ24_K_098",
+            "score": 0.505087
+          },
+          {
+            "id": "junior_physics:RJ24_K_100",
+            "score": 0.503706
+          },
+          {
+            "id": "junior_physics:RJ24_K_102",
+            "score": 0.501784
+          },
+          {
+            "id": "junior_physics:G_NODE_10",
+            "score": 0.494857
+          },
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.490512
+          },
+          {
+            "id": "junior_physics:RJ24_K_106",
+            "score": 0.470213
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_100"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_099",
+          "junior_physics:RJ24_F_ARCHIMEDES",
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_100",
+          "junior_physics:RJ24_K_102",
+          "junior_physics:G_NODE_5",
+          "junior_physics:G_NODE_14"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_5",
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_100"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T07",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_148",
+        "junior_physics:RJ24_K_155",
+        "junior_physics:RJ24_K_139"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_148",
+            "score": 0.532076
+          },
+          {
+            "id": "junior_physics:RJ24_K_144",
+            "score": 0.51782
+          },
+          {
+            "id": "junior_physics:RJ24_F_OHM",
+            "score": 0.517236
+          },
+          {
+            "id": "junior_physics:RJ24_K_139",
+            "score": 0.514107
+          },
+          {
+            "id": "junior_physics:G_NODE_93",
+            "score": 0.513881
+          },
+          {
+            "id": "junior_physics:G_NODE_94",
+            "score": 0.511884
+          },
+          {
+            "id": "junior_physics:RJ24_F_R_PARALLEL",
+            "score": 0.511452
+          },
+          {
+            "id": "junior_physics:RJ24_F_JOULE",
+            "score": 0.510204
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_139",
+          "junior_physics:RJ24_K_148"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_148",
+          "junior_physics:RJ24_K_144",
+          "junior_physics:RJ24_F_OHM",
+          "junior_physics:RJ24_K_139",
+          "junior_physics:G_NODE_93",
+          "junior_physics:G_NODE_90",
+          "junior_physics:G_NODE_94",
+          "junior_physics:G_NODE_91"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_139",
+          "junior_physics:RJ24_K_148"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T08",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_155",
+        "junior_physics:RJ24_K_153",
+        "junior_physics:RJ24_K_116"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_JOULE",
+            "score": 0.612162
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+            "score": 0.567669
+          },
+          {
+            "id": "junior_physics:RJ24_F_HEAT",
+            "score": 0.566258
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_WORK",
+            "score": 0.565674
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.555641
+          },
+          {
+            "id": "junior_physics:RJ24_F_OHM",
+            "score": 0.548611
+          },
+          {
+            "id": "junior_physics:RJ24_F_FUEL",
+            "score": 0.530792
+          },
+          {
+            "id": "junior_physics:RJ24_K_116",
+            "score": 0.529987
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_116",
+          "junior_physics:RJ24_K_155"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_JOULE",
+          "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "junior_physics:RJ24_F_HEAT",
+          "junior_physics:RJ24_F_ELECTRIC_WORK",
+          "junior_physics:RJ24_K_155",
+          "junior_physics:G_NODE_90",
+          "junior_physics:RJ24_K_153",
+          "junior_physics:RJ24_K_002"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_153",
+          "junior_physics:RJ24_K_155"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T09",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_47",
+        "junior_physics:G_NODE_44",
+        "junior_physics:G_NODE_24"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_TOTAL_WORK",
+            "score": 0.616042
+          },
+          {
+            "id": "junior_physics:G_NODE_44",
+            "score": 0.56374
+          },
+          {
+            "id": "junior_physics:RJ24_F_WORK",
+            "score": 0.558165
+          },
+          {
+            "id": "junior_physics:G_NODE_47",
+            "score": 0.556353
+          },
+          {
+            "id": "junior_physics:G_NODE_48",
+            "score": 0.553338
+          },
+          {
+            "id": "junior_physics:G_NODE_46",
+            "score": 0.546375
+          },
+          {
+            "id": "junior_physics:RJ24_K_115",
+            "score": 0.533135
+          },
+          {
+            "id": "junior_physics:G_NODE_24",
+            "score": 0.53008
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_24",
+          "junior_physics:G_NODE_44",
+          "junior_physics:G_NODE_47"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_TOTAL_WORK",
+          "junior_physics:G_NODE_44",
+          "junior_physics:RJ24_F_WORK",
+          "junior_physics:G_NODE_47",
+          "junior_physics:G_NODE_48",
+          "junior_physics:G_NODE_45",
+          "junior_physics:G_NODE_43",
+          "junior_physics:G_NODE_46"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_44",
+          "junior_physics:G_NODE_47"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T10",
+      "split": "test",
+      "coverage": "partially_outside",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_67"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_142",
+            "score": 0.550585
+          },
+          {
+            "id": "junior_physics:G_NODE_67",
+            "score": 0.539508
+          },
+          {
+            "id": "junior_physics:RJ24_K_143",
+            "score": 0.536955
+          },
+          {
+            "id": "junior_physics:RJ24_K_165",
+            "score": 0.529595
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.507815
+          },
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.507575
+          },
+          {
+            "id": "junior_physics:RJ24_K_159",
+            "score": 0.50469
+          },
+          {
+            "id": "junior_physics:RJ24_K_032",
+            "score": 0.503685
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_67"
+        ],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_142",
+          "junior_physics:G_NODE_67",
+          "junior_physics:RJ24_K_143",
+          "junior_physics:RJ24_K_165",
+          "junior_physics:RJ24_K_155"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_67"
+        ],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "winner": null
+    },
+    {
+      "id": "T11",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_019",
+        "junior_physics:RJ24_K_021"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_025",
+            "score": 0.544186
+          },
+          {
+            "id": "junior_physics:RJ24_K_019",
+            "score": 0.535589
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.530332
+          },
+          {
+            "id": "junior_physics:RJ24_K_026",
+            "score": 0.51829
+          },
+          {
+            "id": "junior_physics:RJ24_K_024",
+            "score": 0.50227
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.498076
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.494753
+          },
+          {
+            "id": "junior_physics:RJ24_K_028",
+            "score": 0.49261
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_019"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_025",
+          "junior_physics:RJ24_K_019",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_026",
+          "junior_physics:RJ24_K_024"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_019"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T12",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_015"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_018",
+            "score": 0.422157
+          },
+          {
+            "id": "junior_physics:RJ24_K_023",
+            "score": 0.42116
+          },
+          {
+            "id": "junior_physics:RJ24_K_095",
+            "score": 0.419974
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.418434
+          },
+          {
+            "id": "junior_physics:RJ24_K_015",
+            "score": 0.416899
+          },
+          {
+            "id": "junior_physics:RJ24_K_072",
+            "score": 0.403341
+          },
+          {
+            "id": "junior_physics:RJ24_K_128",
+            "score": 0.403058
+          },
+          {
+            "id": "junior_physics:RJ24_K_175",
+            "score": 0.399967
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_015"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_018",
+          "junior_physics:RJ24_K_023",
+          "junior_physics:RJ24_K_095",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_015"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_015"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T14",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_059",
+        "junior_physics:RJ24_K_062"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_062",
+            "score": 0.57541
+          },
+          {
+            "id": "junior_physics:RJ24_K_046",
+            "score": 0.555446
+          },
+          {
+            "id": "junior_physics:RJ24_K_055",
+            "score": 0.553452
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.546429
+          },
+          {
+            "id": "junior_physics:RJ24_K_054",
+            "score": 0.542098
+          },
+          {
+            "id": "junior_physics:RJ24_K_056",
+            "score": 0.529949
+          },
+          {
+            "id": "junior_physics:RJ24_K_069",
+            "score": 0.527096
+          },
+          {
+            "id": "junior_physics:RJ24_K_063",
+            "score": 0.518233
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_062"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_062",
+          "junior_physics:RJ24_K_046",
+          "junior_physics:RJ24_K_055",
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_054",
+          "junior_physics:RJ24_K_059",
+          "junior_physics:RJ24_K_056"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_059",
+          "junior_physics:RJ24_K_062"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T15",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_118"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_034",
+            "score": 0.540442
+          },
+          {
+            "id": "junior_physics:RJ24_K_035",
+            "score": 0.531738
+          },
+          {
+            "id": "junior_physics:RJ24_K_119",
+            "score": 0.517394
+          },
+          {
+            "id": "junior_physics:RJ24_K_118",
+            "score": 0.495353
+          },
+          {
+            "id": "junior_physics:G_NODE_53",
+            "score": 0.491055
+          },
+          {
+            "id": "junior_physics:G_NODE_73",
+            "score": 0.48629
+          },
+          {
+            "id": "junior_physics:G_NODE_72",
+            "score": 0.483593
+          },
+          {
+            "id": "junior_physics:G_NODE_74",
+            "score": 0.475199
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_118"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_034",
+          "junior_physics:RJ24_K_035",
+          "junior_physics:RJ24_K_119",
+          "junior_physics:RJ24_K_118",
+          "junior_physics:G_NODE_53",
+          "junior_physics:G_NODE_49",
+          "junior_physics:RJ24_K_117"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_118"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T16",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_72",
+        "junior_physics:RJ24_K_116"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_116",
+            "score": 0.651167
+          },
+          {
+            "id": "junior_physics:RJ24_F_HEAT",
+            "score": 0.625217
+          },
+          {
+            "id": "junior_physics:G_NODE_72",
+            "score": 0.617295
+          },
+          {
+            "id": "junior_physics:G_NODE_60",
+            "score": 0.592036
+          },
+          {
+            "id": "junior_physics:RJ24_F_FUEL",
+            "score": 0.535948
+          },
+          {
+            "id": "junior_physics:RJ24_F_JOULE",
+            "score": 0.530386
+          },
+          {
+            "id": "junior_physics:G_NODE_73",
+            "score": 0.516897
+          },
+          {
+            "id": "junior_physics:G_NODE_74",
+            "score": 0.514965
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_72",
+          "junior_physics:RJ24_K_116"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_116",
+          "junior_physics:RJ24_F_HEAT",
+          "junior_physics:G_NODE_72",
+          "junior_physics:G_NODE_60",
+          "junior_physics:RJ24_F_FUEL",
+          "junior_physics:G_NODE_2",
+          "junior_physics:G_NODE_73",
+          "junior_physics:G_NODE_49"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_72",
+          "junior_physics:RJ24_K_116"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T17",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_098",
+        "junior_physics:RJ24_K_100"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_ARCHIMEDES",
+            "score": 0.589265
+          },
+          {
+            "id": "junior_physics:RJ24_K_100",
+            "score": 0.583127
+          },
+          {
+            "id": "junior_physics:RJ24_K_098",
+            "score": 0.53767
+          },
+          {
+            "id": "junior_physics:RJ24_K_102",
+            "score": 0.531969
+          },
+          {
+            "id": "junior_physics:RJ24_K_099",
+            "score": 0.526792
+          },
+          {
+            "id": "junior_physics:RJ24_K_101",
+            "score": 0.515562
+          },
+          {
+            "id": "junior_physics:RJ24_K_072",
+            "score": 0.487202
+          },
+          {
+            "id": "junior_physics:G_NODE_34",
+            "score": 0.466883
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_100"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_ARCHIMEDES",
+          "junior_physics:RJ24_K_100",
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_102",
+          "junior_physics:RJ24_K_099",
+          "junior_physics:G_NODE_5",
+          "junior_physics:G_NODE_14"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_100"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T18",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_089",
+        "junior_physics:G_NODE_21"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_GRAVITY",
+            "score": 0.614829
+          },
+          {
+            "id": "junior_physics:RJ24_F_HYDRO",
+            "score": 0.564403
+          },
+          {
+            "id": "junior_physics:G_NODE_21",
+            "score": 0.533294
+          },
+          {
+            "id": "junior_physics:RJ24_F_TOTAL_WORK",
+            "score": 0.518431
+          },
+          {
+            "id": "junior_physics:RJ24_F_PRESSURE",
+            "score": 0.518396
+          },
+          {
+            "id": "junior_physics:G_NODE_22",
+            "score": 0.516974
+          },
+          {
+            "id": "junior_physics:RJ24_K_110",
+            "score": 0.515443
+          },
+          {
+            "id": "junior_physics:RJ24_F_FUEL",
+            "score": 0.513966
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_21"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_GRAVITY",
+          "junior_physics:RJ24_F_HYDRO",
+          "junior_physics:G_NODE_21",
+          "junior_physics:RJ24_F_TOTAL_WORK",
+          "junior_physics:RJ24_F_PRESSURE",
+          "junior_physics:RJ24_K_089",
+          "junior_physics:RJ24_K_077",
+          "junior_physics:RJ24_K_088"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_21",
+          "junior_physics:RJ24_K_089"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T19",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_155",
+        "junior_physics:RJ24_K_161"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_163",
+            "score": 0.613038
+          },
+          {
+            "id": "junior_physics:RJ24_K_169",
+            "score": 0.572002
+          },
+          {
+            "id": "junior_physics:G_NODE_82",
+            "score": 0.55096
+          },
+          {
+            "id": "junior_physics:G_NODE_94",
+            "score": 0.546707
+          },
+          {
+            "id": "junior_physics:RJ24_K_139",
+            "score": 0.543115
+          },
+          {
+            "id": "junior_physics:RJ24_K_151",
+            "score": 0.5339
+          },
+          {
+            "id": "junior_physics:RJ24_K_148",
+            "score": 0.527534
+          },
+          {
+            "id": "junior_physics:RJ24_F_R_PARALLEL",
+            "score": 0.522912
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": false,
+        "recall_at_8": 0
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_163",
+          "junior_physics:RJ24_K_169",
+          "junior_physics:G_NODE_82",
+          "junior_physics:G_NODE_94",
+          "junior_physics:RJ24_K_139",
+          "junior_physics:G_NODE_96"
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": false,
+        "recall_at_8": 0
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T21",
+      "split": "test",
+      "coverage": "outside_core",
+      "core_entity_ids": [],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_023",
+            "score": 0.541989
+          },
+          {
+            "id": "junior_physics:RJ24_K_016",
+            "score": 0.514807
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.508314
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.507191
+          },
+          {
+            "id": "junior_physics:RJ24_K_025",
+            "score": 0.486021
+          },
+          {
+            "id": "junior_physics:RJ24_K_024",
+            "score": 0.47624
+          },
+          {
+            "id": "junior_physics:RJ24_K_073",
+            "score": 0.458394
+          },
+          {
+            "id": "junior_physics:RJ24_K_028",
+            "score": 0.452439
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_023",
+          "junior_physics:RJ24_K_016",
+          "junior_physics:RJ24_K_017",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_025"
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "winner": null
+    },
+    {
+      "id": "T23",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_84",
+        "junior_physics:RJ24_K_046",
+        "junior_physics:G_NODE_87",
+        "junior_physics:RJ24_K_047"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_84",
+            "score": 0.608895
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.584403
+          },
+          {
+            "id": "junior_physics:RJ24_K_046",
+            "score": 0.570272
+          },
+          {
+            "id": "junior_physics:G_NODE_87",
+            "score": 0.550808
+          },
+          {
+            "id": "junior_physics:G_NODE_88",
+            "score": 0.550053
+          },
+          {
+            "id": "junior_physics:G_NODE_86",
+            "score": 0.539417
+          },
+          {
+            "id": "junior_physics:G_NODE_82",
+            "score": 0.532124
+          },
+          {
+            "id": "junior_physics:RJ24_K_062",
+            "score": 0.518753
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_84",
+          "junior_physics:G_NODE_87",
+          "junior_physics:RJ24_K_046"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.75
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_84",
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_046",
+          "junior_physics:G_NODE_87",
+          "junior_physics:G_NODE_88",
+          "junior_physics:G_NODE_86",
+          "junior_physics:G_NODE_83"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_84",
+          "junior_physics:G_NODE_87",
+          "junior_physics:RJ24_K_046"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.75
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T24",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_048"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_048",
+            "score": 0.584043
+          },
+          {
+            "id": "junior_physics:RJ24_K_039",
+            "score": 0.582856
+          },
+          {
+            "id": "junior_physics:RJ24_K_037",
+            "score": 0.54369
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.537904
+          },
+          {
+            "id": "junior_physics:RJ24_K_040",
+            "score": 0.531507
+          },
+          {
+            "id": "junior_physics:RJ24_K_043",
+            "score": 0.529741
+          },
+          {
+            "id": "junior_physics:RJ24_K_044",
+            "score": 0.516608
+          },
+          {
+            "id": "junior_physics:RJ24_K_050",
+            "score": 0.512527
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_048"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_048",
+          "junior_physics:RJ24_K_039",
+          "junior_physics:RJ24_K_037",
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_040"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_048"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T25",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_59",
+        "junior_physics:RJ24_K_118",
+        "junior_physics:RJ24_K_094"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_53",
+            "score": 0.507081
+          },
+          {
+            "id": "junior_physics:G_NODE_58",
+            "score": 0.47262
+          },
+          {
+            "id": "junior_physics:G_NODE_60",
+            "score": 0.467135
+          },
+          {
+            "id": "junior_physics:RJ24_K_118",
+            "score": 0.464163
+          },
+          {
+            "id": "junior_physics:RJ24_K_089",
+            "score": 0.441992
+          },
+          {
+            "id": "junior_physics:G_NODE_65",
+            "score": 0.437547
+          },
+          {
+            "id": "junior_physics:G_NODE_66",
+            "score": 0.433366
+          },
+          {
+            "id": "junior_physics:RJ24_K_094",
+            "score": 0.433091
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_094",
+          "junior_physics:RJ24_K_118"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.6666666666666666
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_53",
+          "junior_physics:G_NODE_58",
+          "junior_physics:G_NODE_60",
+          "junior_physics:RJ24_K_118",
+          "junior_physics:RJ24_K_089",
+          "junior_physics:RJ24_K_094",
+          "junior_physics:G_NODE_59"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_59",
+          "junior_physics:RJ24_K_094",
+          "junior_physics:RJ24_K_118"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T26",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_120"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_120",
+            "score": 0.582785
+          },
+          {
+            "id": "junior_physics:G_NODE_69",
+            "score": 0.514234
+          },
+          {
+            "id": "junior_physics:G_NODE_88",
+            "score": 0.51035
+          },
+          {
+            "id": "junior_physics:RJ24_K_107",
+            "score": 0.491779
+          },
+          {
+            "id": "junior_physics:RJ24_K_117",
+            "score": 0.490983
+          },
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.490097
+          },
+          {
+            "id": "junior_physics:G_NODE_17",
+            "score": 0.488897
+          },
+          {
+            "id": "junior_physics:G_NODE_84",
+            "score": 0.485159
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_120"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_120",
+          "junior_physics:G_NODE_69",
+          "junior_physics:G_NODE_88",
+          "junior_physics:RJ24_K_107",
+          "junior_physics:RJ24_K_117"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_120"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T27",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_15",
+        "junior_physics:RJ24_K_079"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_080",
+            "score": 0.519534
+          },
+          {
+            "id": "junior_physics:G_NODE_15",
+            "score": 0.517558
+          },
+          {
+            "id": "junior_physics:RJ24_K_081",
+            "score": 0.514335
+          },
+          {
+            "id": "junior_physics:RJ24_K_078",
+            "score": 0.501504
+          },
+          {
+            "id": "junior_physics:G_NODE_17",
+            "score": 0.492646
+          },
+          {
+            "id": "junior_physics:G_NODE_14",
+            "score": 0.480215
+          },
+          {
+            "id": "junior_physics:RJ24_K_079",
+            "score": 0.466729
+          },
+          {
+            "id": "junior_physics:G_NODE_16",
+            "score": 0.459205
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_15",
+          "junior_physics:RJ24_K_079"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_080",
+          "junior_physics:G_NODE_15",
+          "junior_physics:RJ24_K_081",
+          "junior_physics:RJ24_K_078",
+          "junior_physics:G_NODE_17",
+          "junior_physics:RJ24_K_079"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_15",
+          "junior_physics:RJ24_K_079"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T28",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_098",
+        "junior_physics:RJ24_K_092"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_GRAVITY",
+            "score": 0.564794
+          },
+          {
+            "id": "junior_physics:RJ24_K_100",
+            "score": 0.5622
+          },
+          {
+            "id": "junior_physics:RJ24_F_ARCHIMEDES",
+            "score": 0.550167
+          },
+          {
+            "id": "junior_physics:G_NODE_21",
+            "score": 0.532494
+          },
+          {
+            "id": "junior_physics:G_NODE_35",
+            "score": 0.520545
+          },
+          {
+            "id": "junior_physics:RJ24_F_TOTAL_WORK",
+            "score": 0.516614
+          },
+          {
+            "id": "junior_physics:RJ24_K_099",
+            "score": 0.515802
+          },
+          {
+            "id": "junior_physics:RJ24_K_110",
+            "score": 0.513111
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": false,
+        "recall_at_8": 0
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_GRAVITY",
+          "junior_physics:RJ24_K_100",
+          "junior_physics:RJ24_F_ARCHIMEDES",
+          "junior_physics:G_NODE_21",
+          "junior_physics:G_NODE_35",
+          "junior_physics:RJ24_K_098",
+          "junior_physics:RJ24_K_077",
+          "junior_physics:G_NODE_14"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_098"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "B"
+    },
+    {
+      "id": "T29",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_182",
+        "junior_physics:G_NODE_74"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_182",
+            "score": 0.546771
+          },
+          {
+            "id": "junior_physics:RJ24_K_152",
+            "score": 0.538084
+          },
+          {
+            "id": "junior_physics:RJ24_K_183",
+            "score": 0.537429
+          },
+          {
+            "id": "junior_physics:RJ24_K_127",
+            "score": 0.532634
+          },
+          {
+            "id": "junior_physics:RJ24_K_193",
+            "score": 0.532096
+          },
+          {
+            "id": "junior_physics:RJ24_K_153",
+            "score": 0.528241
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.523585
+          },
+          {
+            "id": "junior_physics:G_NODE_74",
+            "score": 0.519149
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_74",
+          "junior_physics:RJ24_K_182"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_182",
+          "junior_physics:RJ24_K_152",
+          "junior_physics:RJ24_K_183",
+          "junior_physics:RJ24_K_127",
+          "junior_physics:RJ24_K_193"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_182"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T31",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_016"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_016",
+            "score": 0.566975
+          },
+          {
+            "id": "junior_physics:RJ24_K_028",
+            "score": 0.506271
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.50507
+          },
+          {
+            "id": "junior_physics:RJ24_K_019",
+            "score": 0.491048
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.481962
+          },
+          {
+            "id": "junior_physics:RJ24_K_095",
+            "score": 0.481511
+          },
+          {
+            "id": "junior_physics:RJ24_K_025",
+            "score": 0.476325
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.467741
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_016"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_016",
+          "junior_physics:RJ24_K_028",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_019",
+          "junior_physics:RJ24_K_017"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_016"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T32",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_020"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.56197
+          },
+          {
+            "id": "junior_physics:RJ24_K_023",
+            "score": 0.534728
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.517023
+          },
+          {
+            "id": "junior_physics:RJ24_K_016",
+            "score": 0.51334
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.50171
+          },
+          {
+            "id": "junior_physics:RJ24_K_026",
+            "score": 0.496398
+          },
+          {
+            "id": "junior_physics:RJ24_K_024",
+            "score": 0.480788
+          },
+          {
+            "id": "junior_physics:RJ24_K_028",
+            "score": 0.462525
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_020"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_017",
+          "junior_physics:RJ24_K_023",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_016",
+          "junior_physics:RJ24_K_020",
+          "junior_physics:RJ24_K_026"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_020"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T33",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_048"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_048",
+            "score": 0.61094
+          },
+          {
+            "id": "junior_physics:RJ24_K_039",
+            "score": 0.597413
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.592855
+          },
+          {
+            "id": "junior_physics:RJ24_K_043",
+            "score": 0.568308
+          },
+          {
+            "id": "junior_physics:RJ24_K_051",
+            "score": 0.557177
+          },
+          {
+            "id": "junior_physics:G_NODE_53",
+            "score": 0.542431
+          },
+          {
+            "id": "junior_physics:RJ24_K_044",
+            "score": 0.524997
+          },
+          {
+            "id": "junior_physics:RJ24_K_040",
+            "score": 0.518261
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_048"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_048",
+          "junior_physics:RJ24_K_039",
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_043",
+          "junior_physics:RJ24_K_051"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_048"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T34",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_066",
+        "junior_physics:RJ24_K_068"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_067",
+            "score": 0.625585
+          },
+          {
+            "id": "junior_physics:RJ24_K_066",
+            "score": 0.605986
+          },
+          {
+            "id": "junior_physics:RJ24_K_055",
+            "score": 0.562284
+          },
+          {
+            "id": "junior_physics:RJ24_K_056",
+            "score": 0.547078
+          },
+          {
+            "id": "junior_physics:RJ24_K_062",
+            "score": 0.512534
+          },
+          {
+            "id": "junior_physics:RJ24_K_068",
+            "score": 0.504855
+          },
+          {
+            "id": "junior_physics:RJ24_K_054",
+            "score": 0.502518
+          },
+          {
+            "id": "junior_physics:RJ24_K_058",
+            "score": 0.478052
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_066",
+          "junior_physics:RJ24_K_068"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_067",
+          "junior_physics:RJ24_K_066",
+          "junior_physics:RJ24_K_055",
+          "junior_physics:RJ24_K_056",
+          "junior_physics:RJ24_K_062",
+          "junior_physics:RJ24_K_054",
+          "junior_physics:RJ24_K_068"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_066",
+          "junior_physics:RJ24_K_068"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T36",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_79",
+        "junior_physics:RJ24_K_122"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_125",
+            "score": 0.614383
+          },
+          {
+            "id": "junior_physics:G_NODE_79",
+            "score": 0.61113
+          },
+          {
+            "id": "junior_physics:RJ24_K_124",
+            "score": 0.573564
+          },
+          {
+            "id": "junior_physics:G_NODE_77",
+            "score": 0.56707
+          },
+          {
+            "id": "junior_physics:G_NODE_67",
+            "score": 0.566487
+          },
+          {
+            "id": "junior_physics:G_NODE_80",
+            "score": 0.564996
+          },
+          {
+            "id": "junior_physics:RJ24_K_122",
+            "score": 0.561488
+          },
+          {
+            "id": "junior_physics:G_NODE_75",
+            "score": 0.556591
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_79",
+          "junior_physics:RJ24_K_122"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_125",
+          "junior_physics:G_NODE_79",
+          "junior_physics:RJ24_K_124",
+          "junior_physics:G_NODE_77",
+          "junior_physics:G_NODE_67",
+          "junior_physics:G_NODE_75"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_79"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T37",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_5",
+        "junior_physics:G_NODE_7"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.63069
+          },
+          {
+            "id": "junior_physics:G_NODE_72",
+            "score": 0.61348
+          },
+          {
+            "id": "junior_physics:G_NODE_7",
+            "score": 0.597925
+          },
+          {
+            "id": "junior_physics:G_NODE_5",
+            "score": 0.577884
+          },
+          {
+            "id": "junior_physics:RJ24_F_HEAT",
+            "score": 0.57034
+          },
+          {
+            "id": "junior_physics:RJ24_K_116",
+            "score": 0.568729
+          },
+          {
+            "id": "junior_physics:RJ24_F_GRAVITY",
+            "score": 0.567179
+          },
+          {
+            "id": "junior_physics:RJ24_K_098",
+            "score": 0.563695
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_5",
+          "junior_physics:G_NODE_7"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_1",
+          "junior_physics:G_NODE_72",
+          "junior_physics:G_NODE_7",
+          "junior_physics:G_NODE_5",
+          "junior_physics:RJ24_F_HEAT",
+          "junior_physics:G_NODE_2",
+          "junior_physics:G_NODE_6",
+          "junior_physics:RJ24_K_116"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_5",
+          "junior_physics:G_NODE_7"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T38",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_010",
+        "junior_physics:RJ24_K_155"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_F_SPEED",
+            "score": 0.587903
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_WORK",
+            "score": 0.541826
+          },
+          {
+            "id": "junior_physics:RJ24_F_JOULE",
+            "score": 0.539415
+          },
+          {
+            "id": "junior_physics:RJ24_K_153",
+            "score": 0.536287
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.535754
+          },
+          {
+            "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+            "score": 0.534246
+          },
+          {
+            "id": "junior_physics:RJ24_F_OHM",
+            "score": 0.532042
+          },
+          {
+            "id": "junior_physics:RJ24_K_009",
+            "score": 0.529636
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_155"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_F_SPEED",
+          "junior_physics:RJ24_F_ELECTRIC_WORK",
+          "junior_physics:RJ24_F_JOULE",
+          "junior_physics:RJ24_K_153",
+          "junior_physics:RJ24_K_155",
+          "junior_physics:RJ24_K_002",
+          "junior_physics:RJ24_K_008",
+          "junior_physics:G_NODE_90"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_155"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T39",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:G_NODE_93",
+        "junior_physics:RJ24_K_156"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_140",
+            "score": 0.560485
+          },
+          {
+            "id": "junior_physics:G_NODE_93",
+            "score": 0.544795
+          },
+          {
+            "id": "junior_physics:RJ24_K_156",
+            "score": 0.539627
+          },
+          {
+            "id": "junior_physics:RJ24_K_138",
+            "score": 0.534507
+          },
+          {
+            "id": "junior_physics:RJ24_K_155",
+            "score": 0.530676
+          },
+          {
+            "id": "junior_physics:RJ24_K_150",
+            "score": 0.525968
+          },
+          {
+            "id": "junior_physics:RJ24_K_148",
+            "score": 0.518988
+          },
+          {
+            "id": "junior_physics:RJ24_K_159",
+            "score": 0.509428
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_93",
+          "junior_physics:RJ24_K_156"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_140",
+          "junior_physics:G_NODE_93",
+          "junior_physics:RJ24_K_156",
+          "junior_physics:RJ24_K_138",
+          "junior_physics:RJ24_K_155",
+          "junior_physics:G_NODE_96",
+          "junior_physics:RJ24_K_153"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_93",
+          "junior_physics:RJ24_K_156"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T40",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_143"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_143",
+            "score": 0.61616
+          },
+          {
+            "id": "junior_physics:RJ24_K_147",
+            "score": 0.519262
+          },
+          {
+            "id": "junior_physics:RJ24_K_142",
+            "score": 0.501657
+          },
+          {
+            "id": "junior_physics:RJ24_K_159",
+            "score": 0.491961
+          },
+          {
+            "id": "junior_physics:G_NODE_49",
+            "score": 0.48187
+          },
+          {
+            "id": "junior_physics:RJ24_K_085",
+            "score": 0.479777
+          },
+          {
+            "id": "junior_physics:RJ24_K_150",
+            "score": 0.478356
+          },
+          {
+            "id": "junior_physics:RJ24_K_148",
+            "score": 0.47568
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_143"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_143",
+          "junior_physics:RJ24_K_147",
+          "junior_physics:RJ24_K_142",
+          "junior_physics:RJ24_K_159",
+          "junior_physics:G_NODE_49",
+          "junior_physics:RJ24_F_JOULE",
+          "junior_physics:RJ24_K_148"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_143"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T41",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_019"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_019",
+            "score": 0.533488
+          },
+          {
+            "id": "junior_physics:RJ24_K_014",
+            "score": 0.496406
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.494904
+          },
+          {
+            "id": "junior_physics:RJ24_K_020",
+            "score": 0.487201
+          },
+          {
+            "id": "junior_physics:RJ24_K_016",
+            "score": 0.480005
+          },
+          {
+            "id": "junior_physics:G_NODE_15",
+            "score": 0.471548
+          },
+          {
+            "id": "junior_physics:RJ24_K_018",
+            "score": 0.465247
+          },
+          {
+            "id": "junior_physics:RJ24_K_025",
+            "score": 0.465196
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_019"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_019",
+          "junior_physics:RJ24_K_014",
+          "junior_physics:RJ24_K_017",
+          "junior_physics:RJ24_K_020",
+          "junior_physics:RJ24_K_016"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_019"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T42",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_018",
+        "junior_physics:G_NODE_5"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:G_NODE_1",
+            "score": 0.473808
+          },
+          {
+            "id": "junior_physics:G_NODE_5",
+            "score": 0.47047
+          },
+          {
+            "id": "junior_physics:RJ24_K_017",
+            "score": 0.464596
+          },
+          {
+            "id": "junior_physics:G_NODE_7",
+            "score": 0.463855
+          },
+          {
+            "id": "junior_physics:G_NODE_6",
+            "score": 0.458922
+          },
+          {
+            "id": "junior_physics:RJ24_K_106",
+            "score": 0.454493
+          },
+          {
+            "id": "junior_physics:RJ24_K_072",
+            "score": 0.452201
+          },
+          {
+            "id": "junior_physics:RJ24_K_001",
+            "score": 0.450332
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_5"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:G_NODE_1",
+          "junior_physics:G_NODE_5",
+          "junior_physics:RJ24_K_017",
+          "junior_physics:G_NODE_7",
+          "junior_physics:G_NODE_6",
+          "junior_physics:G_NODE_2",
+          "junior_physics:RJ24_K_106"
+        ],
+        "matched_core_ids": [
+          "junior_physics:G_NODE_5"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T43",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_045",
+        "junior_physics:RJ24_K_046"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_046",
+            "score": 0.558459
+          },
+          {
+            "id": "junior_physics:RJ24_K_045",
+            "score": 0.55217
+          },
+          {
+            "id": "junior_physics:RJ24_K_065",
+            "score": 0.497478
+          },
+          {
+            "id": "junior_physics:RJ24_K_062",
+            "score": 0.495832
+          },
+          {
+            "id": "junior_physics:RJ24_K_064",
+            "score": 0.482139
+          },
+          {
+            "id": "junior_physics:RJ24_K_013",
+            "score": 0.473389
+          },
+          {
+            "id": "junior_physics:RJ24_K_047",
+            "score": 0.470672
+          },
+          {
+            "id": "junior_physics:RJ24_K_003",
+            "score": 0.463598
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_046"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_046",
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_065",
+          "junior_physics:RJ24_K_062",
+          "junior_physics:RJ24_K_064"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_045",
+          "junior_physics:RJ24_K_046"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T45",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_033"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_033",
+            "score": 0.544969
+          },
+          {
+            "id": "junior_physics:G_NODE_53",
+            "score": 0.483334
+          },
+          {
+            "id": "junior_physics:RJ24_K_096",
+            "score": 0.472488
+          },
+          {
+            "id": "junior_physics:RJ24_K_095",
+            "score": 0.469447
+          },
+          {
+            "id": "junior_physics:G_NODE_63",
+            "score": 0.465004
+          },
+          {
+            "id": "junior_physics:RJ24_K_091",
+            "score": 0.462706
+          },
+          {
+            "id": "junior_physics:RJ24_K_126",
+            "score": 0.460821
+          },
+          {
+            "id": "junior_physics:G_NODE_52",
+            "score": 0.45883
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_033"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_033",
+          "junior_physics:G_NODE_53",
+          "junior_physics:RJ24_K_096",
+          "junior_physics:RJ24_K_095",
+          "junior_physics:G_NODE_63",
+          "junior_physics:RJ24_K_094"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_033"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T47",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_089",
+        "junior_physics:RJ24_K_080"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_080",
+            "score": 0.452049
+          },
+          {
+            "id": "junior_physics:RJ24_K_083",
+            "score": 0.44436
+          },
+          {
+            "id": "junior_physics:RJ24_K_081",
+            "score": 0.437968
+          },
+          {
+            "id": "junior_physics:G_NODE_17",
+            "score": 0.435381
+          },
+          {
+            "id": "junior_physics:RJ24_K_090",
+            "score": 0.42191
+          },
+          {
+            "id": "junior_physics:RJ24_K_094",
+            "score": 0.413769
+          },
+          {
+            "id": "junior_physics:RJ24_K_089",
+            "score": 0.404241
+          },
+          {
+            "id": "junior_physics:RJ24_K_091",
+            "score": 0.402578
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_080",
+          "junior_physics:RJ24_K_089"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_080",
+          "junior_physics:RJ24_K_083",
+          "junior_physics:RJ24_K_081",
+          "junior_physics:G_NODE_17",
+          "junior_physics:RJ24_K_090"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_080"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 0.5
+      },
+      "winner": "A"
+    },
+    {
+      "id": "T48",
+      "split": "test",
+      "coverage": "covered",
+      "core_entity_ids": [
+        "junior_physics:RJ24_K_078",
+        "junior_physics:RJ24_K_085"
+      ],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_078",
+            "score": 0.535993
+          },
+          {
+            "id": "junior_physics:RJ24_K_085",
+            "score": 0.530399
+          },
+          {
+            "id": "junior_physics:RJ24_K_082",
+            "score": 0.509726
+          },
+          {
+            "id": "junior_physics:RJ24_K_095",
+            "score": 0.506148
+          },
+          {
+            "id": "junior_physics:G_NODE_32",
+            "score": 0.498321
+          },
+          {
+            "id": "junior_physics:G_NODE_24",
+            "score": 0.497036
+          },
+          {
+            "id": "junior_physics:RJ24_K_084",
+            "score": 0.496017
+          },
+          {
+            "id": "junior_physics:G_NODE_25",
+            "score": 0.494287
+          }
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_078",
+          "junior_physics:RJ24_K_085"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_078",
+          "junior_physics:RJ24_K_085",
+          "junior_physics:RJ24_K_082",
+          "junior_physics:RJ24_K_095",
+          "junior_physics:G_NODE_32",
+          "junior_physics:G_NODE_24"
+        ],
+        "matched_core_ids": [
+          "junior_physics:RJ24_K_078",
+          "junior_physics:RJ24_K_085"
+        ],
+        "hit_at_8": true,
+        "recall_at_8": 1
+      },
+      "winner": "tie"
+    },
+    {
+      "id": "T50",
+      "split": "test",
+      "coverage": "outside_core",
+      "core_entity_ids": [],
+      "vector_top8": {
+        "candidates": [
+          {
+            "id": "junior_physics:RJ24_K_196",
+            "score": 0.583778
+          },
+          {
+            "id": "junior_physics:RJ24_K_195",
+            "score": 0.554846
+          },
+          {
+            "id": "junior_physics:RJ24_K_193",
+            "score": 0.538218
+          },
+          {
+            "id": "junior_physics:RJ24_K_197",
+            "score": 0.533528
+          },
+          {
+            "id": "junior_physics:RJ24_K_184",
+            "score": 0.526842
+          },
+          {
+            "id": "junior_physics:RJ24_K_198",
+            "score": 0.509332
+          },
+          {
+            "id": "junior_physics:RJ24_K_122",
+            "score": 0.503991
+          },
+          {
+            "id": "junior_physics:RJ24_K_182",
+            "score": 0.496042
+          }
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "vector_top5_graph_up_to3": {
+        "candidate_ids": [
+          "junior_physics:RJ24_K_196",
+          "junior_physics:RJ24_K_195",
+          "junior_physics:RJ24_K_193",
+          "junior_physics:RJ24_K_197",
+          "junior_physics:RJ24_K_184",
+          "junior_physics:RJ24_K_191"
+        ],
+        "matched_core_ids": [],
+        "hit_at_8": null,
+        "recall_at_8": null
+      },
+      "winner": null
+    }
+  ]
+}

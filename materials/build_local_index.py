@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
 import time
 
@@ -36,6 +37,7 @@ from materials.import_phykgraph_json import CONFIG_FILE as NEO4J_CONFIG_FILE, va
 NEO4J_LABEL = "JuniorPhysics2024"
 PARTIAL_INDEX_FILE = INDEX_FILE.with_name("junior_physics_embeddings.partial.npz")
 LEGACY_INDEX_FILE = ROOT / "data" / "generated" / "junior_demo_embeddings.npz"
+INDEX_BACKUP_FILE = INDEX_FILE.with_name("junior_physics_embeddings.before-semantic.npz")
 
 
 def load_neo4j_config() -> dict[str, str]:
@@ -109,18 +111,7 @@ def save_index(path: Path, entities: list[dict], vectors: list[np.ndarray], meta
 
 
 def load_reusable_vectors(entities: list[dict], settings) -> dict[str, np.ndarray]:
-    """只在旧向量的模型、编码和逐实体知识文本完全一致时复用。"""
-    if not LEGACY_INDEX_FILE.exists():
-        return {}
-    try:
-        with np.load(LEGACY_INDEX_FILE, allow_pickle=False) as stored:
-            old_metadata = json.loads(str(stored["metadata"].item()))
-            old_ids = stored["source_ids"].tolist()
-            old_texts = stored["texts"].tolist()
-            old_vectors = stored["vectors"].astype(np.float32)
-    except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
-        print(f"旧索引无法读取，不复用已有向量：{type(error).__name__}")
-        return {}
+    """按实体 ID 和原始知识文本复用向量，JSON 仅增加关系时不重复付费编码。"""
     expected = {
         "embedding_model": settings.embedding_model,
         "embedding_dimensions": settings.embedding_dimensions,
@@ -128,21 +119,55 @@ def load_reusable_vectors(entities: list[dict], settings) -> dict[str, np.ndarra
         "corpus_instruction": CORPUS_INSTRUCTION,
         "query_instruction": QUERY_INSTRUCTION,
     }
-    if any(old_metadata.get(key) != value for key, value in expected.items()):
-        print("旧索引模型或编码配置不匹配，不复用已有向量")
-        return {}
-    if (old_vectors.shape != (len(old_ids), settings.embedding_dimensions)
-            or len(old_texts) != len(old_ids) or not np.isfinite(old_vectors).all()):
-        print("旧索引向量或知识文本不完整，不复用已有向量")
-        return {}
     by_id = {entity["id"]: entity for entity in entities}
-    reusable = {
-        source_id: vector
-        for source_id, text, vector in zip(old_ids, old_texts, old_vectors)
-        if source_id in by_id and text == entity_text(by_id[source_id])
-    }
-    print(f"旧索引中有 {len(reusable)} 个知识实体可安全复用")
+    reusable = {}
+    for path in (INDEX_FILE, LEGACY_INDEX_FILE):
+        if not path.exists():
+            continue
+        try:
+            with np.load(path, allow_pickle=False) as stored:
+                old_metadata = json.loads(str(stored["metadata"].item()))
+                old_ids = stored["source_ids"].tolist()
+                old_full_ids = stored["ids"].tolist() if path == INDEX_FILE else None
+                old_texts = stored["texts"].tolist()
+                old_vectors = stored["vectors"].astype(np.float32)
+        except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
+            print(f"{path.name} 无法读取，不复用其中向量：{type(error).__name__}")
+            continue
+        required = dict(expected)
+        if path == INDEX_FILE:
+            required.update({"project_id": PROJECT_ID, "index_filter_version": INDEX_FILTER_VERSION})
+        if any(old_metadata.get(key) != value for key, value in required.items()):
+            print(f"{path.name} 模型或编码配置不匹配，不复用其中向量")
+            continue
+        if (old_vectors.shape != (len(old_ids), settings.embedding_dimensions)
+                or len(old_texts) != len(old_ids) or len(set(old_ids)) != len(old_ids)
+                or (old_full_ids is not None and old_full_ids != [f"{PROJECT_ID}:{source_id}" for source_id in old_ids])
+                or not np.isfinite(old_vectors).all() or not np.linalg.norm(old_vectors, axis=1).all()):
+            print(f"{path.name} 向量或知识文本不完整，不复用其中向量")
+            continue
+        before = len(reusable)
+        for source_id, knowledge_text, vector in zip(old_ids, old_texts, old_vectors):
+            if source_id in by_id and knowledge_text == entity_text(by_id[source_id]):
+                reusable.setdefault(source_id, vector)
+        print(f"{path.name} 新增可安全复用 {len(reusable) - before} 个知识实体")
     return reusable
+
+
+def reuse_index_without_api() -> None:
+    """关系变化后只更新完整 JSON 指纹；缺任一实体向量即停止，绝不调用嵌入 API。"""
+    data = validate_graph(json.loads(SOURCE_FILE.read_text(encoding="utf-8-sig")))
+    entities = [entity for entity in data["entities"] if is_searchable_entity(entity)]
+    settings = load_ai_settings(require_key=False)
+    reusable = load_reusable_vectors(entities, settings)
+    if len(reusable) != len(entities) or not INDEX_FILE.exists():
+        raise ValueError(f"仅复用模式需要现有索引覆盖全部 {len(entities)} 个知识实体；当前可复用 {len(reusable)} 个，不调用付费 API")
+    if not INDEX_BACKUP_FILE.exists():
+        shutil.copy2(INDEX_FILE, INDEX_BACKUP_FILE)
+    metadata = index_metadata(settings, len(entities))
+    metadata["created_at"] = datetime.now(timezone.utc).isoformat()
+    save_index(INDEX_FILE, entities, [reusable[entity["id"]] for entity in entities], metadata)
+    print(f"PASS：零 API 调用，复用 {len(entities)} 个知识实体向量；原索引备份为 {INDEX_BACKUP_FILE.name}")
 
 
 def load_checkpoint(entities: list[dict], metadata: dict) -> list[np.ndarray]:
@@ -198,13 +223,19 @@ def build_index() -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify-only", action="store_true", help="只校验 JSON 与 Neo4j ID，不调用嵌入 API")
+    parser.add_argument("--reuse-only", action="store_true", help="仅复用全部现有向量并更新索引指纹；缺失时停止，不调用 API")
     parser.add_argument("--yes", action="store_true", help="确认执行尚未复用的知识实体付费嵌入调用")
     args = parser.parse_args()
     try:
+        if sum((args.verify_only, args.reuse_only, args.yes)) > 1:
+            parser.error("--verify-only、--reuse-only 和 --yes 只能选择一个")
         data = validate_graph(json.loads(SOURCE_FILE.read_text(encoding="utf-8-sig")))
         expected = {f"{PROJECT_ID}:{entity['id']}" for entity in data["entities"]}
         if args.verify_only:
             verify_neo4j_ids(expected)
+            return
+        if args.reuse_only:
+            reuse_index_without_api()
             return
         if not args.yes:
             parser.error("构建索引会调用付费嵌入 API；确认后请增加 --yes")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Kgraph 多项目知识图谱后端 API
+PhyKnowledgeGraph 多项目知识图谱后端 API
 支持：Physics, Curriculum, Materials 等多个项目的图谱数据
 
 架构：FastAPI + Neo4j
@@ -20,11 +20,13 @@ from pathlib import Path
 
 from backend.question_locator import (
     LocateQuestionRequest,
+    PROJECT_ID,
     QuestionLocatorError,
     load_examples,
     locate_live,
     locate_offline_example,
 )
+from backend.question_context import RELATION_WEIGHTS, QuestionContextRequest, select_question_context
 
 # ==================== 配置 ====================
 LOCAL_CONFIG_FILE = Path(__file__).parent / "neo4j.local.json"
@@ -42,7 +44,7 @@ PROJECTS = {
         "name": "初中物理知识图谱",
         "available": True,
         "neo4j_label": "JuniorPhysics2024",
-        "description": "基于教材抽取并参考人教版 2024 目录扩充：436 个节点、686 条关系"
+        "description": "基于教材抽取并参考人教版 2024 目录扩充：436 个节点、788 条关系"
     },
     "physics": {
         "name": "Physics 知识图谱",
@@ -63,7 +65,7 @@ PROJECTS = {
 
 BASE_DIR = Path(__file__).parent
 app = FastAPI(
-    title="Kgraph API",
+    title="PhyKnowledgeGraph API",
     description="多项目知识图谱后端 API",
     version="2.0.0"
 )
@@ -140,6 +142,30 @@ class Neo4jClient:
         LIMIT $limit
         """
         return self.query(query, {"limit": limit, "level": level or "all", "node_type": node_type})
+
+    def get_nodes_by_ids(self, label: str, ids: list[str]):
+        """按真实 Neo4j ID 取节点，并保留普通图谱使用的完整关联数量。"""
+        return self.query(f"""
+        MATCH (n:{label}) WHERE n.id IN $ids
+        OPTIONAL MATCH (n)--(m:{label})
+        WITH n, count(DISTINCT m) AS degree
+        RETURN n.id AS id, coalesce(n.title, n.name, n.label) AS label,
+               coalesce(n.type, n.group, 'Unknown') AS type,
+               n.description AS description, n.source_id AS source_id, degree
+        """, {"ids": ids})
+
+    def get_question_edges(self, label: str, candidate_ids: list[str]):
+        """只读取候选的知识关系；目录关系和其他边不进入题目上下文。"""
+        return self.query(f"""
+        UNWIND $candidate_ids AS candidate_id
+        MATCH (c:{label} {{id: candidate_id}})-[r]-(n:{label})
+        WHERE type(r) IN $relations AND NOT (n.type IN ['TEXTBOOK_VOLUME', 'CHAPTER', 'SECTION'])
+        RETURN candidate_id, n.id AS neighbor_id,
+               coalesce(n.title, n.name, n.label) AS neighbor_label,
+               startNode(r).id AS from, endNode(r).id AS to,
+               type(r) AS relation_type,
+               coalesce(r.relation_type, r.description, type(r)) AS label
+        """, {"candidate_ids": candidate_ids, "relations": list(RELATION_WEIGHTS)})
 
     def get_graph(self, center_node: Optional[str], depth: int = 1, label: str = "Entity", limit: int = 100, level: Optional[str] = None, center_id: Optional[str] = None):
         """获取子图"""
@@ -225,7 +251,7 @@ class Edge(BaseModel):
 async def root():
     """API 首页"""
     return {
-        "message": "Kgraph API - 多项目知识图谱后端",
+        "message": "PhyKnowledgeGraph API - 多项目知识图谱后端",
         "version": "2.0.0",
         "projects": list(PROJECTS.keys()),
         "neo4j_connected": neo4j_client.check_connection(),
@@ -487,6 +513,29 @@ async def locate_question(project_id: str, request: LocateQuestionRequest):
     except QuestionLocatorError as error:
         raise HTTPException(status_code=error.status_code, detail={"code": error.code, "message": error.message}) from error
 
+
+@app.post("/api/{project_id}/question/context")
+async def get_question_context(project_id: str, request: QuestionContextRequest):
+    """从已检索候选构造精简视图；不调用模型，也不改变普通图谱的一跳接口。"""
+    project = get_project_config(project_id)
+    if project_id != PROJECT_ID:
+        raise HTTPException(status_code=400, detail="该项目未配置题目图谱上下文")
+    if not neo4j_client.connected:
+        raise HTTPException(status_code=503, detail="Neo4j 未连接，无法加载题目图谱上下文")
+    label = project["neo4j_label"]
+    candidate_ids = [item.id for item in request.candidates]
+    actual_candidates = neo4j_client.get_nodes_by_ids(label, candidate_ids)
+    if len(actual_candidates) != len(candidate_ids) or any(
+        node["type"] in {"TEXTBOOK_VOLUME", "CHAPTER", "SECTION"} for node in actual_candidates
+    ):
+        raise HTTPException(status_code=409, detail="候选 ID 与当前 Neo4j 图谱不一致，请重新解析题目")
+    relation_rows = neo4j_client.get_question_edges(label, candidate_ids)
+    selected_ids, edges = select_question_context(request, relation_rows)
+    nodes_by_id = {node["id"]: node for node in neo4j_client.get_nodes_by_ids(label, selected_ids)}
+    if len(nodes_by_id) != len(selected_ids):
+        raise HTTPException(status_code=409, detail="题目关联节点已变化，请重新加载图谱")
+    return {"nodes": [nodes_by_id[node_id] for node_id in selected_ids], "edges": edges}
+
 # ==================== 前端路由 ====================
 
 @app.get("/frontend")
@@ -512,7 +561,7 @@ async def shutdown_db():
 if __name__ == "__main__":
     import uvicorn
     print("=" * 60)
-    print("Kgraph API 服务器启动中...")
+    print("PhyKnowledgeGraph API 服务器启动中...")
     print("=" * 60)
     print(f"支持项目：{list(PROJECTS.keys())}")
     print(f"Neo4j: {NEO4J_URI}")

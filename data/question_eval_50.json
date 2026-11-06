@@ -1,0 +1,2012 @@
+{
+  "schema_version": 1,
+  "project_id": "junior_physics",
+  "cases": [
+    {
+      "id": "T01",
+      "split": "development",
+      "question": "某同学用同一烧杯测量液体。液体与烧杯的总质量为168 g时，液体体积为20 cm³；总质量为258 g时，液体体积为120 cm³。求液体的密度（kg/m³）和空烧杯的质量（g）。",
+      "exam": "2024年呼伦贝尔中考物理",
+      "source_url": "https://zy.21cnjy.com/26230113",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        },
+        {
+          "id": "junior_physics:G_NODE_11",
+          "name": "测量液体密度"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        },
+        {
+          "id": "junior_physics:G_NODE_6",
+          "name": "体积"
+        },
+        {
+          "id": "junior_physics:G_NODE_7",
+          "name": "\\rho = \\frac{m}{V}"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "900 kg/m³；150 g"
+    },
+    {
+      "id": "T02",
+      "split": "test",
+      "question": "同一根铁棍取长度L为5、10、15、20、25 cm时，敲击振动频率依次为700、500、400、300、200 Hz。（1）判断长度与音调之间的变化关系并解释；（2）若制作乐器的re音频率低于500 Hz，铁棍长度应大于、等于还是小于10 cm？",
+      "exam": "2024年上海中考物理",
+      "source_url": "https://zy.21cnjy.com/20766496",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_018",
+          "name": "音调"
+        },
+        {
+          "id": "junior_physics:RJ24_K_021",
+          "name": "频率"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_015",
+          "name": "振动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "长度越长，频率越低，音调越低；大于10 cm"
+    },
+    {
+      "id": "T03",
+      "split": "test",
+      "question": "凸透镜正对太阳，在透镜后10 cm处得到最小、最亮的光斑。将蜡烛放在透镜前15 cm处，并在另一侧移动光屏，最后会得到怎样的烛焰像（正倒、放大缩小、实虚）？",
+      "exam": "2024年牡丹江中考物理",
+      "source_url": "https://zy.21cnjy.com/21981083",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_058",
+          "name": "焦距"
+        },
+        {
+          "id": "junior_physics:RJ24_K_062",
+          "name": "凸透镜成像规律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_063",
+          "name": "实像"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_055",
+          "name": "凸透镜"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "倒立、放大的实像"
+    },
+    {
+      "id": "T04",
+      "split": "development",
+      "question": "桔槔可利用坠石的重力帮助从井中提水。支点O到水桶端A为1 m，到坠石端B为1.5 m，坠石重100 N，空桶重20 N，要匀速提升重180 N的水，忽略杆、绳重和摩擦。（1）要进一步省力，坠石悬挂点应靠近还是远离O？（2）人还需施加多大的竖直拉力？（3）坠石下降3 m，其重力做功多少？",
+      "exam": "2024年陕西中考物理",
+      "source_url": "https://zy.21cnjy.com/22946861",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_34",
+          "name": "杠杆平衡条件"
+        },
+        {
+          "id": "junior_physics:RJ24_F_WORK",
+          "name": "W=Fs"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_28",
+          "name": "杠杆"
+        },
+        {
+          "id": "junior_physics:G_NODE_31",
+          "name": "动力臂"
+        },
+        {
+          "id": "junior_physics:G_NODE_33",
+          "name": "阻力臂"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "远离；50 N；300 J"
+    },
+    {
+      "id": "T05",
+      "split": "test",
+      "question": "工人利用滑轮装置将760 N的物体在8 s内匀速提升2 m，动滑轮重240 N，不计绳重与摩擦。（1）求物体上升速度；（2）求有用功；（3）求机械效率。",
+      "exam": "2024年西藏中考物理",
+      "source_url": "https://zy.21cnjy.com/22946861",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_47",
+          "name": "机械效率"
+        },
+        {
+          "id": "junior_physics:G_NODE_45",
+          "name": "有用功"
+        },
+        {
+          "id": "junior_physics:G_NODE_44",
+          "name": "总功"
+        },
+        {
+          "id": "junior_physics:RJ24_K_008",
+          "name": "速度"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_42",
+          "name": "滑轮组"
+        },
+        {
+          "id": "junior_physics:G_NODE_46",
+          "name": "额外功"
+        },
+        {
+          "id": "junior_physics:RJ24_F_WORK",
+          "name": "W=Fs"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "0.25 m/s；1520 J；76%"
+    },
+    {
+      "id": "T06",
+      "split": "test",
+      "question": "用弹簧测力计悬挂实心柱体，将柱体浸入水中并保持静止，柱体上表面恰好与水面齐平；此时测力计示数为3 N，柱体下表面受到水的压力为2 N。求柱体所受浮力及柱体密度（取水密度1.0×10³ kg/m³，g=10 N/kg）。",
+      "exam": "2024年海南中考物理",
+      "source_url": "https://zy.21cnjy.com/26230113",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_098",
+          "name": "浮力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_100",
+          "name": "阿基米德原理"
+        },
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_099",
+          "name": "称重法测浮力"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ARCHIMEDES",
+          "name": "F_{浮}=\\rho_{液}gV_{排}"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "2 N；2.5×10³ kg/m³"
+    },
+    {
+      "id": "T07",
+      "split": "test",
+      "question": "电源电压15 V，原电路只接有10 Ω定值电阻R1。（1）求流过R1的电流。（2）将滑动变阻器R2和量程0～0.6 A的电流表接入电路。已知接入后电路最小总功率为27 W，判断R1、R2的连接方式并说明理由；求R2的最大阻值和电路最大总功率。",
+      "exam": "2024年上海中考物理",
+      "source_url": "https://zy.21cnjy.com/20625097",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_148",
+          "name": "欧姆定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_139",
+          "name": "并联电路电流规律"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_144",
+          "name": "滑动变阻器"
+        },
+        {
+          "id": "junior_physics:RJ24_F_OHM",
+          "name": "I=\\frac{U}{R}"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "name": "P=UI"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "1.5 A；并联；50 Ω；31.5 W"
+    },
+    {
+      "id": "T08",
+      "split": "test",
+      "question": "家用电热水壶标有220 V、880 W。（1）求额定电流；（2）求正常工作电阻；（3）求正常工作5 min消耗的电能；（4）求1 kg水由20℃升至70℃吸收的热量，c水=4.2×10³ J/(kg·℃)。",
+      "exam": "2025年辽宁中考物理",
+      "source_url": "https://zy.21cnjy.com/26253068",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_153",
+          "name": "电功"
+        },
+        {
+          "id": "junior_physics:RJ24_K_116",
+          "name": "比热容计算"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_73",
+          "name": "热量"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "name": "P=UI"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_WORK",
+          "name": "W=UIt"
+        },
+        {
+          "id": "junior_physics:RJ24_F_HEAT",
+          "name": "Q=cm\\Delta t"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "4 A；55 Ω；2.64×10⁵ J；2.1×10⁵ J"
+    },
+    {
+      "id": "T09",
+      "split": "test",
+      "question": "沿斜坡方向用400 N的拉力，将600 N的木箱从斜坡底部匀速拉到顶端；坡长2 m，高1 m。求拉力做的总功、该斜坡的机械效率和木箱所受摩擦力。",
+      "exam": "2024年淮安中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-16727028.html",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_47",
+          "name": "机械效率"
+        },
+        {
+          "id": "junior_physics:G_NODE_44",
+          "name": "总功"
+        },
+        {
+          "id": "junior_physics:G_NODE_24",
+          "name": "摩擦力"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_45",
+          "name": "有用功"
+        },
+        {
+          "id": "junior_physics:RJ24_F_WORK",
+          "name": "W=Fs"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "800 J；75%；100 N"
+    },
+    {
+      "id": "T10",
+      "split": "test",
+      "question": "阅读关于水银在约－269℃出现超导现象、超导输电可能减少电能损失的短文，回答：（1）电阻率反映材料的导电能力还是导热能力？（2）水银降至－269℃时内能是否为零？（3）举出常温常压超导材料可能的一项应用。",
+      "exam": "2024年淮安中考物理",
+      "source_url": "https://zy.21cnjy.com/26312877",
+      "source_question_no": null,
+      "source_match": "user_confirmed",
+      "coverage": "partially_outside",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_67",
+          "name": "内能"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_142",
+          "name": "电阻"
+        },
+        {
+          "id": "junior_physics:RJ24_K_153",
+          "name": "电功"
+        }
+      ],
+      "missing_concepts": [
+        "超导现象",
+        "超导体",
+        "电阻率",
+        "临界温度"
+      ],
+      "reference_answer": "导电能力；内能不为零；如低损耗输电"
+    },
+    {
+      "id": "T11",
+      "split": "test",
+      "question": "某体育场临近主干道，运动员走到有弧形顶棚的主席台附近时，听到的车辆声比在体育场其他区域更大。下列分析哪项错误？A. 声波在顶棚处发生反射；B. 能区分不同车辆的声音表明声音能传递信息；C. 路边树木能使声音在传播过程中逐渐减弱；D. 听到车辆声音较大说明声音的频率较高。",
+      "exam": "2025年山东省威海市中考物理",
+      "source_url": "https://www.renrendoc.com/paper/451112881.html",
+      "source_question_no": "第5题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_019",
+          "name": "响度"
+        },
+        {
+          "id": "junior_physics:RJ24_K_021",
+          "name": "频率"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_018",
+          "name": "音调"
+        },
+        {
+          "id": "junior_physics:RJ24_K_020",
+          "name": "音色"
+        },
+        {
+          "id": "junior_physics:RJ24_K_027",
+          "name": "噪声控制"
+        },
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "D；声音大对应响度较大，不能据此断定频率较高。"
+    },
+    {
+      "id": "T12",
+      "split": "test",
+      "question": "对着笔帽轻轻吹气可以发出声音。此时实际振动发声的声源是什么？A. 笔帽；B. 空气；C. 嘴唇；D. 声带。",
+      "exam": "2025年四川省巴中市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17360016.html",
+      "source_question_no": "第2题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_015",
+          "name": "振动"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B；笔帽内空气柱振动发声。"
+    },
+    {
+      "id": "T13",
+      "split": "development",
+      "question": "在探究光的反射定律实验中，平面镜水平放置，竖直白纸板由可沿竖直接缝ON翻折的P、Q两部分组成。激光紧贴纸板P沿AO射向镜面O点，反射后沿纸板Q上的OB射出。（1）纸板能从不同方向显示光路，是因为光在纸板上发生哪种反射？（2）若减小入射光与镜面的夹角，反射角如何变化？（3）再让光沿BO入射而沿OA反射，说明反射光路具有怎样的性质？（4）将纸板Q沿ON向前或向后翻折，能否在Q上看到反射光？这说明反射光线、入射光线与法线有什么位置关系？（5）多次记录光路后，应该怎样操作来比较反射角与入射角的大小？",
+      "exam": "2025年江苏省南通市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17355269.html",
+      "source_question_no": "该解析页面第19题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_040",
+          "name": "光的反射定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_039",
+          "name": "光的反射"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_044",
+          "name": "漫反射"
+        },
+        {
+          "id": "junior_physics:RJ24_K_041",
+          "name": "入射角"
+        },
+        {
+          "id": "junior_physics:RJ24_K_042",
+          "name": "反射角"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）漫反射；（2）增大；（3）光路可逆；（4）不能，反射光线、入射光线和法线在同一平面内；（5）用量角器分别测量对应入射角与反射角并比较。"
+    },
+    {
+      "id": "T14",
+      "split": "test",
+      "question": "物体发出的或反射的光经照相机镜头后会聚在胶片上形成像。下列说法哪些正确（多选）？A. 镜头相当于凸透镜；B. 镜头相当于凹透镜；C. 胶片上所成的像是倒立的；D. 胶片上所成的像是正立的。",
+      "exam": "2025年辽宁省中考物理",
+      "source_url": "https://zy.21cnjy.com/23401686",
+      "source_question_no": "第8题（多选）",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_059",
+          "name": "照相机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_062",
+          "name": "凸透镜成像规律"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_055",
+          "name": "凸透镜"
+        },
+        {
+          "id": "junior_physics:RJ24_K_056",
+          "name": "凹透镜"
+        },
+        {
+          "id": "junior_physics:RJ24_K_063",
+          "name": "实像"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A、C；照相机镜头相当于凸透镜，胶片上形成倒立的实像。"
+    },
+    {
+      "id": "T15",
+      "split": "test",
+      "question": "观察厨房现象，下列解释哪项正确？A. 炒菜时闻到香气四溢，属于扩散现象；B. 高压锅使食物熟得快，是因为气体压强越大，水的沸点越低；C. 汤沸腾后把燃气灶火焰调小，汤的温度会继续升高；D. 刚出锅的馒头很烫，是因为馒头内部含有很多热量。",
+      "exam": "2025年四川省巴中市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17360016.html",
+      "source_question_no": "第4题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_118",
+          "name": "扩散现象"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_119",
+          "name": "分子热运动"
+        },
+        {
+          "id": "junior_physics:RJ24_K_035",
+          "name": "沸点"
+        },
+        {
+          "id": "junior_physics:RJ24_K_034",
+          "name": "沸腾"
+        },
+        {
+          "id": "junior_physics:G_NODE_73",
+          "name": "热量"
+        },
+        {
+          "id": "junior_physics:G_NODE_71",
+          "name": "热传递"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A；香味扩散反映分子不停地做无规则运动，其他三个说法错误。"
+    },
+    {
+      "id": "T16",
+      "split": "test",
+      "question": "将质量都为100 g的沙子和水分别放进相同瓷盘，两者初温相同，用同一热源分别加热相同时间。（1）沙子和水哪一种升温更快？原因是什么？（2）若水升温20℃，水吸收多少热量？已知水的比热容为4.2×10³ J/(kg·℃)。",
+      "exam": "2025年江苏省宿迁市中考物理",
+      "source_url": "https://www.biganshijuan.com/cz/19231.html",
+      "source_question_no": "第17题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_72",
+          "name": "比热容"
+        },
+        {
+          "id": "junior_physics:RJ24_K_116",
+          "name": "比热容计算"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_F_HEAT",
+          "name": "Q=cm\\Delta t"
+        },
+        {
+          "id": "junior_physics:G_NODE_73",
+          "name": "热量"
+        },
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        },
+        {
+          "id": "junior_physics:G_NODE_49",
+          "name": "温度"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）沙子升温快，因为沙子的比热容较小；（2）8.4×10³ J。"
+    },
+    {
+      "id": "T17",
+      "split": "test",
+      "question": "福建舰满载排水量为8.8×10⁴ t。一架舰载机起飞后，福建舰排开海水的体积减少30 m³。已知海水密度1.0×10³ kg/m³，g=10 N/kg。（1）求福建舰满载时排开海水的体积和所受浮力；（2）求这架舰载机的重力。",
+      "exam": "2025年江苏省南通市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17355269.html",
+      "source_question_no": "该解析页面第17题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_098",
+          "name": "浮力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_100",
+          "name": "阿基米德原理"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_F_ARCHIMEDES",
+          "name": "F_{浮}=\\rho_{液}gV_{排}"
+        },
+        {
+          "id": "junior_physics:RJ24_K_103",
+          "name": "漂浮"
+        },
+        {
+          "id": "junior_physics:RJ24_K_101",
+          "name": "排开液体的体积"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        },
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        },
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）8.8×10⁴ m³，8.8×10⁸ N；（2）3.0×10⁵ N。"
+    },
+    {
+      "id": "T18",
+      "split": "test",
+      "question": "一辆质量为1.8×10³ kg的新能源汽车静止在水平地面上，轮胎与地面的总接触面积为0.1 m²，取g=10 N/kg。（1）求汽车受到的重力；（2）求汽车对水平地面的压强。",
+      "exam": "2025年江苏省淮安市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17355268.html",
+      "source_question_no": "第25题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_089",
+          "name": "压强"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_088",
+          "name": "压力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_090",
+          "name": "受力面积"
+        },
+        {
+          "id": "junior_physics:RJ24_F_PRESSURE",
+          "name": "p=\\frac{F}{S}"
+        },
+        {
+          "id": "junior_physics:RJ24_F_GRAVITY",
+          "name": "G=mg"
+        },
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）1.8×10⁴ N；（2）1.8×10⁵ Pa。"
+    },
+    {
+      "id": "T19",
+      "split": "test",
+      "question": "家庭电路电压为220 V，一个插线板允许的最大电流为10 A。厨房有电饭锅（880 W）、电磁炉（1800 W）、电风扇（100 W）和电饼铛（1000 W），各一台。（1）求电饭锅正常工作时加热电阻的阻值。（2）电风扇和电饭锅已经同时正常工作；若还要增加其中一台其他用电器且不得超过插线板的最大允许电流，应该接入哪一台？三台同时正常工作时，插线板的总电流是多少？",
+      "exam": "2025年北京市中考物理",
+      "source_url": "https://zy.21cnjy.com/23365221",
+      "source_question_no": "第25题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_161",
+          "name": "安全用电"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_163",
+          "name": "家庭电路"
+        },
+        {
+          "id": "junior_physics:RJ24_K_142",
+          "name": "电阻"
+        },
+        {
+          "id": "junior_physics:G_NODE_90",
+          "name": "电流"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "name": "P=UI"
+        },
+        {
+          "id": "junior_physics:RJ24_F_OHM",
+          "name": "I=\\frac{U}{R}"
+        },
+        {
+          "id": "junior_physics:RJ24_K_156",
+          "name": "额定功率"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）55 Ω；（2）接入1000 W的电饼铛，总电流9 A。"
+    },
+    {
+      "id": "T20",
+      "split": "development",
+      "question": "高铁用的IGBT芯片采用硅材料制造。这种硅材料按导电性能应归为哪一类？A. 导体；B. 绝缘体；C. 半导体；D. 超导体。",
+      "exam": "2025年辽宁省中考物理",
+      "source_url": "https://zy.21cnjy.com/23401686",
+      "source_question_no": "第1题",
+      "source_match": "matched_page_question",
+      "coverage": "outside_core",
+      "core_nodes": [],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_132",
+          "name": "导体"
+        },
+        {
+          "id": "junior_physics:RJ24_K_133",
+          "name": "绝缘体"
+        }
+      ],
+      "missing_concepts": [
+        "半导体"
+      ],
+      "reference_answer": "C；硅是半导体材料。"
+    },
+    {
+      "id": "T21",
+      "split": "test",
+      "question": "下列应用中，主要利用声音传递能量的是哪项？A. 医院使用B超检查；B. 用声呐探测鱼群；C. 中医通过听声音诊病；D. 使用超声波清洗机清洗眼镜。",
+      "exam": "2025年四川省宜宾市中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17830636.html",
+      "source_question_no": "第5题",
+      "source_match": "matched_page_question",
+      "coverage": "outside_core",
+      "core_nodes": [],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_023",
+          "name": "超声波"
+        },
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        }
+      ],
+      "missing_concepts": [
+        "声音传递能量",
+        "声音传递信息与声音传递能量的区别"
+      ],
+      "reference_answer": "D。超声波清洗通过声音传递能量，其他选项主要利用声音传递信息。"
+    },
+    {
+      "id": "T22",
+      "split": "development",
+      "question": "古诗《所见》写道：“牧童骑黄牛，歌声振林樾”“意欲捕鸣蝉，忽然闭口立”。（1）如果以黄牛为参照物，骑在牛背上的牧童是运动还是静止的？（2）牧童的歌声是由声带怎样产生的？（3）牧童能够辨别鸣蝉的声音，主要依据声音的“响度”还是“音色”？",
+      "exam": "2025年河南省初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17126003.html",
+      "source_question_no": "第2题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_006",
+          "name": "参照物"
+        },
+        {
+          "id": "junior_physics:RJ24_K_020",
+          "name": "音色"
+        },
+        {
+          "id": "junior_physics:RJ24_K_015",
+          "name": "振动"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_005",
+          "name": "机械运动"
+        },
+        {
+          "id": "junior_physics:RJ24_K_007",
+          "name": "运动和静止的相对性"
+        },
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）静止；（2）振动；（3）音色。"
+    },
+    {
+      "id": "T23",
+      "split": "test",
+      "question": "小文站在一面竖直平面镜前1 m处，用塑料梳子梳头时发现头发“飘”起来。（1）这一现象属于什么起电现象？头发丝相互排斥，说明它们带的是同种还是异种电荷？（2）平面镜中的像与小文相距多少米？该像属于实像还是虚像？",
+      "exam": "2025年青海省初中学业水平考试物理",
+      "source_url": "https://kaosj.com/papers/2025/07/2025-zhongkao-paper-qinghai-f30fd2f453-paper/",
+      "source_question_no": "第16题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_84",
+          "name": "摩擦起电"
+        },
+        {
+          "id": "junior_physics:RJ24_K_046",
+          "name": "平面镜成像特点"
+        },
+        {
+          "id": "junior_physics:G_NODE_87",
+          "name": "同种电荷排斥"
+        },
+        {
+          "id": "junior_physics:RJ24_K_047",
+          "name": "虚像"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_86",
+          "name": "电荷相互作用"
+        },
+        {
+          "id": "junior_physics:RJ24_K_045",
+          "name": "平面镜成像"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "摩擦起电；同种电荷；2 m；虚像。"
+    },
+    {
+      "id": "T24",
+      "split": "test",
+      "question": "下列诗词描写的现象中，主要利用光的折射原理的是哪一句？A.“谁知明镜里，形影自相怜”；B.“举杯邀明月，对影成三人”；C.“潭清疑水浅，荷动知鱼散”；D.“野旷天低树，江清月近人”。",
+      "exam": "2025年江苏省宿迁市中考物理",
+      "source_url": "https://www.jiangsu100.com/27143.html",
+      "source_question_no": "第7题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_048",
+          "name": "光的折射"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_039",
+          "name": "光的反射"
+        },
+        {
+          "id": "junior_physics:RJ24_K_045",
+          "name": "平面镜成像"
+        },
+        {
+          "id": "junior_physics:RJ24_K_037",
+          "name": "光沿直线传播"
+        },
+        {
+          "id": "junior_physics:RJ24_K_047",
+          "name": "虚像"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "C。潭水显得比实际浅，是光从水进入空气时发生折射形成的视觉现象。"
+    },
+    {
+      "id": "T25",
+      "split": "test",
+      "question": "夏天制作冰凉的柠檬饮料，常在其中加入冰块。冰块变为水的过程中需要吸热。（1）冰块变为水属于什么物态变化？（2）做好的柠檬饮料向空气中散发淡淡清香，属于什么现象？（3）通过吸管将饮料吸入口中，是利用了什么压强的作用？",
+      "exam": "2025年河南省初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17126003.html",
+      "source_question_no": "第3题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_59",
+          "name": "熔化"
+        },
+        {
+          "id": "junior_physics:RJ24_K_118",
+          "name": "扩散现象"
+        },
+        {
+          "id": "junior_physics:RJ24_K_094",
+          "name": "大气压强"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_60",
+          "name": "吸热"
+        },
+        {
+          "id": "junior_physics:RJ24_K_119",
+          "name": "分子热运动"
+        },
+        {
+          "id": "junior_physics:G_NODE_53",
+          "name": "物态变化"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）熔化；（2）扩散；（3）大气压强。"
+    },
+    {
+      "id": "T26",
+      "split": "test",
+      "question": "实验时将两个端面平整的铅块相互紧压，发现它们能“粘”在一起。主要原因是什么？A. 分子间存在吸引力；B. 分子间存在排斥力；C. 分子间存在空隙；D. 分子直径很小。",
+      "exam": "2025年江苏省宿迁市中考物理",
+      "source_url": "https://www.jiangsu100.com/27143.html",
+      "source_question_no": "第6题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_120",
+          "name": "分子间的相互作用力"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_117",
+          "name": "分子动理论"
+        },
+        {
+          "id": "junior_physics:RJ24_K_119",
+          "name": "分子热运动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A。紧压后铅块表面分子距离足够接近，分子间吸引力表现出来。"
+    },
+    {
+      "id": "T27",
+      "split": "test",
+      "question": "传统马球比赛中，骑手用球杖把球击向球门。下列说法正确的是哪项？A. 球杖将球击出，说明力能改变物体的运动状态；B. 击出的球继续向前，是因为球受到惯性；C. 飞行中的球若所受外力全部消失，将立即停在空中；D. 人骑马静止于地面时，马自身的重力和地面对马的支持力一定是一对平衡力。",
+      "exam": "2025年黑龙江省齐齐哈尔、黑河、大兴安岭地区中考物理",
+      "source_url": "https://jx.panqjy.cn/doc-17825364.html",
+      "source_question_no": "第7题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_15",
+          "name": "力的作用效果"
+        },
+        {
+          "id": "junior_physics:RJ24_K_079",
+          "name": "惯性"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_078",
+          "name": "牛顿第一定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_080",
+          "name": "二力平衡"
+        },
+        {
+          "id": "junior_physics:RJ24_K_081",
+          "name": "二力平衡条件"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A。惯性不是力；失去外力时保持匀速直线运动；马还受到骑手作用，不能仅凭所述认定两力平衡。"
+    },
+    {
+      "id": "T28",
+      "split": "test",
+      "question": "我国研制的“悟空”号全海深无人无缆潜水器（AUV），质量约为1.3×10³ kg，总体积约为4 m³。已知海水密度为1.0×10³ kg/m³，g取10 N/kg。（1）求潜水器重力；（2）求它完全浸没在海水中时受到的浮力；（3）求它在深度1.1×10⁴ m处受到的海水压强（仅考虑液体产生的压强）。",
+      "exam": "2025年青海省初中学业水平考试物理",
+      "source_url": "https://kaosj.com/papers/2025/07/2025-zhongkao-paper-qinghai-f30fd2f453-paper/",
+      "source_question_no": "第23题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_098",
+          "name": "浮力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_092",
+          "name": "液体压强"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_100",
+          "name": "阿基米德原理"
+        },
+        {
+          "id": "junior_physics:RJ24_K_101",
+          "name": "排开液体的体积"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        },
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ARCHIMEDES",
+          "name": "F_{浮}=\\rho_{液}gV_{排}"
+        },
+        {
+          "id": "junior_physics:RJ24_F_HYDRO",
+          "name": "p=\\rho gh"
+        },
+        {
+          "id": "junior_physics:RJ24_F_GRAVITY",
+          "name": "G=mg"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）1.3×10⁴ N；（2）4.0×10⁴ N；（3）1.1×10⁸ Pa。"
+    },
+    {
+      "id": "T29",
+      "split": "test",
+      "question": "风力发电时，叶片带动发电机内部线圈切割磁感线。（1）该发电机的发电原理属于什么物理现象？（2）某风力发电机一天产生电能约5×10⁴ kW·h，若这些电能等于一定质量的煤完全燃烧所放出的热量，求煤的质量。已知1 kW·h=3.6×10⁶ J，煤的热值为3×10⁷ J/kg。",
+      "exam": "2025年青海省初中学业水平考试物理",
+      "source_url": "https://kaosj.com/papers/2025/07/2025-zhongkao-paper-qinghai-f30fd2f453-paper/",
+      "source_question_no": "第17题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_182",
+          "name": "电磁感应"
+        },
+        {
+          "id": "junior_physics:G_NODE_74",
+          "name": "热值"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_183",
+          "name": "发电机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_152",
+          "name": "电能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_127",
+          "name": "燃料完全燃烧放出的热量"
+        },
+        {
+          "id": "junior_physics:RJ24_F_FUEL",
+          "name": "Q=mq"
+        },
+        {
+          "id": "junior_physics:RJ24_K_122",
+          "name": "能量转化"
+        },
+        {
+          "id": "junior_physics:RJ24_K_193",
+          "name": "可再生能源"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）电磁感应；（2）6×10³ kg（6000 kg）。"
+    },
+    {
+      "id": "T30",
+      "split": "development",
+      "question": "关于电和磁的知识，下列说法正确的是哪项？A. 磁感线是磁场中真实存在的曲线；B. 摩擦起电创造了新的电荷；C. 电动机的工作原理是电磁感应；D. 电能表用于测量电路消耗的电能。",
+      "exam": "2025年江苏省连云港市中考物理",
+      "source_url": "https://www.jiangsu100.com/26983.html",
+      "source_question_no": "第3题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_154",
+          "name": "电能表"
+        },
+        {
+          "id": "junior_physics:RJ24_K_182",
+          "name": "电磁感应"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_173",
+          "name": "磁感线"
+        },
+        {
+          "id": "junior_physics:G_NODE_84",
+          "name": "摩擦起电"
+        },
+        {
+          "id": "junior_physics:G_NODE_85",
+          "name": "电子转移"
+        },
+        {
+          "id": "junior_physics:RJ24_K_180",
+          "name": "电动机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_172",
+          "name": "磁场"
+        },
+        {
+          "id": "junior_physics:RJ24_K_152",
+          "name": "电能"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "D。磁感线是人为建立的描述模型；摩擦起电属于电子转移；电动机利用磁场对通电导体的作用。"
+    },
+    {
+      "id": "T31",
+      "split": "test",
+      "question": "把一只正在响铃的机械闹钟放在密封的玻璃罩中，开始时罩外能听到铃声。使用抽气机逐渐抽出玻璃罩内的空气，罩外听到的铃声响度将怎样变化？A.逐渐变小；B.逐渐变大；C.保持不变；D.先变大后变小。",
+      "exam": "2025年山东省济南市初中学业水平考试物理",
+      "source_url": "https://www.renrendoc.com/paper/465120081.html",
+      "source_question_no": "第2题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_016",
+          "name": "声的传播介质"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        },
+        {
+          "id": "junior_physics:RJ24_K_019",
+          "name": "响度"
+        },
+        {
+          "id": "junior_physics:RJ24_K_015",
+          "name": "振动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A。罩内空气减少，声音传播逐渐受阻，铃声越来越弱；可进一步推断真空不能传声。"
+    },
+    {
+      "id": "T32",
+      "split": "test",
+      "question": "关于声现象，下列说法正确的是哪一项？A.声音在空气中的传播速度始终是340m/s；B.“闻其声而知其人”是根据音色判断的；C.广场上的噪声监测仪可以减弱噪声；D.超声波探伤利用声波传递能量。",
+      "exam": "2025年黑龙江省绥化市初中学业水平考试物理",
+      "source_url": "https://kaosj.com/papers/2025/07/2025-zhongkao-paper-heilongjiang-suihua-2a7f080793-paper/",
+      "source_question_no": "第4题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_020",
+          "name": "音色"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_017",
+          "name": "声速"
+        },
+        {
+          "id": "junior_physics:RJ24_K_026",
+          "name": "噪声"
+        },
+        {
+          "id": "junior_physics:RJ24_K_027",
+          "name": "噪声控制"
+        },
+        {
+          "id": "junior_physics:RJ24_K_023",
+          "name": "超声波"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B。不同发声体的音色可帮助辨别；声速受介质和温度影响，噪声监测仪本身不降噪，超声波探伤主要用于获取信息。"
+    },
+    {
+      "id": "T33",
+      "split": "test",
+      "question": "李白诗句“云生结海楼”中的“海楼”指海市蜃楼。这种自然景象主要由哪种光现象形成？A.小孔成像；B.光的折射；C.平面镜成像；D.凹面镜成像。",
+      "exam": "2025年广西壮族自治区初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17825365.html",
+      "source_question_no": "第2题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_048",
+          "name": "光的折射"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_050",
+          "name": "折射规律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_037",
+          "name": "光沿直线传播"
+        },
+        {
+          "id": "junior_physics:RJ24_K_045",
+          "name": "平面镜成像"
+        },
+        {
+          "id": "junior_physics:RJ24_K_039",
+          "name": "光的反射"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B。大气密度不均匀使光传播方向发生偏折，形成海市蜃楼。"
+    },
+    {
+      "id": "T34",
+      "split": "test",
+      "question": "一位学生平时没有注意科学用眼，现在只能看清近处的物体，看不清远处的物体。（1）他患的是近视眼还是远视眼？（2）应配戴由凹透镜还是凸透镜制成的眼镜进行矫正？",
+      "exam": "2025年广西壮族自治区初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17825365.html",
+      "source_question_no": "第17题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_066",
+          "name": "近视眼"
+        },
+        {
+          "id": "junior_physics:RJ24_K_068",
+          "name": "眼镜矫正"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_056",
+          "name": "凹透镜"
+        },
+        {
+          "id": "junior_physics:RJ24_K_054",
+          "name": "透镜"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）近视眼；（2）凹透镜。"
+    },
+    {
+      "id": "T35",
+      "split": "development",
+      "question": "考古人员用“薄荷醇临时固型技术”保护脆弱文物：先将熔化的薄荷醇喷洒到文物表面，冷却后凝固形成支撑；转运至实验室后，薄荷醇在室温下升华。下列说法错误的是哪一项？A.薄荷醇熔化时吸热；B.薄荷醇凝固时，周围空气分子动能减小；C.薄荷醇升华时吸热；D.薄荷醇升华后分子间距变大。",
+      "exam": "2025年山东省威海市初中学业水平考试物理",
+      "source_url": "https://www.renrendoc.com/paper/451112881.html",
+      "source_question_no": "第4题",
+      "source_match": "user_confirmed",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_61",
+          "name": "凝固"
+        },
+        {
+          "id": "junior_physics:G_NODE_68",
+          "name": "分子动能"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_59",
+          "name": "熔化"
+        },
+        {
+          "id": "junior_physics:G_NODE_65",
+          "name": "升华"
+        },
+        {
+          "id": "junior_physics:G_NODE_60",
+          "name": "吸热"
+        },
+        {
+          "id": "junior_physics:G_NODE_62",
+          "name": "放热"
+        },
+        {
+          "id": "junior_physics:G_NODE_49",
+          "name": "温度"
+        },
+        {
+          "id": "junior_physics:G_NODE_53",
+          "name": "物态变化"
+        },
+        {
+          "id": "junior_physics:RJ24_K_119",
+          "name": "分子热运动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B。凝固放热使周围空气吸热升温，空气分子的平均动能通常增大而非减小。"
+    },
+    {
+      "id": "T36",
+      "split": "test",
+      "question": "我国在柴油机研发中已将本体热效率提高到53%以上。在四冲程柴油机的工作过程中，哪一个冲程主要把内能转化为机械能？A.吸气冲程；B.压缩冲程；C.做功冲程；D.排气冲程。",
+      "exam": "2025年天津市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/23279593",
+      "source_question_no": "第5题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_79",
+          "name": "做功冲程"
+        },
+        {
+          "id": "junior_physics:RJ24_K_122",
+          "name": "能量转化"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_125",
+          "name": "柴油机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_124",
+          "name": "内燃机"
+        },
+        {
+          "id": "junior_physics:G_NODE_78",
+          "name": "压缩冲程"
+        },
+        {
+          "id": "junior_physics:G_NODE_67",
+          "name": "内能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_126",
+          "name": "热机效率"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "C。做功冲程中燃气膨胀推动活塞，对外做功，内能主要转化为机械能。"
+    },
+    {
+      "id": "T37",
+      "split": "test",
+      "question": "一种新型碳纤维复合材料比热容较大，密度约为钢的1/4。已知钢的密度为7.9g/cm³，下列说法正确的是哪一项？A.比热容较大表示材料吸热能力弱；B.这种材料制成的实心物块放入水中一定漂浮；C.飞机大量使用这种低密度材料会增加自重；D.与质量相同的实心钢相比，这种材料的体积更大。",
+      "exam": "2025年重庆市初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17832733.html",
+      "source_question_no": "第4题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        },
+        {
+          "id": "junior_physics:G_NODE_7",
+          "name": "\\rho = \\frac{m}{V}"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        },
+        {
+          "id": "junior_physics:G_NODE_6",
+          "name": "体积"
+        },
+        {
+          "id": "junior_physics:G_NODE_72",
+          "name": "比热容"
+        },
+        {
+          "id": "junior_physics:RJ24_K_102",
+          "name": "物体的浮沉条件"
+        },
+        {
+          "id": "junior_physics:RJ24_K_103",
+          "name": "漂浮"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "D。材料密度约为1.975g/cm³，等质量时密度较小的物体体积较大；其密度大于水，不一定漂浮。"
+    },
+    {
+      "id": "T38",
+      "split": "test",
+      "question": "一辆纯电动小巷公交车，电池充满后最多可储存电能72kW·h，行驶时整车的平均电功率为12kW，公交车平均速度为30km/h。求：（1）以该平均速度行驶0.5h的路程是多少千米？（2）若按上述平均功率持续行驶，充满电的电池可以供车行驶多少小时？",
+      "exam": "2025年重庆市初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17832733.html",
+      "source_question_no": "第19题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_010",
+          "name": "平均速度"
+        },
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_009",
+          "name": "路程"
+        },
+        {
+          "id": "junior_physics:RJ24_K_002",
+          "name": "时间"
+        },
+        {
+          "id": "junior_physics:RJ24_K_152",
+          "name": "电能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_153",
+          "name": "电功"
+        },
+        {
+          "id": "junior_physics:RJ24_F_SPEED",
+          "name": "v=\\frac{s}{t}"
+        },
+        {
+          "id": "junior_physics:RJ24_K_108",
+          "name": "功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_008",
+          "name": "速度"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）15km；（2）6h。"
+    },
+    {
+      "id": "T39",
+      "split": "test",
+      "question": "甲灯标有“6V 6W”，乙灯标有“6V 3W”。把这两盏灯串联后接到电压为9V的电源上，不考虑灯丝电阻随温度的变化。判断：A.只有甲灯正常发光；B.只有乙灯正常发光；C.两灯都正常发光；D.两灯都不能正常发光。",
+      "exam": "2025年天津市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/23279593",
+      "source_question_no": "第10题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:G_NODE_93",
+          "name": "串联电路"
+        },
+        {
+          "id": "junior_physics:RJ24_K_156",
+          "name": "额定功率"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_148",
+          "name": "欧姆定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_142",
+          "name": "电阻"
+        },
+        {
+          "id": "junior_physics:RJ24_K_140",
+          "name": "串联电路电压规律"
+        },
+        {
+          "id": "junior_physics:G_NODE_101",
+          "name": "I = I_1 = I_2 = \\dots"
+        },
+        {
+          "id": "junior_physics:RJ24_F_OHM",
+          "name": "I=\\frac{U}{R}"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "name": "P=UI"
+        },
+        {
+          "id": "junior_physics:RJ24_F_R_SERIES",
+          "name": "R=R_1+R_2+\\cdots"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B。R甲=6Ω，R乙=12Ω，总电流0.5A；乙灯额定电流0.5A，甲灯额定电流1A，所以只有乙正常发光。"
+    },
+    {
+      "id": "T40",
+      "split": "test",
+      "question": "实验电路中接有小灯泡和一段镍铬合金丝。用点燃的蜡烛持续加热这段镍铬合金丝时，观察到小灯泡慢慢变暗，已知这是因为合金丝的电阻逐渐增大。造成合金丝电阻变化的主要因素是什么？A.质量；B.长度；C.粗细；D.温度。",
+      "exam": "2025年广西壮族自治区初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-17825365.html",
+      "source_question_no": "第9题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_143",
+          "name": "影响电阻大小的因素"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_142",
+          "name": "电阻"
+        },
+        {
+          "id": "junior_physics:G_NODE_49",
+          "name": "温度"
+        },
+        {
+          "id": "junior_physics:G_NODE_90",
+          "name": "电流"
+        },
+        {
+          "id": "junior_physics:RJ24_K_148",
+          "name": "欧姆定律"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "D。加热使镍铬合金丝温度升高，电阻增大。"
+    },
+    {
+      "id": "T41",
+      "split": "test",
+      "question": "考古人员用两千多年前楚国的编钟演奏《茉莉花》。如果用大小不同的力敲击同一编钟的相同位置，主要改变了声音的什么特性？A. 传播速度；B. 响度；C. 音调；D. 音色。",
+      "exam": "2024年湖南省初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-16304715.html",
+      "source_question_no": "第1题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_019",
+          "name": "响度"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_022",
+          "name": "振幅"
+        },
+        {
+          "id": "junior_physics:RJ24_K_018",
+          "name": "音调"
+        },
+        {
+          "id": "junior_physics:RJ24_K_021",
+          "name": "频率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_014",
+          "name": "声音"
+        },
+        {
+          "id": "junior_physics:RJ24_K_015",
+          "name": "振动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B，主要改变响度；敲击力度变化使编钟振幅变化。"
+    },
+    {
+      "id": "T42",
+      "split": "test",
+      "question": "古代用12根长度不同的律管吹出12个高低不同的标准音。最长的黄钟律管长九寸（约20 cm），曾用作汉代度量衡标准；管腔装满黍时，黍的体积为一龠（约10 mL），质量为十二铢（约7.8 g）。回答：（1）不同律管发出的声音哪种特性不同？（2）推算汉代一寸约合多少厘米（保留两位小数）？（3）黍的密度约为多少g/cm³？",
+      "exam": "2025年湖北省初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/23279587",
+      "source_question_no": "第16题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_018",
+          "name": "音调"
+        },
+        {
+          "id": "junior_physics:G_NODE_5",
+          "name": "密度"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_021",
+          "name": "频率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_001",
+          "name": "长度"
+        },
+        {
+          "id": "junior_physics:G_NODE_2",
+          "name": "质量"
+        },
+        {
+          "id": "junior_physics:G_NODE_6",
+          "name": "体积"
+        },
+        {
+          "id": "junior_physics:G_NODE_7",
+          "name": "\\rho = \\frac{m}{V}"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）音调；（2）约2.22 cm；（3）0.78 g/cm³。"
+    },
+    {
+      "id": "T43",
+      "split": "test",
+      "question": "某同学用完全相同的电子蜡烛A、B和竖直放置的薄透明玻璃板，探究平面镜成像时像距与物距是否有关。将点亮的A放在玻璃板前，应先用刻度尺测量什么距离？将未点亮的B放在玻璃板后，应调整B到什么观察状态，才能用B的位置代表A的像的位置？测量B到玻璃板的距离并记录后，为再次实验，应改变什么？",
+      "exam": "2024年北京市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/20972437",
+      "source_question_no": "第20题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_045",
+          "name": "平面镜成像"
+        },
+        {
+          "id": "junior_physics:RJ24_K_046",
+          "name": "平面镜成像特点"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_064",
+          "name": "物距"
+        },
+        {
+          "id": "junior_physics:RJ24_K_065",
+          "name": "像距"
+        },
+        {
+          "id": "junior_physics:RJ24_K_047",
+          "name": "虚像"
+        },
+        {
+          "id": "junior_physics:RJ24_K_039",
+          "name": "光的反射"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "测量A到玻璃板的距离；调整至B与A的像完全重合；改变蜡烛A的位置。"
+    },
+    {
+      "id": "T44",
+      "split": "development",
+      "question": "某熔盐塔式光热电站用上万面镜子把太阳光反射到高塔顶端，熔盐吸收太阳能量，再将水加热为蒸汽，由水蒸气推动汽轮发电机发电。下列说法正确的有哪些（多选）？A. 太阳能在电站中直接转化为电能；B. 熔盐吸收太阳光能量后内能增大；C. 汽轮发电机发电应用了电磁感应；D. 不同位置的镜子将阳光反射到塔顶，都遵循光的反射定律。",
+      "exam": "2024年北京市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/20972437",
+      "source_question_no": "第13题（多选）",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_040",
+          "name": "光的反射定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_182",
+          "name": "电磁感应"
+        },
+        {
+          "id": "junior_physics:G_NODE_67",
+          "name": "内能"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_122",
+          "name": "能量转化"
+        },
+        {
+          "id": "junior_physics:G_NODE_71",
+          "name": "热传递"
+        },
+        {
+          "id": "junior_physics:RJ24_K_196",
+          "name": "太阳能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_183",
+          "name": "发电机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_039",
+          "name": "光的反射"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B、C、D。"
+    },
+    {
+      "id": "T45",
+      "split": "test",
+      "question": "古代“省油灯”的灯盏夹层可以注水，从而减慢灯油蒸发、达到省油目的。这主要采用了哪一种减慢蒸发的方法？A. 降低油的温度；B. 减小油的表面积；C. 减慢油面上方空气流动；D. 减少油的体积。",
+      "exam": "2024年北京市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/20972437",
+      "source_question_no": "第8题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_033",
+          "name": "蒸发"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_49",
+          "name": "温度"
+        },
+        {
+          "id": "junior_physics:G_NODE_71",
+          "name": "热传递"
+        },
+        {
+          "id": "junior_physics:G_NODE_72",
+          "name": "比热容"
+        },
+        {
+          "id": "junior_physics:G_NODE_73",
+          "name": "热量"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "A；夹层水有助于降低油的温升，减慢蒸发。"
+    },
+    {
+      "id": "T46",
+      "split": "development",
+      "question": "2024年4月25日，搭载神舟十八号载人飞船的运载火箭成功发射。下列说法哪一项正确？A. 火箭燃料燃烧得越充分，燃料热值越大；B. 火箭发动机工作时热机效率能达到100%；C. 火箭内液氢燃料温度低至−253℃，其内能为零；D. 火箭搭载飞船升空时，飞船的重力势能越来越大。",
+      "exam": "2024年湖南省初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-16304715.html",
+      "source_question_no": "第8题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_110",
+          "name": "重力势能"
+        },
+        {
+          "id": "junior_physics:G_NODE_74",
+          "name": "热值"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:G_NODE_67",
+          "name": "内能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_126",
+          "name": "热机效率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_124",
+          "name": "内燃机"
+        },
+        {
+          "id": "junior_physics:G_NODE_49",
+          "name": "温度"
+        },
+        {
+          "id": "junior_physics:RJ24_K_122",
+          "name": "能量转化"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "D；升空时高度增加，重力势能增加，其他选项的热值、热机效率和内能判断错误。"
+    },
+    {
+      "id": "T47",
+      "split": "test",
+      "question": "用左手手指和右手手掌从水平方向分别压住气球两侧，使气球保持静止。下列说法正确的是哪项？A. 手指对气球的压力大于手掌对气球的压力；B. 手指对气球的压强大于手掌对气球的压强；C. 手掌对气球的压力与气球对手掌的压力是一对平衡力；D. 手指和手掌分别受到气球的压力是一对相互作用力。",
+      "exam": "2024年北京市初中学业水平考试物理",
+      "source_url": "https://zy.21cnjy.com/20972437",
+      "source_question_no": "第7题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_089",
+          "name": "压强"
+        },
+        {
+          "id": "junior_physics:RJ24_K_080",
+          "name": "二力平衡"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_088",
+          "name": "压力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_090",
+          "name": "受力面积"
+        },
+        {
+          "id": "junior_physics:RJ24_K_081",
+          "name": "二力平衡条件"
+        },
+        {
+          "id": "junior_physics:G_NODE_17",
+          "name": "力的作用是相互的"
+        },
+        {
+          "id": "junior_physics:RJ24_F_PRESSURE",
+          "name": "p=\\frac{F}{S}"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "B；气球两侧压力大小相等，但手指接触面积较小，压强较大。"
+    },
+    {
+      "id": "T48",
+      "split": "test",
+      "question": "在探究阻力对物体运动的影响时，让同一小车每次从斜面同一高度由静止滑下，只改变水平木板表面的粗糙程度，不计空气阻力。下列说法正确的是哪项？A. 小车在水平木板上运动时只受到摩擦力；B. 小车在不同粗糙程度表面上的滑行距离相同；C. 水平面越粗糙，小车在水平面上运动时所受摩擦力越大；D. 该实验能直接验证完全不受阻力时，小车将永远匀速直线运动。",
+      "exam": "2024年湖南省初中学业水平考试物理",
+      "source_url": "https://jx.panqjy.cn/doc-16304715.html",
+      "source_question_no": "第7题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_078",
+          "name": "牛顿第一定律"
+        },
+        {
+          "id": "junior_physics:RJ24_K_085",
+          "name": "影响滑动摩擦力大小的因素"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_082",
+          "name": "滑动摩擦力"
+        },
+        {
+          "id": "junior_physics:G_NODE_24",
+          "name": "摩擦力"
+        },
+        {
+          "id": "junior_physics:G_NODE_21",
+          "name": "重力"
+        },
+        {
+          "id": "junior_physics:RJ24_K_080",
+          "name": "二力平衡"
+        },
+        {
+          "id": "junior_physics:RJ24_K_011",
+          "name": "匀速直线运动"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "C；粗糙程度越大，滑动摩擦力越大；理想无阻力结论依靠推理，不是实验直接观察。"
+    },
+    {
+      "id": "T49",
+      "split": "development",
+      "question": "某品牌电风扇额定电压220 V、额定功率55 W，电动机线圈电阻32 Ω。电风扇正常工作1 h，求：（1）电风扇消耗的电能（kW·h）；（2）通过电风扇的额定电流（A）；（3）电动机线圈中因电流产生的热量（J）。",
+      "exam": "2025年四川省南充市中考物理",
+      "source_url": "https://kaosj.com/papers/2025/07/2025-zhongkao-paper-sichuan-e5beeec28f-paper/",
+      "source_question_no": "第24题",
+      "source_match": "matched_page_question",
+      "coverage": "covered",
+      "core_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_155",
+          "name": "电功率"
+        },
+        {
+          "id": "junior_physics:RJ24_K_159",
+          "name": "焦耳定律"
+        }
+      ],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_152",
+          "name": "电能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_153",
+          "name": "电功"
+        },
+        {
+          "id": "junior_physics:RJ24_K_160",
+          "name": "电热"
+        },
+        {
+          "id": "junior_physics:RJ24_K_156",
+          "name": "额定功率"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_POWER",
+          "name": "P=UI"
+        },
+        {
+          "id": "junior_physics:RJ24_F_ELECTRIC_WORK",
+          "name": "W=UIt"
+        },
+        {
+          "id": "junior_physics:RJ24_F_JOULE",
+          "name": "Q=I^2Rt"
+        }
+      ],
+      "missing_concepts": [],
+      "reference_answer": "（1）0.055 kW·h（或1.98×10⁵ J）；（2）0.25 A；（3）7200 J。"
+    },
+    {
+      "id": "T50",
+      "split": "test",
+      "question": "关于我国科技成果的物理知识解释，下列哪项不正确？A. 白鹤滩水电站年均发电量624亿千瓦时，水力发电把机械能转化为电能；B. “天问二号”在太空通过电磁波与地面联系；C. 中国空间站利用太阳能电池板供电，太阳能属于清洁能源；D. “人造太阳”实现约1亿℃持续1000秒的技术，其释放核能的反应属于核裂变。",
+      "exam": "2025年四川省泸州市中考物理",
+      "source_url": "https://www.chujuan.cn/paper/view-5584908.shtml",
+      "source_question_no": "第10题",
+      "source_match": "matched_page_question",
+      "coverage": "outside_core",
+      "core_nodes": [],
+      "supporting_nodes": [
+        {
+          "id": "junior_physics:RJ24_K_195",
+          "name": "核能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_184",
+          "name": "电磁波"
+        },
+        {
+          "id": "junior_physics:RJ24_K_183",
+          "name": "发电机"
+        },
+        {
+          "id": "junior_physics:RJ24_K_196",
+          "name": "太阳能"
+        },
+        {
+          "id": "junior_physics:RJ24_K_122",
+          "name": "能量转化"
+        }
+      ],
+      "missing_concepts": [
+        "核聚变",
+        "核裂变"
+      ],
+      "reference_answer": "D；“人造太阳”利用核聚变，不是核裂变。"
+    }
+  ]
+}

@@ -18,7 +18,7 @@
       </el-main>
 
       <el-footer v-if="$route.name !== 'GraphView'">
-        <p>Kgraph 多项目知识图谱系统 v2.0 | Powered by FastAPI + Vue 3 + Neo4j</p>
+        <p>PhyKnowledgeGraph | Powered by FastAPI + Vue 3 + Neo4j</p>
       </el-footer>
     </el-container>
   </div>
