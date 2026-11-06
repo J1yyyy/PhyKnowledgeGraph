@@ -4,7 +4,11 @@
 
 ## 功能展示
 
-普通图谱可按级别查看知识实体。下图为核心节点视图。
+[观看项目演示视频](docs/videos/phyknowledgegraph-demo.mp4)
+
+普通图谱默认展示全部 319 个知识实体，也可切换到核心节点视图。
+
+![全部知识实体图谱](docs/images/graph-all-knowledge.png)
 
 ![核心知识实体图谱](docs/images/graph-core-knowledge.png)
 
@@ -19,6 +23,10 @@
 选择候选后进入上下文图，可查看全部候选、真实关系和节点详情。图中示例显示 5 个候选、8 条关系。
 
 ![候选上下文图与节点详情](docs/images/candidate-context.png)
+
+还可以选择公式候选，查看它与相关物理量的关系及节点详情。
+
+![公式候选与节点详情](docs/images/candidate-formula-detail.png)
 
 ## 图谱数据
 
